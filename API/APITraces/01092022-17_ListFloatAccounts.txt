@@ -1,0 +1,4 @@
+2022-09-01 17:27:11 - =================================================
+2022-09-01 17:27:11 - SELECT a.fl_acc_id,u.full_name,a.fl_acc_currentamtkes,a.fl_acc_lasttopup,a.fl_acc_lasttopupdate,fl_created_on FROM float_accounts a LEFT JOIN tbl_users u ON u.user_id = a.fl_acc_userid WHERE u.user_company = '33' AND u.user_level = '1' and fl_acc_status = 1
+2022-09-01 17:27:11 - Response {"accounts":[]}
+2022-09-01 17:27:11 - =================================================

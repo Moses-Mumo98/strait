@@ -1,6 +1,7 @@
 <?php include 'header.php';?>
       <!-- Main Content -->
       <div class="main-content">
+
         <section class="section">
           <ul class="breadcrumb breadcrumb-style ">
             <li class="breadcrumb-item">
@@ -88,6 +89,7 @@
                            </select>
                         </div>
                      </div>
+
                      <div style="height: 10px;"></div>
                   <div class="form-group">
                     <button id = "projectSaver" type="submit" class="btn btn-primary btn-lg btn-block"><i id = 'projectsaverIcon' class="fa fa-spinner"></i>

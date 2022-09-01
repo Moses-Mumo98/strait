@@ -28,7 +28,7 @@
                   <div class="row">
                     <div class="form-group col-6">
                       <label for="u_name">Full Name</label>
-                      <input id="u_name" type="text" class="form-control" name="u_name" autofocus>
+                      <input id="u_name" type="text" class="form-control" name="u_name">
                     </div>
                     <div class="form-group col-6">
                       <label for="u_email">User Email</label>

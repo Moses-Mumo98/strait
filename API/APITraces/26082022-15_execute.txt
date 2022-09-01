@@ -1,5 +1,0 @@
-2022-08-26 15:43:26 - Executing UPDATE tbl_branches set branch_status = 0 where branch_id = ''
-2022-08-26 15:43:32 - Executing UPDATE tbl_branches set branch_status = 0 where branch_id = ''
-2022-08-26 15:43:32 - Executing UPDATE tbl_branches set branch_status = 0 where branch_id = ''
-2022-08-26 15:43:34 - Executing UPDATE tbl_branches set branch_status = 0 where branch_id = ''
-2022-08-26 15:43:34 - Executing UPDATE tbl_branches set branch_status = 0 where branch_id = ''

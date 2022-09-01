@@ -185,9 +185,9 @@ switch ($request) {
 		usersetting($_POST['user_id']);
 	break;
     
-	// case 44:
-	// 	upload($_POST['user_image']);
-    // break;
+	case 44:
+		upload($_POST['user_image']);
+    break;
 
 	case 45:
 		getPic($_POST['user_id']);
@@ -199,8 +199,12 @@ switch ($request) {
 	break;
 
 	case 47:
-		updateBranchstatus($_POST['branch_id']);
+		updateBranch($_POST['branch_id']);
 		break;
+
+	case 48:
+		updateDepartment($_POST['company_id']);
+	break;
 	
 
     default:
@@ -758,8 +762,8 @@ function ListFloatAccounts($company){
     $typehere = "ListFloatAccounts";
 	debug("=================================================",$typehere);
 	$fl_acc_id = $_POST['fl_acc_id'];
-	if($fl_acc_id == "")$strSQL = "SELECT a.fl_acc_id,u.full_name,a.fl_acc_currentamtkes,a.fl_acc_lasttopup,a.fl_acc_lasttopupdate,fl_created_on FROM float_accounts a LEFT JOIN tbl_users u ON u.user_id = a.fl_acc_userid WHERE u.user_company = '$company' AND u.user_level = '1' and fl_acc_status = 1";
-	else $strSQL = "SELECT a.fl_acc_id,u.full_name,a.fl_acc_currentamtkes,a.fl_acc_lasttopup,a.fl_acc_lasttopupdate,fl_created_on FROM float_accounts a LEFT JOIN tbl_users u ON u.user_id = a.fl_acc_userid WHERE fl_acc_id = '$fl_acc_id'";
+	if($fl_acc_id == "")$strSQL = "SELECT a.fl_acc_id,u.first_name,a.fl_acc_currentamtkes,a.fl_acc_lasttopup,a.fl_acc_lasttopupdate,fl_created_on FROM float_accounts a LEFT JOIN tbl_users u ON u.user_id = a.fl_acc_userid WHERE u.user_company = '$company' AND u.user_level = '1' and fl_acc_status = 1";
+	else $strSQL = "SELECT a.fl_acc_id,u.first_name,a.fl_acc_currentamtkes,a.fl_acc_lasttopup,a.fl_acc_lasttopupdate,fl_created_on FROM float_accounts a LEFT JOIN tbl_users u ON u.user_id = a.fl_acc_userid WHERE fl_acc_id = '$fl_acc_id'";
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);
@@ -990,9 +994,11 @@ function getSubTask(){
 	}
 	
 	if($sub_id == "")
-		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE s.task_id  = '$task_id'";
+		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
+		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE s.task_id  = '$task_id'";
 	else
-		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE sub_id = '$sub_id'";
+		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
+		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE sub_id = '$sub_id'";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -1021,7 +1027,7 @@ function getSubTask(){
 		debug($getUsers, $typehere);
 		$q = execute_($getUsers,$conn);
 		while($f = fetch($q)){
-			$users .= $f['full_name'].",";
+			$users .= $f['first_name'].",";
 		}
 		debug("Users: ".$users,$typehere);
 		
@@ -1314,11 +1320,11 @@ function getProjectTasks(){
 	$user_id = $_POST['user_id'];
 	
 	if ($user_id != "")
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.full_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status left join sub_tasks st on st.task_id = t.task_id left join tbl_assigned_users tu on tu.sub_id = st.sub_id LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id' and (t.assigned_to = '$user_id' OR tu.assigned_users like '%$user_id%') GROUP BY task_id";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status left join sub_tasks st on st.task_id = t.task_id left join tbl_assigned_users tu on tu.sub_id = st.sub_id LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id' and (t.assigned_to = '$user_id' OR tu.assigned_users like '%$user_id%') GROUP BY task_id";
 	else if($task_id == "")
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.full_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id'";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id'";
 	else
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.full_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.task_id = '$task_id'";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.task_id = '$task_id'";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -1389,6 +1395,7 @@ function saveDepartment(){
 	$branch_name = $_POST['branch_name'];
 	$company_id = $_POST['company_id'];
 	$user_id = $_POST['user_id'];
+	$dep_status = $_POST['dep_status'];
 	
 	$dep_id = $_POST['dep_id'];
 	
@@ -1436,7 +1443,7 @@ function saveDepartment(){
 		echo json_encode(array("depadd" => $result));
 	}else{
 		debug("Update Details For ".$dep_id,$typehere);
-		$sql = "UPDATE tbl_departments set dep_name = '$d_name',branch_id = '$branch_id', modified_on = NOW() where dep_id = '$dep_id'";
+		$sql = "UPDATE tbl_departments set dep_name = '$d_name', dep_status = '$dep_status',branch_id = '$branch_id', modified_on = NOW() where dep_id = '$dep_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -1453,6 +1460,23 @@ function saveDepartment(){
 	debug("=================================================",$typehere);
 }
 
+function updateDepartment($company_id){
+	$typehere = "updateDepartment";
+	debug("===========================================", $typehere);
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_departments set dep_status = 0 where company = '$company_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 array_push($result,array("company_id" => $company_id));
+	 debug("Response".json_encode(array("updated" => $result)),$typehere);
+	 echo json_encode(array("updated" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
 
 
 function listDepartments(){
@@ -1460,6 +1484,7 @@ function listDepartments(){
     $typehere = "listDepartments";
 	debug("=================================================",$typehere);
 	$dep_id = $_POST['dep_id'];
+	$dep_status = $_POST['dep_status'];
 	$branch = $_POST['branch'];
 	$company_id = $_POST['company_id'];
 	$branch_id = $_POST['branch_id'];
@@ -1474,13 +1499,13 @@ function listDepartments(){
 		}else{
 			$branch_id = $branch;
 		}
-		$strSQL = "SELECT t.dep_id,t.dep_name,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id'";
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id'";
 	}else if ($branch_id != ""){
-		$strSQL = "SELECT t.dep_id,t.dep_name,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id'";
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id'";
 	}else if($dep_id == ""){
-		$strSQL = "SELECT t.dep_id,t.dep_name,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '".$_POST['company_id']."'";
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '".$_POST['company_id']."'";
 	}else {
-		$strSQL = "SELECT t.dep_id,t.dep_name,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE dep_id = '$dep_id'";
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE dep_id = '$dep_id'";
 	}
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -1504,11 +1529,12 @@ function listDepartments(){
 	debug("=================================================",$typehere);
 }
 
-function updateBranchstatus($branch_id){
+function updateBranch(){
 	$typehere = "updateBranch";
 	debug("===========================================", $typehere);
+	$branch_id = $_POST['branch_id'];
     $conn = connect("timetracker1");
-	$strSQL = "UPDATE tbl_branches set branch_status = 0 where branch_id = '$branch_id'";
+	$strSQL = "UPDATE tbl_branches set branch_status=0 where branch_id = '$branch_id'";
 	debug($strSQL, $typehere);
 	execute_($strSQL,$conn);
 
@@ -1537,7 +1563,7 @@ function saveBranch(){
 	
 	if($branch_id == ""){
 		debug("Save New Branch ",$typehere);
-		$checker2 = "SELECT * from tbl_branches where branch_name = '$p_name' and company_id = '$company_id'";
+		$checker2 = "SELECT * from tbl_branches where branch_name = '$p_name' and company_id = '$company_id' ";
 		debug($checker2, $typehere);
 		$q = execute_($checker2,$conn);
 		$n = num($q);
@@ -1568,7 +1594,7 @@ function saveBranch(){
 		echo json_encode(array("branchadd" => $result));
 	}else{
 		debug("Update Details For ".$branch_id,$typehere);
-		$sql = "UPDATE tbl_branches set  branch_name = '$p_name',branch_desc ='$p_desc',company_id = '$company_id', modified_on = NOW() where branch_id = '$branch_id'";
+		$sql = "UPDATE tbl_branches set  branch_name = '$p_name',branch_desc ='$p_desc',branch_status='$branch_status',company_id = '$company_id', modified_on = NOW() where branch_id = '$branch_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -1826,6 +1852,8 @@ function saveTask(){
 			debug($t_name . " already exists", $typehere);
 			array_push($result, array("bool_code" => false,"message" => $t_name . " already exists"));
 			echo json_encode(array("taskadd" => $result));
+	
+	
 			return;
 		}
 		
@@ -2095,10 +2123,8 @@ function saveNewUser(){
 	$added_by = $_POST['added_by'];
 	$branch = $_POST['branch'];
 	$dep = $_POST['dep'];
-	
 	$user_id = $_POST['user_id'];
-	
-    $typehere = "saveNewUser";
+	$typehere = "saveNewUser";
     debug("===========================================", $typehere);
     $conn = connect("timetracker1");
 	debug("Got User ID as ".$user_id,$typehere);
@@ -2143,33 +2169,34 @@ function saveNewUser(){
 	if($user_id == ""){
 		debug("Save New Staff ",$typehere);
 				
-		$password = randomString(6);
-		debug("Generated Password " . $password, $typehere);
+		// $password = randomString(6);
+		// debug("Generated Password" . $password, $typehere);
 		
-		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
-		debug("User Global ID ".$GlobalID,$typehere);
+		// $GlobalID = checkUserGlobal($u_name,$u_email,$password);
+		// debug("User Global ID".$GlobalID,$typehere);
 		
-		$checker2 = "select user_id, full_name from tbl_users where user_email = '$u_email'";
-		debug($checker2, $typehere);
+		$checker2 = "SELECT * from tbl_users where first_name='$u_name', user_email = '$u_email'";
+		debug($checker2,$typehere);
 		$q = execute_($checker2,$conn);
 		$n = num($q);
 		$user_id = 0;
 		$result = array();
 		while ($f = fetch($q)) {
 			$user_id = $f['user_id'];
-			$full_name = $f['full_name'];
+			$first_name = $f['u_name'];
 		}
 		
-		debug("user_id " . $user_id, $typehere);
+		debug("user_id ".$user_id,$typehere);
 		if ($user_id > 0) {
 			$sql = "UPDATE tbl_users set global_id = '$GlobalID' where user_id = '$user_id'";
 		}else{
-			$sql = "INSERT INTO tbl_users(global_id,user_email,user_password,full_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('$GlobalID','$u_email',MD5('$password'),'$u_name','$level_id','$status_id','$company_id',NOW(),'$branch_id','$dep_id')";
+			$sql = "INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('$GlobalID','$u_email',MD5('$password'),'$u_name','$level_id','$status_id','$company_id',NOW(),'$branch_id','$dep_id')";
 		}
-		debug($sql, $typehere);
+		debug($sql,$typehere);
 		$roww = execute_($sql,$conn);
+		debug($roww);
 		$num = affected($conn);
-		debug("Inserted " . $num." User Records", $typehere);
+		debug("Inserted".$num." User Records", $typehere);
 		if ($num > 0) {	
 			if($user_id < 1){
 
@@ -2179,7 +2206,7 @@ function saveNewUser(){
 			$f_name = $exploded[0];
 			$l_name = $exploded[1];
 			
-			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$f_name','1','1')";
+			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$u_name','1','1')";
 			debug($ins,$typehere);
 			execute_($ins,$docs);
 			$in = affected($docs);
@@ -2206,8 +2233,8 @@ function saveNewUser(){
 				execute_($save,$docs);
 			}
 			
-			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
-			debug($email, $typehere);
+			$u_email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
+			debug($u_email, $typehere);
 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 			}
 			array_push($result, array("bool_code" => true,"message" => $u_name . " Successfully Registered"));
@@ -2217,14 +2244,14 @@ function saveNewUser(){
 		echo json_encode(array("useradd" => $result));
 	}else{
 		debug("Update Details For ".$staff_id,$typehere);
-		$sql = "UPDATE tbl_users set last_action = NOW(),user_email = '$s_email',first_name = '$f_name',last_name = '$l_name', user_level = '$s_level',user_dep = '$s_dep' where user_id = '$staff_id'";
+		$sql = "UPDATE tbl_users set created_on = NOW(),user_email = '$u_email',first_name = '$u_name', user_level = '$u_level',user_dep = '$u_dep' where user_id = '$user_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
 		debug("Updated " . $num." User Records", $typehere);
 		$result = array();
 		if ($num > 0) {
-			array_push($result, array("result" => 'TRUE',"addmessage" => $s_name . " Details Successfully Updated"));
+			array_push($result, array("result" => 'TRUE',"addmessage" => $u_name . " Details Successfully Updated"));
 		} else {
 			array_push($result, array("result" => 'FALSE',"addmessage" => "Failed to Update Staff Details"));
 		}
@@ -2233,6 +2260,156 @@ function saveNewUser(){
     closer($conn);
 	debug("=================================================",$typehere);
 }
+
+
+// function saveNewUser(){
+//     $u_name = $_POST['u_name'];
+// 	$u_email = $_POST['u_email'];
+//     $user_level = $_POST['user_level'];
+//     $user_status = $_POST['user_status'];
+// 	$company_id = $_POST['company_id'];
+// 	$added_by = $_POST['added_by'];
+// 	$branch = $_POST['branch'];
+// 	$dep = $_POST['dep'];
+	
+// 	$user_id = $_POST['user_id'];
+	
+//     $typehere = "saveNewUser";
+//     debug("===========================================", $typehere);
+//     $conn = connect("timetracker");
+// 	debug("Got User ID as ".$user_id,$typehere);
+	
+// 	$type = $_POST['type'];
+	
+// 	if($type == "SCHOOL") $getLevel = "SELECT * FROM user_levels s WHERE s.school_desc = '$user_level'";
+// 	else if($type == "LAWFIRM") $getLevel = "SELECT * FROM user_levels s WHERE s.law_desc = '$user_level'"; else $getLevel = "SELECT * FROM user_levels s WHERE s.level_desc = '$user_level'";
+// 	debug($getLevel,$typehere);
+// 	$a = execute_($getLevel,$conn);
+// 	$b = fetch($a);
+// 	$level_id = $b['level_id'];
+	
+// 	if(!is_numeric($branch)){
+// 		$getBranchID = "SELECT * FROM tbl_branches WHERE branch_name = '$branch' and company_id = '$company_id'";
+// 		debug($getBranchID,$typehere);
+// 		$a = execute_($getBranchID,$conn);
+// 		$b = fetch($a);
+// 		$branch_id = $b['branch_id'];
+// 	}else{
+// 		$branch_id = $branch;
+// 	}
+	
+// 	if(!is_numeric($dep)){
+// 		$getDepID = "SELECT * FROM tbl_departments WHERE dep_name = '$dep' and company = '$company_id'";
+// 		debug($getDepID,$typehere);
+// 		$a = execute_($getDepID,$conn);
+// 		$b = fetch($a);
+// 		$dep_id = $b['dep_id'];
+// 	}else{
+// 		$dep_id = $dep;
+// 	}
+	
+// 	$getStatus = "SELECT * FROM user_status WHERE status_desc = '$user_status'";
+// 	debug($getStatus,$typehere);
+// 	$a = execute_($getStatus,$conn);
+// 	$b = fetch($a);
+// 	$status_id = $b['status_id'];
+	
+// 	debug("level_id ".$level_id." status_id ".$status_id,$typehere);
+	
+// 	if($user_id == ""){
+// 		debug("Save New Staff ",$typehere);
+				
+// 		$password = randomString(6);
+// 		debug("Generated Password " . $password, $typehere);
+		
+// 		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
+// 		debug("User Global ID ".$GlobalID,$typehere);
+		
+// 		$checker2 = "select user_id, first_name from tbl_users where user_email = '$u_email'";
+// 		debug($checker2, $typehere);
+// 		$q = execute_($checker2,$conn);
+// 		$n = num($q);
+// 		$user_id = 0;
+// 		$result = array();
+// 		while ($f = fetch($q)) {
+// 			$user_id = $f['user_id'];
+// 			$full_name = $f['full_name'];
+// 		}
+		
+// 		debug("user_id " . $user_id, $typehere);
+// 		if ($user_id > 0) {
+// 			$sql = "UPDATE tbl_users set global_id = '$GlobalID' where user_id = '$user_id'";
+// 		}else{
+// 			$sql = "INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('$GlobalID','$u_email',MD5('$password'),'$u_name','$level_id','$status_id','$company_id',NOW(),'$branch_id','$dep_id')";
+// 		}
+// 		debug($sql, $typehere);
+// 		$roww = execute_($sql,$conn);
+// 		$num = affected($conn);
+// 		debug("Inserted " . $num." User Records", $typehere);
+// 		if ($num > 0) {	
+// 			if($user_id < 1){
+
+// 			$docs = connect("docs");
+			
+// 			$exploded = multiexplode(array(" "), $u_name);
+// 			$f_name = $exploded[0];
+// 			$l_name = $exploded[1];
+			
+// 			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$f_name','1','1')";
+// 			debug($ins,$typehere);
+// 			execute_($ins,$docs);
+// 			$in = affected($docs);
+			
+// 			debug("Saved ".$in." DMS Records",$typehere);
+			
+// 			$id = last_id($docs);
+			
+// 			if($level_id > 2){
+// 				$admin = 1;
+// 			}else{
+// 				$admin = 0;
+// 			}
+				
+// 			$saver = "INSERT INTO dms_admin(id,admin) VALUES ('$id','$admin')";
+// 			debug($saver,$typehere);
+// 			execute_($saver,$docs);
+// 			$in2 = affected($docs);
+// 			debug("Saved ".$in2." DMS Admin Records",$typehere);
+			
+// 			if($level_id == 1){
+// 				$save = "INSERT INTO dms_department (name) VALUES ('$u_name');";
+// 				debug($save,$typehere);
+// 				execute_($save,$docs);
+// 			}
+			
+// 			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
+// 			debug($email, $typehere);
+// 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
+// 			}
+// 			array_push($result, array("bool_code" => true,"message" => $u_name . " Successfully Registered"));
+// 		} else {
+// 			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
+// 		}
+// 		echo json_encode(array("useradd" => $result));
+// 	}else{
+// 		debug("Update Details For ".$staff_id,$typehere);
+// 		$sql = "UPDATE tbl_users set last_action = NOW(),user_email = '$s_email',first_name = '$f_name',last_name = '$l_name', user_level = '$s_level',user_dep = '$s_dep' where user_id = '$staff_id'";
+// 		debug($sql, $typehere);
+// 		$roww = execute_($sql,$conn);
+// 		$num = affected($conn);
+// 		debug("Updated " . $num." User Records", $typehere);
+// 		$result = array();
+// 		if ($num > 0) {
+// 			array_push($result, array("result" => 'TRUE',"addmessage" => $s_name . " Details Successfully Updated"));
+// 		} else {
+// 			array_push($result, array("result" => 'FALSE',"addmessage" => "Failed to Update Staff Details"));
+// 		}
+// 		echo json_encode(array("staffadd" => $result));
+// 	}
+//     closer($conn);
+// 	debug("=================================================",$typehere);
+// }
+
 
 function getUserLevels(){
     $conn = connect("timetracker1");
@@ -2375,7 +2552,7 @@ function saveProject(){
 		echo json_encode(array("projectadd" => $result));
 	}else{
 		debug("Update Details For ".$staff_id,$typehere);
-		$sql = "UPDATE tbl_projects set modified_on = NOW(),project_name = '$p_name',project_desc = '$p_desc',department_id = '$department_id',status = '$status_no', start_date = '$startDate',end_date = '$endDate' where project_id = '$project_id'";
+		$sql = "UPDATE tbl_projects set modified_on = NOW(),project_name = '$p_name',status = '$status',project_desc = '$p_desc',department_id = '$department_id',status = '$status_no', start_date = '$startDate',end_date = '$endDate' where project_id = '$project_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -2392,11 +2569,14 @@ function saveProject(){
 	debug("=================================================",$typehere);
 }
 
-function getCompanyUsers($company){
+
+function getCompanyUsers($company_id){
 	$conn = connect("timetracker1");
     $typehere = "getCompanyUsers";
 	$user_id = $_POST['user_id'];
 	debug("=================================================",$typehere);
+
+	//echo json_encode($conn);
 	
 	$limit = $_POST['limit'];
 	
@@ -2414,32 +2594,45 @@ function getCompanyUsers($company){
 		$branch = $_POST['branch'];
 		$dep = $_POST['dep'];
 		if($branch != ""){
-			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch where user_branch = '$branch' $adder";
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l
+			 ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			 tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			 where user_branch = '$branch' $adder";
 		}else if($dep != ""){
-			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch where user_dep = '$dep' $adder";
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			where user_dep = '$dep' $adder";
 		}else {
-			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch where user_company = '$company' $adder";
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			where user_company = '$company_id' $adder";
 		}
 	}else{
-		$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch where user_id = '$user_id' $adder";
+		$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+		ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+		tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+		where user_id = '".$user_id."'  ";
 	}
-    debug($strSQL, $typehere);
+    debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
+	//debug(json_encode(mysqli_free_result($objQuery)));
     $intNumField = mysqli_num_fields($objQuery);
     $resultArray = array();
     while ($obResult = mysqli_fetch_array($objQuery)) {
         $arrCol = array();
-        for ($i = 0; $i < $intNumField; $i ++) {
-             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        for ($i = 0; $i < $intNumField; $i++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery,$i)->name] = $obResult[$i];
         }
 		
 		try {
-			array_push($resultArray, $arrCol);
+			array_push($resultArray,$arrCol);
 		} catch (Exception $e) {
-			debug("Error Reporting ".$e->getMessage(),$typehere);
+			debug("Error Reporting".$e->getMessage(),$typehere);
 		}
     }
-	debug("Response ".json_encode(array("users" => $resultArray)),$typehere);
+	debug("Response".json_encode(array("users" => $resultArray)),$typehere);
     echo json_encode(array("users" => $resultArray));
     closer($conn);
 	debug("=================================================",$typehere);
@@ -2483,15 +2676,31 @@ function getMyProjects(){
 	$dep_id = $_POST['dep_id'];
 	
 	if($user_id != ""){
-		$strSQL = "SELECT p.project_id,p.project_name,project_desc,p.status,p.created_on,dep_name,p.start_date,p.end_date,status_desc,p.chargable,p.fee,p.cycle,u.full_name AS client_name FROM tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_tasks t on t.project_id = p.project_id LEFT JOIN sub_tasks s on s.task_id = t.task_id left join tbl_assigned_users u on u.sub_id = s.sub_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE assigned_users like '%$user_id%' group by p.project_id";
+		$strSQL = "SELECT p.project_id,p.project_name,project_desc,p.status,p.created_on,dep_name,p.start_date,p.end_date,status_desc,p.chargable,p.fee,p.cycle,u.first_name AS
+		 client_name FROM tbl_projects p left join 
+		status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
+		tbl_tasks t on t.project_id = p.project_id LEFT JOIN sub_tasks s on s.task_id = t.task_id left join 
+		tbl_assigned_users u on u.sub_id = s.sub_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE 
+		assigned_users like '%$user_id%' group by p.project_id";
 	}else if($project_id != ""){
-		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.full_name AS client_name FROM tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.project_id = '$project_id'";
+		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM 
+		tbl_projects p left join status_code sc on sc.status_no = p.status left join 
+		tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN 
+		tbl_users u ON u.user_id = p.client_id WHERE p.project_id = '$project_id'";
 	}else if($branch != ""){
-		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.full_name AS client_name FROM tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE b.branch_id = '$branch'";
+		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name 
+		FROM tbl_projects p left join 
+		status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
+		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE b.branch_id = '$branch'";
 	}else if($dep_id != ""){
-		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.full_name AS client_name FROM tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.department_id = '$dep_id'";
+		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM
+		 tbl_projects p left join status_code sc on sc.status_no = p.status left join 
+		 tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN 
+		 tbl_users u ON u.user_id = p.client_id WHERE p.department_id = '$dep_id'";
 	}else{
-		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.full_name AS client_name FROM tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.company_id = '$company_id'";
+		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM 
+		tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
+		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.company_id = '$company_id'";
 	}
 	
     debug($strSQL, $typehere);
@@ -2522,7 +2731,7 @@ function getMyProjects(){
 		debug($getUsers, $typehere);
 		$q = execute_($getUsers,$conn);
 		while($f = fetch($q)){
-			$users .= $f['full_name'].",";
+			$users .= $f['first_name'].",";
 		}
 		debug("Users: ".$users,$typehere);
 		
