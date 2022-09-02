@@ -1,0 +1,27 @@
+2022-09-02 16:10:58 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:10:58 - Executing SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:11:10 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:11:10 - <br />  <b> SQL ERROR </b>: SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:11:10 - Executing SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:25:12 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:25:12 - Executing SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:25:12 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.sub_id where s.task_id = '1' GROUP BY s.task_id' at line 1<br />  <b> SQL ERROR </b>: SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:25:12 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:25:12 - Executing SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:33:19 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:33:19 - Executing SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:41:03 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:03 - Executing SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:41:03 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.sub_id where s.task_id = '1' GROUP BY s.task_id' at line 1<br />  <b> SQL ERROR </b>: SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:41:03 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:03 - Executing SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:41:10 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:10 - Executing SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:41:10 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.sub_id where s.task_id = '1' GROUP BY s.task_id' at line 1<br />  <b> SQL ERROR </b>: SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:41:10 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:10 - Executing SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:42:45 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:42:45 - Executing SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:42:45 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.sub_id where s.task_id = '1' GROUP BY s.task_id' at line 1<br />  <b> SQL ERROR </b>: SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-02 16:42:45 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:42:45 - Executing SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'

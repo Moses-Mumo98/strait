@@ -116,6 +116,7 @@ $(document).ready(function() {
             document.getElementById('myslider').style.display = 'none';
         }
         getCompanyProjects(1);
+        getPic();
     }else if(page == "register"){
         getOrgTypes();
         // Upload();
@@ -174,6 +175,7 @@ $(document).ready(function() {
         }
     }else if(page == "timeline"){
         listDepartments(2);
+        getPic();
     }else if(page == "invoice"){
         getInvoiceDetails(localStorage.getItem("sub"),localStorage.getItem("user"));
         document.getElementById('paymentRow').style.display = 'none';
@@ -195,6 +197,7 @@ $(document).ready(function() {
         }
     }else if(page == "account-topup"){
         getTopMethods(1);
+        getPic();
         accID = localStorage.getItem("accID");
 		if(!accID){
             getAccountDetails("");
@@ -207,9 +210,11 @@ $(document).ready(function() {
         accID = localStorage.getItem("accID");
 		getAccountDetails("");
 		filterTransactions("");
+        getPic();
         
     }else if(page == 'throughput'){
         getCompanyUsers();
+        getPic();
     }else if(page == 'invoices'){
         getCompanyUsers();
     }else if(page == 'profile'){
@@ -1053,7 +1058,7 @@ function filterTransactions(ac_id){
                 var fl_amt_kes = AccountsJSON.trans[i].fl_amt_kes;
                 var fl_balancekes = AccountsJSON.trans[i].fl_balancekes;
                 var trans_date = AccountsJSON.trans[i].trans_date;
-                var full_name = AccountsJSON.trans[i].full_name;
+                var first_name = AccountsJSON.trans[i].first_name;
 
                 tbHTML += "<tr><td><a href='#'>"+fl_acc_name+"</a></td>"+
 				 '<td align = "right" class="col-purple font-weight-bold">'+type_name+'</td>'+
@@ -1062,7 +1067,7 @@ function filterTransactions(ac_id){
                 "<td align = 'right'>"+number_format(fl_amt_kes)+"</td>"+
                 "<td align = 'right'>"+number_format(fl_balancekes)+"</td>"+
                 "<td>"+trans_date+"</td>"+
-				"<td>"+full_name+"</td></tr>";
+				"<td>"+first_name+"</td></tr>";
             }
             tbHTML = '<table class="table table-striped table-hover" id="statementsTable" style="width:100%;"><thead><tr><th>Client Name</th><th>Trans Type</th><th>Payment Method</th><th>Previous Balance</th><th>Trans Amount</th><th>New Balance</th><th>Trans Date</th><th>Company User</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
             $('#statement-table').html(tbHTML);
@@ -1242,9 +1247,9 @@ function getAccountDetails(id){
             logger("Length Ya " + AccountJSON + " Ni " + AccountJSON.accounts.length);
             for (var i = 0; i < AccountJSON.accounts.length; i++) {
                 if (i == 0) {
-                    details += "<option value='" + AccountJSON.accounts[i].fl_acc_id + "' data-amt = '" + AccountJSON.accounts[i].fl_acc_currentamtkes + "'>" + AccountJSON.accounts[i].full_name + "</option>";
+                    details += "<option value='" + AccountJSON.accounts[i].fl_acc_id + "' data-amt = '" + AccountJSON.accounts[i].fl_acc_currentamtkes + "'>" + AccountJSON.accounts[i].first_name + "</option>";
                 } else {
-                    details += "<option value='" + AccountJSON.accounts[i].fl_acc_id + "' data-amt = '" + AccountJSON.accounts[i].fl_acc_currentamtkes + "'>" + AccountJSON.accounts[i].full_name + "</option>";
+                    details += "<option value='" + AccountJSON.accounts[i].fl_acc_id + "' data-amt = '" + AccountJSON.accounts[i].fl_acc_currentamtkes + "'>" + AccountJSON.accounts[i].first_name + "</option>";
                 }
             }
             $("#company-user").html(details).trigger('change');
@@ -1338,9 +1343,9 @@ function listCompanyUsersForFloat() {
             logger("Length Ya " + usersJSON + " Ni " + usersJSON.users.length);
             for (var i = 0; i < usersJSON.users.length; i++) {
                 if (i == 0) {
-                    users += "<option value='" + usersJSON.users[i].user_id + "' selected>" + usersJSON.users[i].full_name + "</option>";
+                    users += "<option value='" + usersJSON.users[i].user_id + "' selected>" + usersJSON.users[i].first_name + "</option>";
                 } else {
-                    users += "<option value='" + usersJSON.users[i].user_id + "'>" + usersJSON.users[i].full_name + "</option>";
+                    users += "<option value='" + usersJSON.users[i].user_id + "'>" + usersJSON.users[i].first_name + "</option>";
                 }
             }
             $("#company-users").html(users);
@@ -1389,7 +1394,7 @@ function ListFloatAccounts() {
             logger("Length of Projects JSON "+AccountsJSON.accounts.length);
             for (var i = 0; i < AccountsJSON.accounts.length; i++) {
                 var fl_acc_id = AccountsJSON.accounts[i].fl_acc_id;
-                var full_name = AccountsJSON.accounts[i].full_name;
+                var first_name = AccountsJSON.accounts[i].first_name;
                 var fl_acc_currentamtkes = AccountsJSON.accounts[i].fl_acc_currentamtkes;
                 var fl_acc_lasttopup = AccountsJSON.accounts[i].fl_acc_lasttopup;
                 var fl_acc_lasttopupdate = AccountsJSON.accounts[i].fl_acc_lasttopupdate;
@@ -1403,7 +1408,7 @@ function ListFloatAccounts() {
 					"<a onclick = 'accountStatement("+fl_acc_id+")' data-toggle='tooltip' title='' data-original-title='Activity'><i class='fas fa-list-ul'></i></a><a data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
-                tbHTML += "<tr><td><a href='#'>"+full_name+"</a></td>"+
+                tbHTML += "<tr><td><a href='#'>"+first_name+"</a></td>"+
 				 '<td align = "right" class="col-purple font-weight-bold">'+number_format(fl_acc_currentamtkes)+'</td>'+
                 '<td class="col-green font-weight-bold">'+fl_created_on+'</td>'+
                 "<td align = 'right'>"+number_format(fl_acc_lasttopup)+"</td>"+
@@ -1932,7 +1937,7 @@ function getSubTasksLogs() {
             for (var i = 0; i < logsJSON.logs.length; i++) {
                 var sub_id = logsJSON.logs[i].sub_id;
                 var user_email = logsJSON.logs[i].user_email;
-                var full_name = logsJSON.logs[i].full_name;
+                var first_name = logsJSON.logs[i].first_name;
                 var project_name = logsJSON.logs[i].project_name;
                 var task_name = logsJSON.logs[i].task_name;
                 var sub_name = logsJSON.logs[i].sub_name;
@@ -1957,7 +1962,7 @@ function getSubTasksLogs() {
                 '<td class="col-green font-weight-bold">'+task_name+'</td>'+
                 '<td class="col-purple font-weight-bold">'+project_name+'</td>'+
                 "<td>"+user_email+"</td>"+
-                "<td>"+full_name+"</td>"+
+                "<td>"+first_name+"</td>"+
                 "<td>"+counter_date+"</td>"+
                 "<td>"+ConvertMinutes(minutes)+"</td>"+
                 "<td class='align-middle'><div class='progress-text'>"+sub_progress+"%</div><div class='progress' data-height='6' style='height: 6px;'><div class='progress-bar' data-width="+sub_progress+"% style='width: "+sub_progress+"%;'></div></div></td>"+

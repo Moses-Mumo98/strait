@@ -1,0 +1,87 @@
+2022-09-02 16:10:58 - =================================================
+2022-09-02 16:10:58 - SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:10:58 - Project ID 
+2022-09-02 16:10:58 - SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:10:58 - Task ID 
+2022-09-02 16:10:58 - task_id 
+2022-09-02 16:10:58 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
+		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '' and c.user_id = '20' GROUP BY counter_date,
+		c.sub_id
+2022-09-02 16:10:58 - Response {"logs":[]}
+2022-09-02 16:10:58 - =================================================
+2022-09-02 16:11:10 - =================================================
+2022-09-02 16:11:10 - SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:11:10 - Project ID 
+2022-09-02 16:11:10 - SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:11:10 - Task ID 
+2022-09-02 16:11:10 - task_id 
+2022-09-02 16:11:10 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
+		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '' and c.user_id = '20' GROUP BY counter_date,
+		c.sub_id
+2022-09-02 16:11:10 - Response {"logs":[]}
+2022-09-02 16:11:10 - =================================================
+2022-09-02 16:25:12 - =================================================
+2022-09-02 16:25:12 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:25:12 - Project ID 1
+2022-09-02 16:25:12 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:25:12 - Task ID 1
+2022-09-02 16:25:12 - task_id 1
+2022-09-02 16:25:12 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '1' GROUP BY counter_date,c.user_id,c.sub_id
+2022-09-02 16:25:12 - Response {"logs":[]}
+2022-09-02 16:25:12 - =================================================
+2022-09-02 16:33:19 - =================================================
+2022-09-02 16:33:19 - SELECT * FROM tbl_projects s WHERE s.project_name = '' and company_id = '1'
+2022-09-02 16:33:19 - Project ID 
+2022-09-02 16:33:19 - SELECT * from tbl_tasks s where s.project_id = '' and task_name = ''
+2022-09-02 16:33:19 - Task ID 
+2022-09-02 16:33:19 - task_id 
+2022-09-02 16:33:19 - SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
+		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '' and c.user_id = '20' GROUP BY counter_date,
+		c.sub_id
+2022-09-02 16:33:19 - Response {"logs":[]}
+2022-09-02 16:33:19 - =================================================
+2022-09-02 16:41:03 - =================================================
+2022-09-02 16:41:03 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:03 - Project ID 1
+2022-09-02 16:41:03 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:41:03 - Task ID 1
+2022-09-02 16:41:03 - task_id 1
+2022-09-02 16:41:03 - SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '1' GROUP BY counter_date,c.user_id,c.sub_id
+2022-09-02 16:41:03 - Response {"logs":[]}
+2022-09-02 16:41:03 - =================================================
+2022-09-02 16:41:10 - =================================================
+2022-09-02 16:41:10 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:41:10 - Project ID 1
+2022-09-02 16:41:10 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:41:10 - Task ID 1
+2022-09-02 16:41:10 - task_id 1
+2022-09-02 16:41:10 - SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '1' GROUP BY counter_date,c.user_id,c.sub_id
+2022-09-02 16:41:10 - Response {"logs":[]}
+2022-09-02 16:41:10 - =================================================
+2022-09-02 16:42:45 - =================================================
+2022-09-02 16:42:45 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-02 16:42:45 - Project ID 1
+2022-09-02 16:42:45 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Delmonte'
+2022-09-02 16:42:45 - Task ID 1
+2022-09-02 16:42:45 - task_id 1
+2022-09-02 16:42:45 - SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '1' GROUP BY counter_date,c.user_id,c.sub_id
+2022-09-02 16:42:45 - Response {"logs":[]}
+2022-09-02 16:42:45 - =================================================

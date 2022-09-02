@@ -503,7 +503,10 @@ function getStaffThroughPut(){
 	$f = fetch($q);
 	$user_id = $f['user_id'];
 
-	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee,q.full_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id WHERE c.user_id = '$user_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes)
+	 AS minutes,s.sub_progress,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id
+	  LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id
+	   LEFT JOIN tbl_users q on q.user_id = p.client_id WHERE c.user_id = '$user_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -541,7 +544,7 @@ function AccountTransactions($company){
 	
 	$fl_acc_id = $_POST['fl_acc_id'];
 	if($fl_acc_id == ""){
-		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.full_name FROM float_transactions a
+		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
 		LEFT JOIN fl_trans_types t ON t.type_id = a.fl_trans_type
 		LEFT JOIN fl_payment_method p ON p.method_id = a.fl_payment_method
 		LEFT JOIN float_accounts f ON f.fl_acc_id = a.fl_acc_id
@@ -549,7 +552,7 @@ function AccountTransactions($company){
 		LEFT JOIN tbl_users g ON g.user_id = a.fl_userid where u.user_company = '$company' and fl_trans_date between '$startDate' and '$endDate'
 		ORDER BY fl_acc_id ASC,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) ASC";
 	}else{
-		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.full_name FROM float_transactions a
+		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
 		LEFT JOIN fl_trans_types t ON t.type_id = a.fl_trans_type
 		LEFT JOIN fl_payment_method p ON p.method_id = a.fl_payment_method
 		LEFT JOIN float_accounts f ON f.fl_acc_id = a.fl_acc_id
@@ -682,7 +685,7 @@ function saveAccount(){
 		}
 		
 		$sql = "INSERT INTO float_accounts(fl_acc_name, fl_acc_userid, fl_acc_currentamtkes, fl_created_on, fl_acc_createdby)
-		VALUES ((SELECT full_name from tbl_users where user_id = '$fl_acc_userid'),'$fl_acc_userid','$acc_bal',NOW(),'$user_id')";
+		VALUES ((SELECT first_name from tbl_users where user_id = '$fl_acc_userid'),'$fl_acc_userid','$acc_bal',NOW(),'$user_id')";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -903,7 +906,7 @@ function logPASA(){
 	}
 	debug("Response ".json_encode(array("hoursadd" => $result)),$typehere);
 	echo json_encode(array("hoursadd" => $result));
-	closer($conn);
+			closer($conn);
 	debug("=================================================",$typehere);
 }
 
@@ -935,14 +938,22 @@ function getSubTasksLogs(){
 	}else{
 		$task_id = $task_name;
 	}
-	debug("task_id  ".$task_id,$typehere);
+	debug("task_id ".$task_id,$typehere);
 	
-	if($user_id == "")
-		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
-	else
-		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id' GROUP BY counter_date,c.sub_id";
-		
-    debug($strSQL, $typehere);
+	if($user_id == ""){
+
+		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
+	}else{
+		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
+		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id' GROUP BY counter_date,
+		c.sub_id";
+	}
+    debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);
     $resultArray = array();
@@ -954,7 +965,7 @@ function getSubTasksLogs(){
         }
 		
 		try {
-			array_push($resultArray, $arrCol);
+			array_push($resultArray,$arrCol);
 		} catch (Exception $e) {
 			debug("Error Reporting ".$e->getMessage(),$typehere);
 		}
