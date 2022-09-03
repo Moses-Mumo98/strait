@@ -914,7 +914,6 @@ function getSubTasksLogs(){
 	$conn = connect("timetracker1");
     $typehere = "getSubTasksLogs";
 	debug("=================================================",$typehere);
-	
 	$company = $_POST['company_id'];
 	$project = $_POST['project_name'];
 	$task_name = $_POST['task_name'];
@@ -931,7 +930,7 @@ function getSubTasksLogs(){
 	if(!is_numeric($task_name)){
 		$getTaskID = "SELECT * from tbl_tasks s where s.project_id = '$project_id' and task_name = '$task_name'";
 		debug($getTaskID,$typehere);
-		$q = execute_($getTaskID,$conn);
+		//$q = execute_($getTaskID,$conn);
 		$f = fetch($q);
 		$task_id = $f['task_id'];
 		debug("Task ID ".$task_id,$typehere);
@@ -941,18 +940,28 @@ function getSubTasksLogs(){
 	debug("task_id ".$task_id,$typehere);
 	
 	if($user_id == ""){
-
-		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
-		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
-		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
-		 tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
-	}else{
-		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	// $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	// 	SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+	// 	LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+	// 	 tbl_users u ON u.user_id = c.user_id WHERE t.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+	LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
+	 tbl_users u ON u.user_id = c.user_id WHERE t.task_id = '$task_id'";
+	}
+	else{
+//    $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+// 		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
+// 		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
+// 		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id' GROUP BY counter_date,
+// 		c.sub_id";
+    $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
 		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
 		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
-		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id' GROUP BY counter_date,
-		c.sub_id";
+		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id'";
 	}
+		
+	
     debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);

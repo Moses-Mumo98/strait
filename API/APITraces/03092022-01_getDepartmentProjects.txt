@@ -1,0 +1,8 @@
+2022-09-03 01:34:37 - =================================================
+2022-09-03 01:34:37 - SELECT * FROM tbl_projects p WHERE p.department_id = (SELECT dep_id from tbl_departments where dep_name = 'kileleshwa 2')
+2022-09-03 01:34:37 - Response {"projects":[{"project_id":"1","project_name":"Kamiti","project_desc":"Mutrwa","department_id":"1","created_on":"2022-09-01","created_by":"20","status":"0","start_date":"2022-09-01","end_date":"2022-09-01","modified_on":"2022-09-02 12:52:58","company_id":"33","client_id":"239","chargable":"1","fee":"4","cycle":"1"}]}
+2022-09-03 01:34:37 - =================================================
+2022-09-03 01:42:55 - =================================================
+2022-09-03 01:42:55 - SELECT * FROM tbl_projects p WHERE p.department_id = (SELECT dep_id from tbl_departments where dep_name = 'kileleshwa 2')
+2022-09-03 01:42:55 - Response {"projects":[{"project_id":"1","project_name":"Kamiti","project_desc":"Mutrwa","department_id":"1","created_on":"2022-09-01","created_by":"20","status":"0","start_date":"2022-09-01","end_date":"2022-09-01","modified_on":"2022-09-02 12:52:58","company_id":"33","client_id":"239","chargable":"1","fee":"4","cycle":"1"}]}
+2022-09-03 01:42:55 - =================================================

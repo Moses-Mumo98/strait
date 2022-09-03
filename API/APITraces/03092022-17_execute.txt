@@ -1,0 +1,4 @@
+2022-09-03 17:33:59 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-03 17:33:59 - Executing SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-03 17:33:59 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.sub_id where s.task_id = '1' GROUP BY s.task_id' at line 1<br />  <b> SQL ERROR </b>: SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '1' GROUP BY s.task_id
+2022-09-03 17:33:59 - Executing SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
