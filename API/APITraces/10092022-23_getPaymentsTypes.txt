@@ -1,0 +1,4 @@
+2022-09-10 23:26:17 - =================================================
+2022-09-10 23:26:17 - SELECT * from fl_payment_method  where method_type = '1' and method_id > 0
+2022-09-10 23:26:17 - Response {"methods":[{"method_id":"1","method_type":"1","method_desc":"CASH"},{"method_id":"2","method_type":"1","method_desc":"CHEQUE"},{"method_id":"3","method_type":"1","method_desc":"BANK TRANSFER"},{"method_id":"4","method_type":"1","method_desc":"M-PESA"}]}
+2022-09-10 23:26:17 - =================================================

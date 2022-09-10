@@ -6,10 +6,7 @@ $(document).ready(function() {
     logger("Is Logged In "+sessionStorage.getItem("loggedin"));
 	if(page == 'index' || page == 'register'){
 		
-	}else if (!sessionStorage.getItem("loggedin")){
-        logger("Kick out");
-        window.location = 'index';
-    }
+	}
 
     if(page == 'index' || page == 'register'){
     }else{
@@ -179,6 +176,7 @@ $(document).ready(function() {
     }else if(page == "invoice"){
         getInvoiceDetails(localStorage.getItem("sub"),localStorage.getItem("user"));
         document.getElementById('paymentRow').style.display = 'none';
+        getPic();
     }else if(page == 'chart'){
 		loadGantt();
 	}else if(page == 'accounts'){
@@ -217,12 +215,15 @@ $(document).ready(function() {
         getPic();
     }else if(page == 'invoices'){
         getCompanyUsers();
+        getPic();
     }else if(page == 'profile'){
-        getProfile();
-        getPic();
+        getProfile("user_id");
+        getPic("user_id");
     }else if(page == 'setting'){
-        getProfile();
-        getPic();
+        getProfile("user_id");
+        getPic(user_id);
+    }else if(page == 'forgot-pass'){
+        resetPass();
     }
     
     PageLabels(page);
@@ -243,6 +244,7 @@ var subID;
 var accID;
 var loadedPage;
 var user_image;
+var user_id;
 
 
 $('#dms').on('click', function(e) {
@@ -251,6 +253,16 @@ $('#dms').on('click', function(e) {
     window.location = url;
     return false;
 });
+
+
+function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
 
 function hideShowDiv(){
     const div=document.querySelectorAll("#myDIV");
@@ -268,7 +280,7 @@ function hideShowDiv(){
 
 
 function getPic(){
-    var user_id = sessionStorage.getItem("user_id");
+    var user_id = localStorage.getItem("user_id");
     var dataString = {
         'request': 45,
         'user_id': user_id
@@ -292,49 +304,7 @@ function getPic(){
 
 
 
-// function readURL(input) {
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         var user_image = $('input[name = "user_image"]').val();
-//         var user_id = sessionStorage.getItem("user_id");
-//         //var formData = new FormData();
 
-//         var dataString = {
-//             'request': 46,
-//             'user_image': user_image,
-//             'user_id': user_id
-//         };
-//         logger(dataString);
-//         $.ajax({
-//             type: "POST",
-//             url: myurl,
-//             data: dataString,
-//             cache:false,
-//             contentType: false,
-//             processData: false,
-//             success: function(data){
-//                 logger(data);
-//                 var updateJSON = JSON.parse(data);
-//                 for (var i = 0; i < updateJSON.update.length; i++){
-//                     var user_image = updateJSON.update[i].user_image;
-//                     logger("uui",user_image)
-//                     $('#profile').html('<img style="width:100% !important;height:100% !important; border-radius:100% !important" src="'+user_image+'"/>');
-              
-//                 }
-//             }
-//         })
-
-//         reader.onload = function(e) {
-//             $('#profile').css('background-image', 'url('+e.target.result +')');
-//             $('#imagePreview').hide();
-//             $('#imagePreview').fadeIn(650);
-//         }
-//         reader.readAsDataURL(input.files[0]);
-//     }
-// }
-// $("#imageUpload").change(function() {
-//     readURL(this);
-// });
 
 function readURL(input) {
     if (input.files && input.files[0]) {
@@ -368,7 +338,7 @@ $("#imageUpload").change(function() {
 
 function readURL(user_image) {
     var form_data = new FormData();
-    var user_id = sessionStorage.getItem("user_id");
+    var user_id = localStorage.getItem("user_id");
     var user_image = $('input[name = "user_image"]').val();
     console.log("rrr",user_image)
     form_data.append('user_image', $('#user_image')[0].files[0]);
@@ -665,7 +635,7 @@ $('#useredit').on('click', function(e) {
     var first_name = $('input[name = "first_name"]').val();
     var last_name = $('input[name = "last_name"]').val();
     var user_phone = $('input[name = "user_phone"]').val();
-    var user_password = $('input[name = "user_password"]').val();
+    var user_id = localStorage.getItem("user_id");
     
      var errorMessage;
      if(user_email == ""){
@@ -712,24 +682,15 @@ $('#useredit').on('click', function(e) {
         document.getElementById("user_phone").style.borderColor = "green";
     }
 
-    if(user_password == ""){
-        errorMessage = "user password is required"
-        //errorMessage = localStorage.getItem("user_id")+" User phone is Required";
-		document.getElementById("confrimed").innerText = errorMessage;
-		document.getElementById('confrimed').style.display = 'block';
-        document.getElementById("user_password").style.borderColor = "red";
-		return;	
-	}else{
-        document.getElementById("user_password").style.borderColor = "green";
-    }
+
     var dataString = {
         'user_email':user_email,
         'first_name':first_name,
         'last_name':last_name,
         'user_phone':user_phone,
-        'user_password':user_password,
+        'user_id': user_id,
         'request':43,
-        'user_id':sessionStorage.getItem("user_id")
+        // 'user_id':sessionStorage.getItem("user_id")
 
     }
     logger(dataString)
@@ -776,7 +737,7 @@ $('#useredit').on('click', function(e) {
 function getProfile(){
     logger("profilenejkee")
     
-        var user_id = sessionStorage.getItem("user_id");
+        var user_id = localStorage.getItem("user_id");
     
         var dataString = {
             'request': 42,
@@ -797,7 +758,7 @@ function getProfile(){
                     var first_name = profileJSON.profile[i].first_name;
                     var last_name = profileJSON.profile[i].last_name;
                     var user_phone = profileJSON.profile[i].user_phone;
-                    var user_password = profileJSON.profile[i].user_password;
+                    
                     
                     var code;
                     var toadd;
@@ -806,7 +767,9 @@ function getProfile(){
                     $('input[name="first_name"]').val(first_name);
                     $('input[name="last_name"]').val(last_name);
                     $('input[name="user_phone"]').val(user_phone);
-                    $('input[name="user_password"]').val(user_password);
+                  
+        //sessionStorage.setItem("profileJSON", JSON.stringify(data));
+
 
                 if(userLevel == 1){
                     toadd = "None Required";
@@ -821,12 +784,39 @@ function getProfile(){
                 }
                 tbHTML = '<table class="table table-striped table-hover" id="projectsTable" style="width:100%;"><thead><tr><th>User email</th><th>First name</th><th>Last name</th><th>User phone</th><th>Edit</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
                 $('#projects-table').html(tbHTML)
-                // $('#projectsHead').html(ProfileJSON.profile.length + " "+localStorage.getItem("user_email"));
+                //$('#projectsHead').html(ProfileJSON.profile.length + " "tem("user_id"));
                 var oTable = $('#projectsTable').DataTable({
                     "iDisplayLength": 10,
                     dom: 'Bfrtip',
+                    // buttons: [
+                    //     'copy', 'csv', 'excel', 'pdf', 'print'
+                    // ]
                     buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions: {
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            exportOptions: {
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        'colvis'
                     ]
     
                 });
@@ -839,8 +829,8 @@ function getProfile(){
         return false;
     }
 
-    function setting (id){
-        localStorage.setItem("user_id", id);
+    function setting (user_id){
+        localStorage.setItem("user_id", user_id);
         window.location = "setting";
         return false;
     }
@@ -871,7 +861,7 @@ function getClientInvoices(){
             for (var i = 0; i < logsJSON.logs.length; i++) {
                 var sub_id = logsJSON.logs[i].sub_id;
                 var user_email = logsJSON.logs[i].user_email;
-                var full_name = logsJSON.logs[i].full_name;
+                var first_name = logsJSON.logs[i].first_name;
                 var project_name = logsJSON.logs[i].project_name;
                 var desc = logsJSON.logs[i].desc;
                 var fee = logsJSON.logs[i].fee;
@@ -886,7 +876,7 @@ function getClientInvoices(){
                 var moreValue = sub_id+','+ user_id;
                 var toadd = "<button class='btn btn-warning btn-icon icon-left' onclick = 'moreLogs("+moreValue+")'><i class='fas fa-ellipsis-h'></i> Details</button>";
 
-                tbHTML += "<tr><td><a href='#'>"+client_name+"</a></td>"+
+                tbHTML += "<tr><td><a href='#'>"+first_name+"</a></td>"+
                 '<td class="col-red font-weight-bold">'+project_name+'</td>'+
                 '<td class="col-purple font-weight-bold">'+ConvertMinutes(minutes)+'</td>'+
                 '<td class="col-green font-weight-bold">'+number_format(fee)+" "+desc+"</td>"+
@@ -962,7 +952,7 @@ function getStaffThroughPut() {
             for (var i = 0; i < logsJSON.logs.length; i++) {
                 var sub_id = logsJSON.logs[i].sub_id;
                 var user_email = logsJSON.logs[i].user_email;
-                var full_name = logsJSON.logs[i].full_name;
+                var first_name = logsJSON.logs[i].first_name;
                 var project_name = logsJSON.logs[i].project_name;
                 var task_name = logsJSON.logs[i].task_name;
                 var sub_name = logsJSON.logs[i].sub_name;
@@ -980,7 +970,7 @@ function getStaffThroughPut() {
                 tbHTML += "<tr><td><a href='#'>"+project_name+"</a></td>"+
                 '<td class="col-blue font-weight-bold">'+client_name+'</td>'+
                 '<td class="col-green font-weight-bold">'+user_email+"</td>"+
-                "<td>"+full_name+"</td>"+
+                "<td>"+first_name+"</td>"+
                 '<td class="col-purple font-weight-bold">'+ConvertMinutes(minutes)+"</td></tr>";
             }
             tbHTML = '<table class="table table-striped table-hover" id="logsTable" style="width:100%;"><thead><tr><th>Project Name</th><th>Client Name</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>'+localStorage.getItem("ur_name") +' Name</th><th>Time Logged</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
@@ -1037,7 +1027,7 @@ function filterTransactions(ac_id){
         'company_id': company_id,
 		'startDate':startDate,
 		'endDate':endDate,
-		'fl_acc_id':ac_id
+		'fl_acc_id': ac_id
     };
     logger(dataString);
     $.ajax({
@@ -1387,7 +1377,7 @@ function ListFloatAccounts() {
         url: myurl,
         data: dataString,
         success: function(data) {
-           //{"accounts":[{"fl_acc_id":"1","full_name":"Michael Kibet","fl_acc_currentamtkes":"0","fl_acc_lasttopup":"0","fl_acc_lasttopupdate":"0000-00-00 00:00:00"}]}
+           //{"accounts":[{"fl_acc_id":"1","first_name":"Michael Kibet","fl_acc_currentamtkes":"0","fl_acc_lasttopup":"0","fl_acc_lasttopupdate":"0000-00-00 00:00:00"}]}
             logger(data);
             var AccountsJSON = JSON.parse(data);
             var tbHTML = "";
@@ -1596,7 +1586,7 @@ function getInvoiceDetails(sub,user){
 		   document.getElementById('invoice-number').innerHTML = "PASA"+invoice_number;
 		   document.getElementById('eventname').innerHTML = logsJSON.logs[0].project_name;
 		   document.getElementById('taskname').innerHTML = logsJSON.logs[0].task_name;
-		   document.getElementById('myname').innerHTML = logsJSON.logs[0].full_name;
+		   document.getElementById('myname').innerHTML = logsJSON.logs[0].first_name;
 		   document.getElementById('myemail').innerHTML = logsJSON.logs[0].user_email;
 		   
 		   document.getElementById('eventdate').innerHTML = logsJSON.logs[0].counter_date;
@@ -3819,8 +3809,8 @@ function ListUsers(){
                 if(userLevel == 1){
 
                 }else{
-                    adder = "<button class='btn btn-warning' onclick='resetPass(" + user_id + ")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
-                    deleter = "<button class='btn btn-danger' onclick='deleteStaff(" + user_id + ")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
+                    adder = "<button class='btn btn-warning' onclick='resetUser(" + user_id + ")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
+                    //deleter = "<button class='btn btn-danger' onclick='deleteStaff(" + user_id + ")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
                 }
 
                 tbHTML += "<tr><td class='col-green font-weight-bold'>"+first_name+"</td>"+
@@ -3853,16 +3843,34 @@ function ListUsers(){
     return false;
 }
 
-function resetPass(user_id){
+function resetUser(id){
+    localStorage.setItem("user_id", id);
+    window.location = "setting";
+    return false;
+}
 
+function resetPass(){
+logger("resetpassword2");
+//var user_email = document.querySelector('input[name="user_email"]').value;
+ var user_email = $('input[name = "user_email"]').val();
+console.log("wuuw",user_email)
+
+var errorMessage;	
+if(user_email == ""){
+    errorMessage = "Useremail Required";
+    document.getElementById("confrimed").innerText = errorMessage;
+    document.getElementById('confrimed').style.display = 'block';
+    document.getElementById("user_email").style.borderColor = "red";
+    return;	
+}
     var dataString = {
-        'user_id': user_id,
+        'user_email': user_email,
         'request': 18
     };
     logger(dataString);
 	
-	var saveButton = document.getElementById('reset'+user_id);
-    saveButton.classList.add('fa-spin');
+	var resetPass = document.getElementById('resetIcon');
+    resetPass.classList.add('fa-spin');
 	
     $.ajax({
         type: "POST",
@@ -3870,7 +3878,7 @@ function resetPass(user_id){
         data: dataString,
         success: function(data) {
 			
-			saveButton.classList.remove('fa-spin');
+			resetPass.classList.remove('fa-spin');
 			
 			logger('Reset Password Response ' + data);
 			
@@ -3879,7 +3887,7 @@ function resetPass(user_id){
 			swal(jsObject.reset[0].message, "Success", 'success');
         },
         error: function(e) {
-			saveButton.classList.remove('fa-spin');
+			resetPass.classList.remove('fa-spin');
         }
 
     });

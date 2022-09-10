@@ -20,7 +20,7 @@
                 <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4 id = 'project-edit-title'>Settings</h4>
+                            <h4 id = 'project-edit-title'>Edit profile</h4>
                             <h4 id="confrimed" style="color:red; display:none;"></h4>
                         </div>
                         <div class="card-body">
@@ -41,10 +41,10 @@
                                 <label id = "user_phone" for="user_phone">User Phone</label>
                                 <input id="user_phone" type="text" class="form-control" name="user_phone">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label id = "user_password" for="user_phone">User Password</label>
                                 <input id="user_password" type="text" class="form-control" name="user_password">
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <button id = "useredit" type="submit" class="btn btn-primary btn-lg btn-block"><i id = 'usereditIcon' class="fa fa-spinner"></i>Submit</button>
                             </div>

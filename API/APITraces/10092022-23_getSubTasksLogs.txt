@@ -1,0 +1,13 @@
+2022-09-10 23:26:03 - =================================================
+2022-09-10 23:26:03 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
+2022-09-10 23:26:03 - Project ID 1
+2022-09-10 23:26:03 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = 'Joker'
+2022-09-10 23:26:03 - Task ID 1
+2022-09-10 23:26:03 - task_id 1
+2022-09-10 23:26:03 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
+	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
+	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON
+	 p.project_id = p.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '1'
+	  GROUP BY counter_date,c.user_id,c.sub_id
+2022-09-10 23:26:03 - Response{"logs":[{"sub_id":"0","user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","project_name":"Kamiti","task_name":"Joker","sub_name":"Delmonte","counter_date":"2022-09-03","minutes":"22","sub_progress":"26","chargable":"1","fee":"4"}]}
+2022-09-10 23:26:03 - =================================================

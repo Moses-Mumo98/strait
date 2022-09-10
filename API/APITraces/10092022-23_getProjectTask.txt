@@ -1,0 +1,4 @@
+2022-09-10 23:26:07 - =================================================
+2022-09-10 23:26:07 - SELECT * FROM tbl_tasks p LEFT JOIN status_code s on s.status_no = p.status WHERE p.project_id = (SELECT project_id FROM tbl_projects WHERE project_name = 'Kamiti' AND company_id = '33' AND department_id = 'null')
+2022-09-10 23:26:07 - Response {"tasks":[]}
+2022-09-10 23:26:07 - =================================================

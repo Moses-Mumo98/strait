@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_STRICT);
 date_default_timezone_set('Africa/Nairobi');
-include('class.smtp.php'); 
+//include('class.smtp.php'); 
 include('class.phpmailer.php');
 
 function connect($server)
@@ -224,7 +224,40 @@ function push_mail1($email, $mail_msg,$subject,$sent_from_user,$sent_from_email)
 			}
 }
 
-function push_mail($email, $mail_msg,$subject,$sent_from_user,$sent_from_email){
+// function push_mail($email,$mail_msg,$subject,$sent_from_user,$sent_from_email){
+// 	$typehere = "SendMail";
+// 	debug("======================================",$typehere);
+// 	debug("Sending Email to " . $email, $typehere);
+// 	debug("Email Message " . $mail_msg, $typehere);
+
+// 	$mail = new PHPMailer;
+// 	$mail->isSMTP();                                      
+// 	$mail->Host = 'mail.kaps.co.ke';  
+// 	$mail->SMTPAuth = true;                               
+// 	$mail->Username = 'kapslabnotify@kaps.co.ke';                
+// 	$mail->Password = '7X3?b=fkE!';                           
+// 	$mail->SMTPSecure = 'tls';  
+	                          
+
+// 	$mail->From = $sent_from_email;
+// 	$mail->FromName = $sent_from_user;
+// 	$mail->addAddress($email);     
+
+// 	$mail->WordWrap = 50;                                 
+// 	$mail->isHTML(true);                                 
+
+// 	$mail->Subject = $subject;
+// 	$mail->Body    = $mail_msg;
+
+// 	if(!$mail->send()) {
+// 		debug('Message could not be sent.',$typehere);
+// 		debug('Mailer Error: ' . $mail->ErrorInfo,$typehere);
+// 	} else {
+// 		debug('Message has been sent',$typehere);
+// 	}
+// }
+
+function push_mail($email,$mail_msg,$subject,$sent_from_user,$sent_from_email){
 	$typehere = "SendMail";
 	debug("======================================",$typehere);
 	debug("Sending Email to " . $email, $typehere);
@@ -232,11 +265,13 @@ function push_mail($email, $mail_msg,$subject,$sent_from_user,$sent_from_email){
 
 	$mail = new PHPMailer;
 	$mail->isSMTP();                                      
-	$mail->Host = 'mail.kaps.co.ke';  
+	$mail->Host = 'smtp.gmail.com'; 
+	$mail->Port = 465; // or 587 
 	$mail->SMTPAuth = true;                               
-	$mail->Username = 'kapslabnotify@kaps.co.ke';                
-	$mail->Password = '7X3?b=fkE!';                           
-	$mail->SMTPSecure = 'tls';                            
+	$mail->Username = 'mosesmumo49@gmail.com';                
+	$mail->Password = 'dknenviksbexvueg';                           
+	$mail->SMTPSecure = 'ssl';  
+	                          
 
 	$mail->From = $sent_from_email;
 	$mail->FromName = $sent_from_user;

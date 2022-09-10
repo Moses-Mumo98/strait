@@ -185,3 +185,9 @@
 <?php include 'footer.php';?>
 <script src="assets/js/page/index.js"></script>
 <script src="assets/fullcalendar/fullcalendar.min.js"></script>
+<script>
+     if (!sessionStorage.getItem("loggedin")){
+        logger("Kick out");
+        window.location = 'index';
+    }
+  </script>

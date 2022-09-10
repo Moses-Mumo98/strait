@@ -82,7 +82,7 @@ switch ($request) {
 	
 	
 	case 18:
-		resetPassword($_POST['user_id']);
+		resetPassword($_POST['user_email']);
 	break;
 	
 	case 19:
@@ -291,68 +291,38 @@ function updatePic($user_image,$user_id){
 }
 
 function usersetting($user_id){
-	// $conn = connect("timetracker1");
-	// $typehere = "usersetting";
-	// debug("=================================================",$typehere);
-	// $user_email = $_POST['user_email'];
-	// $first_name = $_POST['first_name'];
-	// $last_name = $_POST['last_name'];
-	// $user_phone = $_POST['user_phone'];
-	// $user_id = $_POST['user_id'];
-
-	// $strSQL = "SELECT user_email,first_name,last_name,user_phone FROM tbl_users where user_id = '$user_id'";
-	// debug($strSQL, $typehere);
-    // $objQuery = mysqli_query($conn,$strSQL);
-    // $intNumField = mysqli_num_fields($objQuery);
-    // $resultArray = array();
-    // while ($obResult = mysqli_fetch_array($objQuery)) {
-    //     $arrCol = array();
-    //     for ($i = 0; $i < $intNumField; $i ++) {
-    //          $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
-    //     }
-		
-	// 	try {
-	// 		array_push($resultArray, $arrCol);
-	// 	} catch (Exception $e) {
-	// 		debug("Error Reporting ".$e->getMessage(),$typehere);
-	// 	}
-    // }
-	// debug("Response ".json_encode(array("setting" => $resultArray)),$typehere);
-    // echo json_encode(array("setting" => $resultArray));
-    // closer($conn);
-	// debug("=================================================",$typehere);
 	$user_email = $_POST['user_email'];
 	$first_name = $_POST['first_name'];
 	$last_name = $_POST['last_name'];
 	$user_phone = $_POST['user_phone'];
-	$user_password = $_POST['user_password'];
-	$user_id = $_POST['user_id'];
 	
-    $typehere = "userSetting";
+	
+    $typehere = "usersetting";
     debug("===========================================", $typehere);
     $conn = connect("timetracker1");	
 	
 	if($user_id == ""){
-		debug("Save New User ",$typehere);
-		$checker2 = "SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '$user_id'";
+		debug("userSetting",$typehere);
+		$checker2 = "SELECT user_email,user_id,first_name,last_name,user_phone FROM tbl_users where user_id = '$user_id'";
 		debug($checker2, $typehere);
 		$q = execute_($checker2,$conn);
 		$n = num($q);
-		$branch_id = 0;
 		$result = array();
 		while ($f = fetch($q)) {
 			$user_id = $f['user_id'];
+			
 		}
 		
 		debug("User ID " . $user_id, $typehere);
 		if ($user_id > 0) {
-			debug($first_name . " already exists", $typehere);
+			debug($first_name . " already exists", $progresssscdtypehere);
 			array_push($result, array("bool_code" => false,"message" => $first_name . " already exists"));
 			echo json_encode(array("setting" => $result));
 			return;
 		}
 		
-		$sql = "INSERT INTO tbl_users(user_email, first_name, last_name, user_phone,user_password,user_image) VALUES ('$user_email','$first_name','$last_name','$user_phone','$user_password','$user_image')";
+		$sql = "INSERT INTO tbl_users(user_email, first_name, last_name, user_phone,user_password) 
+		VALUES ('$user_email','$first_name','$last_name','$user_phone','$user_password')";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -365,14 +335,15 @@ function usersetting($user_id){
 		echo json_encode(array("setting" => $result));
 	}else{
 		debug("Update Details For ".$user_id,$typehere);
-		$sql = "UPDATE tbl_users set user_email='$user_email',first_name='$first_name',last_name ='$last_name', user_phone='$user_phone', user_password='$user_password' where user_id = '$user_id'";
+		$sql = "UPDATE tbl_users set user_email='$user_email',first_name='$first_name',last_name ='$last_name', 
+		user_phone='$user_phone' where user_id = '$user_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
 		debug("Updated " . $num." user Records", $typehere);
 		$result = array();
 		if ($num > 0) {
-			array_push($result, array("bool_code" => true,"message" => $user_email . " Details Successfully Updated"));
+			array_push($result, array("bool_code" => true,"message" => $user_email . "Details Successfully Updated"));
 		} else {
 			array_push($result, array("bool_code" => false,"message" => "Failed to Update Details"));
 		}
@@ -440,7 +411,11 @@ function getClientInvoices(){
 	$f = fetch($q);
 	$client_id = $f['user_id'];
 	
-	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,cycle,chargable,fee,q.full_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id WHERE p.client_id = '$client_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	SUM(c.minutes) AS minutes,s.sub_progress,cycle,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN 
+	sub_tasks s ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id
+	 WHERE p.client_id = '$client_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -504,9 +479,9 @@ function getStaffThroughPut(){
 	$user_id = $f['user_id'];
 
 	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes)
-	 AS minutes,s.sub_progress,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id
+	 AS minutes,s.sub_progress,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON c.sub_id = c.sub_id
 	  LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id
-	   LEFT JOIN tbl_users q on q.user_id = p.client_id WHERE c.user_id = '$user_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
+	   LEFT JOIN tbl_users q ON q.user_id = p.client_id WHERE c.user_id = '$user_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -539,25 +514,31 @@ function AccountTransactions($company){
 	$startDate = $_POST['startDate'];
 	$endDate = $_POST['endDate'];
 	
+
 	$startDate = date("Y-m-d", strtotime($startDate));
 	$endDate = date("Y-m-d", strtotime($endDate));
 	
-	$fl_acc_id = $_POST['fl_acc_id'];
-	if($fl_acc_id == ""){
-		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
+
+	$fl_acc_id =$_POST['fl_acc_id'];
+	if($fl_acc_id == ""  ){
+		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,
+		CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
 		LEFT JOIN fl_trans_types t ON t.type_id = a.fl_trans_type
 		LEFT JOIN fl_payment_method p ON p.method_id = a.fl_payment_method
 		LEFT JOIN float_accounts f ON f.fl_acc_id = a.fl_acc_id
 		LEFT JOIN tbl_users u ON u.user_id = f.fl_acc_userid
-		LEFT JOIN tbl_users g ON g.user_id = a.fl_userid where u.user_company = '$company' and fl_trans_date between '$startDate' and '$endDate'
+		LEFT JOIN tbl_users g ON g.user_id = a.fl_userid where u.user_company = '$company' and fl_trans_date between 
+		'$startDate' and '$endDate'
 		ORDER BY fl_acc_id ASC,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) ASC";
 	}else{
-		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
+		$strSQL = "SELECT f.fl_acc_id,f.fl_acc_name,t.type_name,p.method_desc,a.fl_prev_amtkes,a.fl_amt_kes,a.fl_balancekes,
+		CONCAT(a.fl_trans_date,' ',a.fl_trans_time) AS trans_date,g.first_name FROM float_transactions a
 		LEFT JOIN fl_trans_types t ON t.type_id = a.fl_trans_type
 		LEFT JOIN fl_payment_method p ON p.method_id = a.fl_payment_method
 		LEFT JOIN float_accounts f ON f.fl_acc_id = a.fl_acc_id
 		LEFT JOIN tbl_users u ON u.user_id = f.fl_acc_userid
-		LEFT JOIN tbl_users g ON g.user_id = a.fl_userid where f.fl_acc_id = '$fl_acc_id' and fl_trans_date between '$startDate' and '$endDate'
+		LEFT JOIN tbl_users g ON g.user_id = a.fl_userid where f.fl_acc_id = '$fl_acc_id' and fl_trans_date between 
+		'$startDate' and '$endDate'
 		ORDER BY fl_acc_id ASC,CONCAT(a.fl_trans_date,' ',a.fl_trans_time) ASC";
 	}
 	debug($strSQL, $typehere);
@@ -797,7 +778,7 @@ function invoiceDetails(){
 	$sub = $_POST['sub'];
 	$user = $_POST['user'];
 	
-	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.full_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee,cycle FROM task_counter c 
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee,cycle FROM task_counter c 
 	LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id 
 	LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE c.sub_id = '$sub' and c.user_id = '$user'";
 		
@@ -914,6 +895,7 @@ function getSubTasksLogs(){
 	$conn = connect("timetracker1");
     $typehere = "getSubTasksLogs";
 	debug("=================================================",$typehere);
+	$task_id = $_POST['task_id'];
 	$company = $_POST['company_id'];
 	$project = $_POST['project_name'];
 	$task_name = $_POST['task_name'];
@@ -924,13 +906,14 @@ function getSubTasksLogs(){
 	debug($getProjectID,$typehere);
 	$a = execute_($getProjectID,$conn);
 	$b = fetch($a);
+	console.log($b);
 	$project_id = $b['project_id'];
 	debug("Project ID ".$project_id,$typehere);
 	
 	if(!is_numeric($task_name)){
 		$getTaskID = "SELECT * from tbl_tasks s where s.project_id = '$project_id' and task_name = '$task_name'";
 		debug($getTaskID,$typehere);
-		//$q = execute_($getTaskID,$conn);
+		$q = execute_($getTaskID,$conn);
 		$f = fetch($q);
 		$task_id = $f['task_id'];
 		debug("Task ID ".$task_id,$typehere);
@@ -940,27 +923,19 @@ function getSubTasksLogs(){
 	debug("task_id ".$task_id,$typehere);
 	
 	if($user_id == ""){
-	// $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
-	// 	SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
-	// 	LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
-	// 	 tbl_users u ON u.user_id = c.user_id WHERE t.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
-	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
-	SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
-	LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN
-	 tbl_users u ON u.user_id = c.user_id WHERE t.task_id = '$task_id'";
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
+	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
+	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON
+	 p.project_id = p.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id'
+	  GROUP BY counter_date,c.user_id,c.sub_id";
 	}
 	else{
-//    $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
-// 		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
-// 		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
-// 		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id' GROUP BY counter_date,
-// 		c.sub_id";
-    $strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
-		SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id 
-		LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN 
-		tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and c.user_id = '$user_id'";
-	}
-		
+	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
+	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
+	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
+	p.project_id = p.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' 
+	and c.user_id = '$user_id' GROUP BY counter_date,c.sub_id";
+	}	
 	
     debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -969,17 +944,18 @@ function getSubTasksLogs(){
     while ($obResult = mysqli_fetch_array($objQuery)) {
         $arrCol = array();
 		
+		
         for ($i = 0; $i < $intNumField; $i ++) {
              $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
         }
 		
 		try {
-			array_push($resultArray,$arrCol);
+			array_push($resultArray, $arrCol);
 		} catch (Exception $e) {
 			debug("Error Reporting ".$e->getMessage(),$typehere);
 		}
     }
-	debug("Response ".json_encode(array("logs" => $resultArray)),$typehere);
+	debug("Response".json_encode(array("logs" => $resultArray)),$typehere);
     echo json_encode(array("logs" => $resultArray));
     closer($conn);
 	debug("=================================================",$typehere);
@@ -1175,7 +1151,18 @@ function saveSubTask(){
 				$f = fetch($q);
 				$ids .= $f['user_id'].',';
 			}
-			
+			// else{
+			// 	debug("Update Details For ".$sub_id,$typehere);
+			// 	$sql = "UPDATE sub_tasks set sub_name = '$t_name',sub_desc ='$t_desc',task_id = '$task_id',sub_progress = '$task_progress',created_on = NOW(),created_by = '$user',status = '$status_no',start_time = '$startTime', meeting = '$meeting', duration = '$t_dur' where sub_id = '$sub_id'";
+			// 	debug($sql, $typehere);
+			// 	$roww = execute_($sql,$conn);
+			// 	$num = affected($conn);
+			// 	debug("Updated " . $num." Task Records", $typehere);
+			// 	$result = array();
+				
+			// }
+
+
 			debug("IDs 1 ".$ids,$typehere);
 			
 			if (strpos($ids, $user) == false) {
@@ -1205,7 +1192,7 @@ function saveSubTask(){
 			$global_id = $f['global_id'];
 			$company_type = $f['company_type'];
 			$myemail = $f['user_email'];
-			$my_name = $f['full_name'];
+			$my_name = $f['first_name'];
 			
 			if($company_type == 'SCHOOL'){
 				$event_type = 'SCHOOL LESSON';
@@ -1303,7 +1290,7 @@ function saveSubTask(){
 		echo json_encode(array("taskadd" => $result));
 	}else{
 		debug("Update Details For ".$task_id,$typehere);
-		$sql = "UPDATE tbl_tasks set task_name = '$t_name',task_desc ='$t_desc',project_id = '$project_id',task_progress = '$task_progress',assigned_to= '$user_id', modified_on = NOW(),status = '$status_no',start_date = '$startDate',end_date = '$endDate' where task_id = '$task_id'";
+		$sql = "UPDATE sub_tasks set sub_name = '$t_name',sub_desc ='$t_desc',task_id = '$task_id',sub_progress = '$task_progress',created_on = NOW(),created_by = '$user',status = '$status_no',start_time = '$startTime', meeting = '$meeting', duration = '$t_dur' where sub_id = '$sub_id'";
 		debug($sql, $typehere);
 		$roww = execute_($sql,$conn);
 		$num = affected($conn);
@@ -1355,7 +1342,7 @@ function getProjectTasks(){
 		
 		$task_id = $obResult['task_id'];
 		
-		$getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s left join s.sub_id = t.sub_id where s.task_id = '$task_id' GROUP BY s.task_id";
+		$getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s ON s.sub_id = t.sub_id where s.task_id = '$task_id' GROUP BY s.task_id";
 		debug($getHours, $typehere);
 		$q = execute_($getHours,$conn);
 		$f = fetch($q);
@@ -2189,11 +2176,11 @@ function saveNewUser(){
 	if($user_id == ""){
 		debug("Save New Staff ",$typehere);
 				
-		// $password = randomString(6);
-		// debug("Generated Password" . $password, $typehere);
+		$password = randomString(6);
+		debug("Generated Password" . $password, $typehere);
 		
-		// $GlobalID = checkUserGlobal($u_name,$u_email,$password);
-		// debug("User Global ID".$GlobalID,$typehere);
+		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
+		debug("User Global ID".$GlobalID,$typehere);
 		
 		$checker2 = "SELECT * from tbl_users where first_name='$u_name', user_email = '$u_email'";
 		debug($checker2,$typehere);
@@ -3066,7 +3053,7 @@ function login($uname,$upass){
 	$conn = connect("timetracker1");
     $typehere = "login";
 	debug("=================================================",$typehere);
-	$checkV = "SELECT u.user_id,u.user_email,u.first_name,u.user_status,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	$checkV = "SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
 	LEFT JOIN tbl_company c ON c.company_id = u.user_company
 	LEFT JOIN user_levels l ON l.level_id = u.user_level
 	WHERE u.user_email = '$uname' AND u.user_password = MD5('$upass')";
@@ -3080,7 +3067,8 @@ function login($uname,$upass){
 	}else{
 		$f = fetch($q);
 		$user_status = $f['user_status'];
-		if($user_status == 1){
+		$reset_pass = $f['reset_pass'];
+		if($user_status == 1 || $reset_pass == 1){
 			$user_id = $f['user_id'];
 			$user_email = $f['user_email'];
 			$first_name = $f['first_name'];
@@ -3103,6 +3091,9 @@ function login($uname,$upass){
 		}else{
 			array_push($result, array("bool_code" => false,"message"=>"Inactive Account"));
 		}
+		
+		
+		
 	}
 	debug("Login Response ".json_encode(array("login" => $result)),$typehere);
 	echo json_encode(array("login" => $result));
@@ -3110,18 +3101,18 @@ function login($uname,$upass){
 	debug("=================================================",$typehere);
 }
 
-function resetGlobalPassword($u_email,$u_password){
+function resetGlobalPassword($user_email,$u_password){
 	$conn = connect("users");
     $typehere = "resetPassword";
 	debug("==================== ON GLOBAL ==========================",$typehere);
 	
-	$saver = "UPDATE tbl_users s set user_password = MD5('$u_password') where user_email = '$u_email'";
+	$saver = "UPDATE tbl_users  set user_password = MD5('$u_password') where user_email = '$user_email'";
 	debug($saver,$typehere);
 	execute_($saver,$conn);
 	
 	
 	$conn2 = connect("pasa");
-	$saver2 = "UPDATE gts_users set user_password = MD5('$u_password') where user_email = '$u_email'";
+	$saver2 = "UPDATE gts_users set user_password = MD5('$u_password') where user_email = '$user_email'";
 	debug($saver2,$typehere);
 	execute_($saver2,$conn2);	
 	
@@ -3130,11 +3121,11 @@ function resetGlobalPassword($u_email,$u_password){
 	debug("==================== OFF GLOBAL ==========================",$typehere);
 }
 
-function resetPassword($user_id){
+function resetPassword($user_email){
 	$conn = connect("timetracker1");
     $typehere = "resetPassword";
 	debug("=================================================",$typehere);
-    $getUser = "SELECT a.user_id,a.user_email, full_name FROM tbl_users a where user_id = '$user_id'";
+    $getUser = "SELECT a.user_id,a.user_email,a.first_name FROM tbl_users a where user_email = '$user_email'";
     debug($getUser,$typehere);
 	$q = execute_($getUser,$conn);
 	$f = fetch($q);
@@ -3146,7 +3137,7 @@ function resetPassword($user_id){
 	}
 	debug("Generated Password " . $password, $typehere);
 		
-	$updater = "update tbl_users set user_password = MD5('$password') where user_id = '$user_id'";
+	$updater = "update tbl_users set user_password = MD5('$password') where user_email = '$user_email'";
 	debug($updater,$typehere);
 	$q = execute_($updater,$conn);
 	
@@ -3156,14 +3147,14 @@ function resetPassword($user_id){
 	if($n){
 		resetGlobalPassword($f['user_email'],$password);
 		if($_POST['newpass'] == ""){
-			$email = "Dear " . $f['full_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". Keep it safe";
+			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". Keep it safe";
 		}else{
-			$email = "Dear " . $f['full_name'] . " , KAPS STRAIT & PASA Events Password has been changed.";
+			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed.";
 		}
 		push_mail($f['user_email'], $email,"Password Reset","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
 	}else{
-		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed, Try Again"));
+		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed,Try Again"));
 	}
     debug("Password Reset Response ".json_encode(array("reset" => $result)),$typehere);
 	echo json_encode(array("reset" => $result));

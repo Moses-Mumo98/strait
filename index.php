@@ -42,7 +42,7 @@
                     <div class="d-block">
                       <label for="password" class="control-label">Password</label>
                       <div class="float-right">
-                        <a href="auth-forgot-password.html" class="text-small">
+                        <a href="forgot-pass" class="text-small">
                           Forgot Password?
                         </a>
                       </div>
@@ -52,6 +52,15 @@
                       please fill in your password
                     </div>
                   </div>
+                  <!-- <input type="checkbox" id="showPassword" />
+<label for="showPassword">Show password</label> -->
+  
+                   <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" name="showPassword" class="custom-control-input" onclick="myFunction()" tabindex="3" id="showPassword">
+                      <label class="custom-control-label" for="showPassword">Show password</label>
+                    </div>
+
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
