@@ -1,0 +1,28 @@
+2022-09-14 14:53:37 - =================================================
+2022-09-14 14:53:37 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '20'
+2022-09-14 14:53:37 - Response {"profile":[{"user_email":"mumo@gmail.com","first_name":"Ujenzi ","last_name":"Boraeka  2","user_phone":"0705051909","user_password":"3a4e3269efdc0cadc80077f71efd0b00","user_image":"590366family.jpg"}]}
+2022-09-14 14:53:37 - =================================================
+2022-09-14 14:54:29 - =================================================
+2022-09-14 14:54:29 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '20'
+2022-09-14 14:54:29 - Response {"profile":[{"user_email":"mumo@gmail.com","first_name":"Ujenzi ","last_name":"Boraeka  2","user_phone":"0705051909","user_password":"3a4e3269efdc0cadc80077f71efd0b00","user_image":"590366family.jpg"}]}
+2022-09-14 14:54:29 - =================================================
+2022-09-14 14:55:31 - =================================================
+2022-09-14 14:55:31 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '20'
+2022-09-14 14:55:31 - Response {"profile":[{"user_email":"mumo@gmail.com","first_name":"Ujenzi ","last_name":"Boraeka  2","user_phone":"0705051909","user_password":"3a4e3269efdc0cadc80077f71efd0b00","user_image":"590366family.jpg"}]}
+2022-09-14 14:55:31 - =================================================
+2022-09-14 14:55:49 - =================================================
+2022-09-14 14:55:49 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '20'
+2022-09-14 14:55:49 - Response {"profile":[{"user_email":"mumo@gmail.com","first_name":"Ujenzi ","last_name":"Boraeka  2","user_phone":"0705051909","user_password":"3a4e3269efdc0cadc80077f71efd0b00","user_image":"590366family.jpg"}]}
+2022-09-14 14:55:49 - =================================================
+2022-09-14 14:56:33 - =================================================
+2022-09-14 14:56:33 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '20'
+2022-09-14 14:56:33 - Response {"profile":[{"user_email":"mumo@gmail.com","first_name":"Ujenzi ","last_name":"Boraeka  2","user_phone":"0705051909","user_password":"3a4e3269efdc0cadc80077f71efd0b00","user_image":"590366family.jpg"}]}
+2022-09-14 14:56:33 - =================================================
+2022-09-14 14:58:36 - =================================================
+2022-09-14 14:58:36 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = ''
+2022-09-14 14:58:36 - Response {"profile":[]}
+2022-09-14 14:58:36 - =================================================
+2022-09-14 14:59:31 - =================================================
+2022-09-14 14:59:31 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = ''
+2022-09-14 14:59:31 - Response {"profile":[]}
+2022-09-14 14:59:31 - =================================================

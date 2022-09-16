@@ -1,0 +1,38 @@
+2022-09-14 14:43:36 - ===========================================
+2022-09-14 14:43:36 - Got User ID as 
+2022-09-14 14:43:36 - SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:43:36 - SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:43:36 - SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:43:36 - SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:43:36 - level_id 1 status_id 1
+2022-09-14 14:43:36 - Save New Staff 
+2022-09-14 14:43:36 - Generated PasswordJNTTP2
+2022-09-14 14:43:36 - User Global ID
+2022-09-14 14:43:36 - SELECT * from tbl_users where first_name='e2e2e', user_email = 'e2eef@gmail.com'
+2022-09-14 14:43:36 - user_id 0
+2022-09-14 14:43:36 - INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','e2eef@gmail.com',MD5('JNTTP2'),'e2e2e','1','1','33',NOW(),'33','1')
+2022-09-14 14:46:03 - ===========================================
+2022-09-14 14:46:03 - Got User ID as 
+2022-09-14 14:46:03 - SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:46:03 - SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:46:03 - SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:46:03 - SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:46:03 - level_id 1 status_id 1
+2022-09-14 14:46:03 - Save New Staff 
+2022-09-14 14:46:03 - Generated PasswordK0C7I7
+2022-09-14 14:46:03 - SELECT * from tbl_users where first_name='adsfgrsr', user_email = 'efefedg@gmail.com'
+2022-09-14 14:46:03 - user_id 0
+2022-09-14 14:46:03 - INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','efefedg@gmail.com',MD5('K0C7I7'),'adsfgrsr','1','1','33',NOW(),'33','1')
+2022-09-14 14:51:33 - ===========================================
+2022-09-14 14:51:33 - Got User ID as 
+2022-09-14 14:51:33 - SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:51:33 - SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:51:33 - SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:51:33 - SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:51:33 - level_id 1 status_id 1
+2022-09-14 14:51:33 - Save New Staff 
+2022-09-14 14:51:33 - Generated PasswordQOWM3D
+2022-09-14 14:51:33 - User Global ID
+2022-09-14 14:51:33 - SELECT * from tbl_users where first_name='edescdc', user_email = 'wdwe3@gmail.com'
+2022-09-14 14:51:33 - user_id 0
+2022-09-14 14:51:33 - INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','wdwe3@gmail.com',MD5('QOWM3D'),'edescdc','1','1','33',NOW(),'33','1')

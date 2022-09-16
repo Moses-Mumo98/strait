@@ -1,9 +1,0 @@
-2022-09-10 23:26:07 - =================================================
-2022-09-10 23:26:07 - SELECT * FROM tbl_projects s WHERE s.project_name = 'Kamiti' and company_id = '33'
-2022-09-10 23:26:07 - Project ID 1
-2022-09-10 23:26:07 - SELECT * from tbl_tasks s where s.project_id = '1' and task_name = ''
-2022-09-10 23:26:07 - Task ID 
-2022-09-10 23:26:07 - SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
-		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE s.task_id  = ''
-2022-09-10 23:26:07 - Response {"subtasks":[]}
-2022-09-10 23:26:07 - =================================================

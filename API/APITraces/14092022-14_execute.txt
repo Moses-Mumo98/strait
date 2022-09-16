@@ -1,0 +1,92 @@
+2022-09-14 14:43:22 - Executing select * from tbl_branches where branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:43:36 - Executing SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:43:36 - Executing SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:43:36 - Executing SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:43:36 - Executing SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:43:36 - Executing SELECT * from tbl_users where first_name='e2e2e', user_email = 'e2eef@gmail.com'
+2022-09-14 14:43:36 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' user_email = 'e2eef@gmail.com'' at line 1<br />  <b> SQL ERROR </b>: SELECT * from tbl_users where first_name='e2e2e', user_email = 'e2eef@gmail.com'
+2022-09-14 14:43:36 - Executing INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','e2eef@gmail.com',MD5('JNTTP2'),'e2e2e','1','1','33',NOW(),'33','1')
+2022-09-14 14:45:48 - Executing select * from tbl_branches where branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:46:03 - Executing SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:46:03 - Executing SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:46:03 - Executing SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:46:03 - Executing SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:46:03 - Executing SELECT * from tbl_users where first_name='adsfgrsr', user_email = 'efefedg@gmail.com'
+2022-09-14 14:46:03 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' user_email = 'efefedg@gmail.com'' at line 1<br />  <b> SQL ERROR </b>: SELECT * from tbl_users where first_name='adsfgrsr', user_email = 'efefedg@gmail.com'
+2022-09-14 14:46:03 - Executing INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','efefedg@gmail.com',MD5('K0C7I7'),'adsfgrsr','1','1','33',NOW(),'33','1')
+2022-09-14 14:51:17 - Executing select * from tbl_branches where branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:51:33 - Executing SELECT * FROM user_levels s WHERE s.law_desc = 'CLIENTS'
+2022-09-14 14:51:33 - Executing SELECT * FROM tbl_branches WHERE branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:51:33 - Executing SELECT * FROM tbl_departments WHERE dep_name = 'kileleshwa 2' and company = '33'
+2022-09-14 14:51:33 - Executing SELECT * FROM user_status WHERE status_desc = 'Active'
+2022-09-14 14:51:33 - Executing SELECT * from tbl_users where first_name='edescdc', user_email = 'wdwe3@gmail.com'
+2022-09-14 14:51:33 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' user_email = 'wdwe3@gmail.com'' at line 1<br />  <b> SQL ERROR </b>: SELECT * from tbl_users where first_name='edescdc', user_email = 'wdwe3@gmail.com'
+2022-09-14 14:51:33 - Executing INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('','wdwe3@gmail.com',MD5('QOWM3D'),'edescdc','1','1','33',NOW(),'33','1')
+2022-09-14 14:53:28 - Executing select * from tbl_branches where branch_name = 'mjengo MAIN' and company_id = '33'
+2022-09-14 14:53:32 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 14:53:34 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 14:53:34 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 14:53:34 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 14:53:34 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 14:53:34 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 14:53:34 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-14 14:53:34 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1
+2022-09-14 14:53:34 - Executing SELECT * from tbl_users where user_id in (20,20)
+2022-09-14 14:54:16 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 14:54:17 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '131'
+2022-09-14 14:54:17 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '131'
+2022-09-14 14:54:17 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '131'
+2022-09-14 14:54:17 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '131'
+2022-09-14 14:54:17 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '131'
+2022-09-14 14:55:41 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 14:55:41 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 14:55:42 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-14 14:55:42 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1
+2022-09-14 14:55:42 - Executing SELECT * from tbl_users where user_id in (20,20)
+2022-09-14 14:55:42 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 14:55:42 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 14:55:42 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 14:55:42 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 14:55:42 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 14:56:29 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 14:56:29 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '131'
+2022-09-14 14:56:29 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '131'
+2022-09-14 14:56:29 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '131'
+2022-09-14 14:56:29 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '131'
+2022-09-14 14:56:29 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '131'
+2022-09-14 14:57:54 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 14:57:56 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 14:57:56 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 14:57:56 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 14:57:56 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 14:57:56 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 14:57:56 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-14 14:57:56 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1
+2022-09-14 14:57:56 - Executing SELECT * from tbl_users where user_id in (20,20)
+2022-09-14 14:58:32 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 14:58:33 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '131'
+2022-09-14 14:58:33 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '131'
+2022-09-14 14:58:33 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '131'
+2022-09-14 14:58:33 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '131'
+2022-09-14 14:58:33 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '131'

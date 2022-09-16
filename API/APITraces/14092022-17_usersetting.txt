@@ -1,0 +1,24 @@
+2022-09-14 17:14:58 - ===========================================
+2022-09-14 17:14:58 - Update Details For 237
+2022-09-14 17:14:58 - UPDATE tbl_users set user_email='mosesmumo49@gmail.com',first_name='jjnmmnkjjk',last_name =',mnmv,m', 
+		user_phone='0705051906' where user_id = '237'
+2022-09-14 17:14:58 - Updated 1 user Records
+2022-09-14 17:14:58 - =================================================
+2022-09-14 17:14:58 - ===========================================
+2022-09-14 17:14:58 - Update Details For 237
+2022-09-14 17:14:58 - UPDATE tbl_users set user_email='mosesmumo49@gmail.com',first_name='jjnmmnkjjk',last_name =',mnmv,m', 
+		user_phone='0705051906' where user_id = '237'
+2022-09-14 17:14:58 - Updated 0 user Records
+2022-09-14 17:14:58 - =================================================
+2022-09-14 17:15:10 - ===========================================
+2022-09-14 17:15:10 - Update Details For 237
+2022-09-14 17:15:10 - UPDATE tbl_users set user_email='mosesmumo49@gmail.com',first_name='jjnmmnkjjka',last_name =',mnmv,m', 
+		user_phone='0705051906' where user_id = '237'
+2022-09-14 17:15:10 - Updated 1 user Records
+2022-09-14 17:15:10 - =================================================
+2022-09-14 17:15:10 - ===========================================
+2022-09-14 17:15:10 - Update Details For 237
+2022-09-14 17:15:10 - UPDATE tbl_users set user_email='mosesmumo49@gmail.com',first_name='jjnmmnkjjka',last_name =',mnmv,m', 
+		user_phone='0705051906' where user_id = '237'
+2022-09-14 17:15:10 - Updated 0 user Records
+2022-09-14 17:15:10 - =================================================

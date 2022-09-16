@@ -1,0 +1,152 @@
+2022-09-14 16:02:27 - =================================================
+2022-09-14 16:02:27 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 16:02:27 - Found 1 User Records
+2022-09-14 16:02:27 - Login Response {"login":[{"bool_code":true,"user_id":"237","user_email":"mosesmumo49@gmail.com","first_name":"jjnmmnkjjkd","company_id":"131","company_name":"hgjkjkkkj","level_desc":"MANAGEMENT","user_level":"5","org_type":"","user_dep":null,"user_branch":null}]}
+2022-09-14 16:02:27 - =================================================
+2022-09-14 16:06:30 - =================================================
+2022-09-14 16:06:30 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:06:30 - Found 1 User Records
+2022-09-14 16:06:30 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:06:30 - =================================================
+2022-09-14 16:07:31 - =================================================
+2022-09-14 16:07:31 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 16:07:31 - Found 1 User Records
+2022-09-14 16:07:31 - Login Response {"login":[{"bool_code":true,"user_id":"237","user_email":"mosesmumo49@gmail.com","first_name":"jjnmmnkjjkd","company_id":"131","company_name":"hgjkjkkkj","level_desc":"MANAGEMENT","user_level":"5","org_type":"","user_dep":null,"user_branch":null}]}
+2022-09-14 16:07:31 - =================================================
+2022-09-14 16:09:42 - =================================================
+2022-09-14 16:09:42 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:09:42 - Found 1 User Records
+2022-09-14 16:09:42 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:09:42 - =================================================
+2022-09-14 16:09:59 - =================================================
+2022-09-14 16:09:59 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:09:59 - Found 1 User Records
+2022-09-14 16:09:59 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:09:59 - =================================================
+2022-09-14 16:10:10 - =================================================
+2022-09-14 16:10:10 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:10:10 - Found 1 User Records
+2022-09-14 16:10:10 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:10:10 - =================================================
+2022-09-14 16:11:01 - =================================================
+2022-09-14 16:11:01 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:11:01 - Found 1 User Records
+2022-09-14 16:11:01 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:11:01 - =================================================
+2022-09-14 16:11:50 - =================================================
+2022-09-14 16:11:50 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:11:50 - Found 1 User Records
+2022-09-14 16:11:50 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:11:50 - =================================================
+2022-09-14 16:15:30 - =================================================
+2022-09-14 16:15:30 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 16:15:30 - Found 1 User Records
+2022-09-14 16:15:30 - Login Response {"login":[{"bool_code":true,"user_id":"237","user_email":"mosesmumo49@gmail.com","first_name":"jjnmmnkjjkd","company_id":"131","company_name":"hgjkjkkkj","level_desc":"MANAGEMENT","user_level":"5","org_type":"","user_dep":null,"user_branch":null}]}
+2022-09-14 16:15:30 - =================================================
+2022-09-14 16:16:50 - =================================================
+2022-09-14 16:16:50 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:16:50 - Found 1 User Records
+2022-09-14 16:16:50 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:16:50 - =================================================
+2022-09-14 16:17:48 - =================================================
+2022-09-14 16:17:48 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:17:48 - Found 1 User Records
+2022-09-14 16:17:48 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:17:48 - =================================================
+2022-09-14 16:40:21 - =================================================
+2022-09-14 16:40:21 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 16:40:21 - Found 1 User Records
+2022-09-14 16:40:21 - Login Response {"login":[{"bool_code":true,"user_id":"237","user_email":"mosesmumo49@gmail.com","first_name":"jjnmmnkjjkd","company_id":"131","company_name":"hgjkjkkkj","level_desc":"MANAGEMENT","user_level":"5","org_type":"","user_dep":null,"user_branch":null}]}
+2022-09-14 16:40:21 - =================================================
+2022-09-14 16:41:39 - =================================================
+2022-09-14 16:41:39 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mosesmumo49@gmail.com' AND u.user_password = MD5('ADMIN')
+2022-09-14 16:41:39 - Found 1 User Records
+2022-09-14 16:41:39 - Login Response {"login":[{"bool_code":true,"user_id":"237","user_email":"mosesmumo49@gmail.com","first_name":"jjnmmnkjjkd","company_id":"131","company_name":"hgjkjkkkj","level_desc":"MANAGEMENT","user_level":"5","org_type":"","user_dep":null,"user_branch":null}]}
+2022-09-14 16:41:39 - =================================================
+2022-09-14 16:42:47 - =================================================
+2022-09-14 16:42:47 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:42:47 - Found 1 User Records
+2022-09-14 16:42:47 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:42:47 - =================================================
+2022-09-14 16:42:47 - =================================================
+2022-09-14 16:42:47 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:42:47 - Found 1 User Records
+2022-09-14 16:42:47 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi ","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:42:47 - =================================================
+2022-09-14 16:46:42 - =================================================
+2022-09-14 16:46:42 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:46:42 - Found 1 User Records
+2022-09-14 16:46:42 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:46:42 - =================================================
+2022-09-14 16:47:59 - =================================================
+2022-09-14 16:47:59 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:47:59 - Found 1 User Records
+2022-09-14 16:47:59 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:47:59 - =================================================
+2022-09-14 16:47:59 - =================================================
+2022-09-14 16:47:59 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:47:59 - Found 1 User Records
+2022-09-14 16:47:59 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:47:59 - =================================================
+2022-09-14 16:50:04 - =================================================
+2022-09-14 16:50:04 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-14 16:50:04 - Found 1 User Records
+2022-09-14 16:50:04 - Login Response {"login":[{"bool_code":true,"user_id":"20","user_email":"mumo@gmail.com","first_name":"Ujenzi 1","company_id":"33","company_name":"majeng","level_desc":"PARTNER","user_level":"5","org_type":"LAWFIRM","user_dep":null,"user_branch":null}]}
+2022-09-14 16:50:04 - =================================================

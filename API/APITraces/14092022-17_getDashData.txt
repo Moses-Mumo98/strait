@@ -1,0 +1,64 @@
+2022-09-14 17:00:54 - =================================================
+2022-09-14 17:00:54 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:00:54 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:00:54 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:00:54 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:00:54 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:00:54 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:00:54 - =================================================
+2022-09-14 17:01:48 - =================================================
+2022-09-14 17:01:48 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:01:48 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:01:48 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:01:48 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:01:48 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:01:48 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:01:48 - =================================================
+2022-09-14 17:12:02 - =================================================
+2022-09-14 17:12:02 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:12:02 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:12:02 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:12:02 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:12:02 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:12:02 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:12:02 - =================================================
+2022-09-14 17:12:59 - =================================================
+2022-09-14 17:12:59 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:12:59 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:12:59 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:12:59 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:12:59 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:12:59 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:12:59 - =================================================
+2022-09-14 17:13:08 - =================================================
+2022-09-14 17:13:08 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:13:08 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:13:08 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:13:08 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:13:08 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:13:08 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:13:08 - =================================================
+2022-09-14 17:14:45 - =================================================
+2022-09-14 17:14:45 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '131'
+2022-09-14 17:14:45 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '131'
+2022-09-14 17:14:45 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '131'
+2022-09-14 17:14:45 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '131'
+2022-09-14 17:14:45 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '131'
+2022-09-14 17:14:45 - DashData Response {"dashdata":[{"users":"2","projects":"0","tasks":"0","sub_tasks":"0","minutes":null}]}
+2022-09-14 17:14:45 - =================================================
+2022-09-14 17:15:20 - =================================================
+2022-09-14 17:15:20 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-14 17:15:20 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-14 17:15:20 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-14 17:15:20 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-14 17:15:20 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-14 17:15:20 - DashData Response {"dashdata":[{"users":"16","projects":"1","tasks":"1","sub_tasks":"2","minutes":"11"}]}
+2022-09-14 17:15:20 - =================================================
+2022-09-14 17:16:20 - =================================================
+2022-09-14 17:16:20 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '131'
+2022-09-14 17:16:20 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '131'
+2022-09-14 17:16:20 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '131'
+2022-09-14 17:16:20 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '131'
+2022-09-14 17:16:20 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '131'
+2022-09-14 17:16:20 - DashData Response {"dashdata":[{"users":"2","projects":"0","tasks":"0","sub_tasks":"0","minutes":null}]}
+2022-09-14 17:16:20 - =================================================

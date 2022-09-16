@@ -1,0 +1,16 @@
+2022-09-14 14:43:22 - =================================================
+2022-09-14 14:43:22 - SELECT level_id,law_desc as  level_desc FROM user_levels order by level_id asc
+2022-09-14 14:43:22 - Response {"levels":[{"level_id":"1","level_desc":"CLIENTS"},{"level_id":"2","level_desc":"LEGAL ASSISTANT"},{"level_id":"3","level_desc":"HOD"},{"level_id":"4","level_desc":"ASSOCIATES"},{"level_id":"5","level_desc":"PARTNER"}]}
+2022-09-14 14:43:22 - =================================================
+2022-09-14 14:45:48 - =================================================
+2022-09-14 14:45:48 - SELECT level_id,law_desc as  level_desc FROM user_levels order by level_id asc
+2022-09-14 14:45:48 - Response {"levels":[{"level_id":"1","level_desc":"CLIENTS"},{"level_id":"2","level_desc":"LEGAL ASSISTANT"},{"level_id":"3","level_desc":"HOD"},{"level_id":"4","level_desc":"ASSOCIATES"},{"level_id":"5","level_desc":"PARTNER"}]}
+2022-09-14 14:45:48 - =================================================
+2022-09-14 14:51:17 - =================================================
+2022-09-14 14:51:17 - SELECT level_id,law_desc as  level_desc FROM user_levels order by level_id asc
+2022-09-14 14:51:17 - Response {"levels":[{"level_id":"1","level_desc":"CLIENTS"},{"level_id":"2","level_desc":"LEGAL ASSISTANT"},{"level_id":"3","level_desc":"HOD"},{"level_id":"4","level_desc":"ASSOCIATES"},{"level_id":"5","level_desc":"PARTNER"}]}
+2022-09-14 14:51:17 - =================================================
+2022-09-14 14:53:28 - =================================================
+2022-09-14 14:53:28 - SELECT level_id,law_desc as  level_desc FROM user_levels order by level_id asc
+2022-09-14 14:53:28 - Response {"levels":[{"level_id":"1","level_desc":"CLIENTS"},{"level_id":"2","level_desc":"LEGAL ASSISTANT"},{"level_id":"3","level_desc":"HOD"},{"level_id":"4","level_desc":"ASSOCIATES"},{"level_id":"5","level_desc":"PARTNER"}]}
+2022-09-14 14:53:28 - =================================================

@@ -205,12 +205,57 @@ switch ($request) {
 	case 48:
 		updateDepartment($_POST['company_id']);
 	break;
+
+	case 49:
+		confirmpassword($_POST['user_email'],$_POST['user_password']);
+	break;
 	
 
     default:
         echo "Get Out Of Here";
     break;
 }
+
+function confirmpassword($user_email,$user_password){
+	$conn = connect("timetracker1");
+    $typehere = "confirmPassword";
+	debug("=================================================",$typehere);
+    $getUser = "SELECT a.user_id,a.user_email,,a.first_name,a.reset_pass= 0 FROM tbl_users a where user_email = '$user_email'";
+    debug($getUser,$typehere);
+	$q = execute_($getUser,$conn);
+	$f = fetch($q);
+	
+	if($_POST['newpass'] == ""){
+		$password = randomString(6);
+	}else{
+		$password = $_POST['newpass'];
+	}
+	debug("Generated Password " . $password, $typehere);
+		
+	$updater = "update tbl_users set user_password = MD5('$user_password'),reset_pass = 1 where user_email = '$user_email'";
+	debug($updater,$typehere);
+	$q = execute_($updater,$conn);
+	
+	$n = affected($conn);
+	debug("Updated ".$n." User records",$typehere);
+	$result = array();
+	if($n){
+		//resetGlobalPassword($f['user_email'],$password);
+		if($_POST['newpass'] == ""){
+			
+			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed keep it safe.";
+			}
+		push_mail($f['user_email'], $email,"Password Reset","KAPS STRAIT","kapslabnotify@kaps.co.ke");
+		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
+	}else{
+		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed,Try Again"));
+	}
+    debug("Password Reset Response ".json_encode(array("confirm" => $result)),$typehere);
+	echo json_encode(array("confirm" => $result));
+	closer($conn);
+	debug("=================================================",$typehere);
+}
+
 
 
 function getPic($user_id){
@@ -2179,7 +2224,7 @@ function saveNewUser(){
 		$password = randomString(6);
 		debug("Generated Password" . $password, $typehere);
 		
-		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
+		//$GlobalID = checkUserGlobal($u_name,$u_email,$password);
 		debug("User Global ID".$GlobalID,$typehere);
 		
 		$checker2 = "SELECT * from tbl_users where first_name='$u_name', user_email = '$u_email'";
@@ -2248,7 +2293,7 @@ function saveNewUser(){
 		} else {
 			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
 		}
-		echo json_encode(array("useradd" => $result));
+		echo json_encode(array("staffadd" => $result));
 	}else{
 		debug("Update Details For ".$staff_id,$typehere);
 		$sql = "UPDATE tbl_users set created_on = NOW(),user_email = '$u_email',first_name = '$u_name', user_level = '$u_level',user_dep = '$u_dep' where user_id = '$user_id'";
@@ -2262,6 +2307,7 @@ function saveNewUser(){
 		} else {
 			array_push($result, array("result" => 'FALSE',"addmessage" => "Failed to Update Staff Details"));
 		}
+		
 		echo json_encode(array("staffadd" => $result));
 	}
     closer($conn);
@@ -3068,7 +3114,7 @@ function login($uname,$upass){
 		$f = fetch($q);
 		$user_status = $f['user_status'];
 		$reset_pass = $f['reset_pass'];
-		if($user_status == 1 || $reset_pass == 1){
+		if( $reset_pass == 1){
 			$user_id = $f['user_id'];
 			$user_email = $f['user_email'];
 			$first_name = $f['first_name'];
@@ -3095,24 +3141,25 @@ function login($uname,$upass){
 		
 		
 	}
+	
 	debug("Login Response ".json_encode(array("login" => $result)),$typehere);
 	echo json_encode(array("login" => $result));
 	closer($conn);
 	debug("=================================================",$typehere);
 }
 
-function resetGlobalPassword($user_email,$u_password){
-	$conn = connect("users");
+function resetGlobalPassword($user_email,$user_password){
+	$conn = connect("timetracker1");
     $typehere = "resetPassword";
 	debug("==================== ON GLOBAL ==========================",$typehere);
 	
-	$saver = "UPDATE tbl_users  set user_password = MD5('$u_password') where user_email = '$user_email'";
+	$saver = "UPDATE tbl_users  set user_password = MD5('$user_password') where user_email = '$user_email'";
 	debug($saver,$typehere);
 	execute_($saver,$conn);
 	
 	
 	$conn2 = connect("pasa");
-	$saver2 = "UPDATE gts_users set user_password = MD5('$u_password') where user_email = '$user_email'";
+	$saver2 = "UPDATE gts_users set user_password = MD5('$user_password') where user_email = '$user_email'";
 	debug($saver2,$typehere);
 	execute_($saver2,$conn2);	
 	
@@ -3125,7 +3172,7 @@ function resetPassword($user_email){
 	$conn = connect("timetracker1");
     $typehere = "resetPassword";
 	debug("=================================================",$typehere);
-    $getUser = "SELECT a.user_id,a.user_email,a.first_name FROM tbl_users a where user_email = '$user_email'";
+    $getUser = "SELECT a.user_id,a.user_email,a.first_name,a.reset_pass= 1 FROM tbl_users a where user_email = '$user_email'";
     debug($getUser,$typehere);
 	$q = execute_($getUser,$conn);
 	$f = fetch($q);
@@ -3137,7 +3184,7 @@ function resetPassword($user_email){
 	}
 	debug("Generated Password " . $password, $typehere);
 		
-	$updater = "update tbl_users set user_password = MD5('$password') where user_email = '$user_email'";
+	$updater = "update tbl_users set user_password = MD5('$password'),reset_pass = 0 where user_email = '$user_email'";
 	debug($updater,$typehere);
 	$q = execute_($updater,$conn);
 	
@@ -3147,7 +3194,8 @@ function resetPassword($user_email){
 	if($n){
 		resetGlobalPassword($f['user_email'],$password);
 		if($_POST['newpass'] == ""){
-			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". Keep it safe";
+			// $email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". Keep it safe";
+			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". <a href=127.0.0.1/straitLegal/confirm_pass>To reset your password enter a new password</a>";
 		}else{
 			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed.";
 		}

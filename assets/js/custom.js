@@ -217,13 +217,18 @@ $(document).ready(function() {
         getCompanyUsers();
         getPic();
     }else if(page == 'profile'){
+        userID = localStorage.getItem("user_id");
         getProfile("user_id");
         getPic("user_id");
+        
     }else if(page == 'setting'){
         getProfile("user_id");
         getPic(user_id);
     }else if(page == 'forgot-pass'){
         resetPass();
+    }else if(page == 'confirm_pass'){
+        resetPass2();
+       
     }
     
     PageLabels(page);
@@ -736,9 +741,7 @@ $('#useredit').on('click', function(e) {
 
 function getProfile(){
     logger("profilenejkee")
-    
-        var user_id = localStorage.getItem("user_id");
-    
+    var user_id = localStorage.getItem("user_id");
         var dataString = {
             'request': 42,
             'user_id': user_id
@@ -1751,6 +1754,8 @@ function logTime(){
 $('#logout').on('click', function(e) {
     sessionStorage.setItem("loggedin", "");
     window.location = "index";
+    sessionStorage.clear();
+    localStorage.clear();
     return false;
 
 });
@@ -3894,6 +3899,62 @@ if(user_email == ""){
     return false;
 }
 
+function resetPass2(){
+    logger("resetpassword");
+    //var user_email = document.querySelector('input[name="user_email"]').value;
+    var user_email = $('input[name = "user_email"]').val();
+     var user_password = $('input[name = "user_password"]').val();
+     
+    
+    
+    var errorMessage;	
+    if(user_email == ""){
+        errorMessage = "User email Required";
+        document.getElementById("confrimed").innerText = errorMessage;
+        document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("user_email").style.borderColor = "red";
+        return;	
+    }
+    if(user_password == ""){
+        errorMessage = "User password Required";
+        document.getElementById("confrimed").innerText = errorMessage;
+        document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("user_password").style.borderColor = "red";
+        return;	
+    }
+        var dataString = {
+            'user_email': user_email,
+            'user_password': user_password,
+            'request': 49
+        };
+        logger(dataString);
+        
+        var resetPass2 = document.getElementById('resetIcon');
+        resetPass2.classList.add('fa-spin');
+        
+        $.ajax({
+            type: "POST",
+            url: myurl,
+            data: dataString,
+            success: function(data) {
+                
+                resetPass2.classList.remove('fa-spin');
+                
+                logger('Reset Password Response ' + data);
+                
+                var jsObject = JSON.parse(data);
+                logger(jsObject);		
+                swal(jsObject.confirm[0].message, "Success", 'success');
+            },
+            error: function(e) {
+                resetPass2.classList.remove('fa-spin');
+            }
+    
+        });
+        return false;
+    }
+    
+
 $('#projectSaver').on('click', function(e) {
 	logger("projectSaver Now");
     var p_name = $('input[name = "p_name"]').val();
@@ -4277,7 +4338,7 @@ $('#loginbutton').on('click', function(e) {
 				document.getElementById("email").style.borderColor = "#666";
                 document.getElementById("password").style.borderColor = "#666";
 				document.getElementById("confrimed").style.color = "#666";
-				sessionStorage.setItem("user_id", jsObject.login[0].user_id);
+			    localStorage.setItem("user_id", jsObject.login[0].user_id);
 				sessionStorage.setItem("user_email", jsObject.login[0].user_email);
 				sessionStorage.setItem("first_name", jsObject.login[0].first_name);
 				sessionStorage.setItem("company_id", jsObject.login[0].company_id);
