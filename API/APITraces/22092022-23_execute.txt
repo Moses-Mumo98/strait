@@ -1,0 +1,167 @@
+2022-09-22 23:00:10 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '7'
+2022-09-22 23:00:19 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '1'
+2022-09-22 23:05:17 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '1'
+2022-09-22 23:05:26 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '7'
+2022-09-22 23:07:01 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-22 23:07:03 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:07:03 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:07:03 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:07:03 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:07:03 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:07:03 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:07:03 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:07:03 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:07:03 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:07:03 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:07:03 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:07:03 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:07:03 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:07:03 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:07:03 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:07:03 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:07:03 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:08:18 - Executing UPDATE tbl_departments set effective = 3 where dep_id = ''
+2022-09-22 23:09:23 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-22 23:09:24 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:09:24 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:09:24 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:09:24 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:09:24 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:09:24 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:09:24 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:09:24 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:09:24 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:09:24 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:09:24 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:09:24 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:09:24 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:09:24 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:09:24 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:09:24 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:09:24 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:19:31 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-22 23:19:32 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:19:32 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:19:32 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:19:32 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:19:32 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:19:32 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:19:32 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:19:32 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:19:32 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:19:32 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:19:32 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:19:32 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:19:32 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:19:32 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:19:32 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:19:32 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:19:32 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:21:52 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:21:52 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:21:52 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:21:52 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:21:52 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:21:52 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:21:52 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:21:52 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:21:52 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:21:52 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:21:52 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:21:52 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:21:52 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:21:52 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:21:52 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:21:52 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:21:52 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:21:57 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-22 23:21:58 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:21:58 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:21:58 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:21:58 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:21:58 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:21:58 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:21:58 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:21:58 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:21:58 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:21:58 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:21:58 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:21:58 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:21:58 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:21:58 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:21:58 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:21:58 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:21:58 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:23:37 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'mumo@gmail.com' AND u.user_password = MD5('hammer666sarah')
+2022-09-22 23:23:38 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '33'
+2022-09-22 23:23:38 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '33'
+2022-09-22 23:23:38 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '33'
+2022-09-22 23:23:38 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '33'
+2022-09-22 23:23:38 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '33'
+2022-09-22 23:23:38 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:23:38 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:23:38 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:23:38 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:23:38 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:23:38 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:23:38 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:23:38 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:23:38 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:23:38 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:23:38 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:23:38 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:24:09 - Executing UPDATE tbl_departments set effective = 3 where dep_id = 'undefined'
+2022-09-22 23:24:15 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '3'
+2022-09-22 23:24:32 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '3'
+2022-09-22 23:24:57 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:24:57 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:24:57 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:24:57 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:24:57 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:24:57 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:24:57 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:24:57 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:24:57 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:24:57 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:24:57 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:24:57 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:25:01 - Executing UPDATE tbl_projects set effective_status=3  where project_id = ''
+2022-09-22 23:25:02 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:25:02 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:25:02 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:25:02 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:25:02 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:25:02 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:25:02 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:25:02 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:25:02 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:25:02 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:25:02 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:25:02 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:26:49 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '1' GROUP BY st.sub_id
+2022-09-22 23:26:49 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 1 
+2022-09-22 23:26:49 - Executing SELECT * from tbl_users where user_id in ('20,20')
+2022-09-22 23:26:49 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '4' GROUP BY st.sub_id
+2022-09-22 23:26:49 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 4 
+2022-09-22 23:26:49 - Executing SELECT * from tbl_users where user_id in ('')
+2022-09-22 23:26:49 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '5' GROUP BY st.sub_id
+2022-09-22 23:26:49 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 5 
+2022-09-22 23:26:49 - Executing SELECT * from tbl_users where user_id in ('20,')
+2022-09-22 23:26:49 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '6' GROUP BY st.sub_id
+2022-09-22 23:26:49 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 6 
+2022-09-22 23:26:49 - Executing SELECT * from tbl_users where user_id in ('')

@@ -52,7 +52,7 @@ function connect($server)
 	}
 
 	if ($conn = mysqli_connect($ip, $u, $p,$d,$port)) {
-		debug('Connnected to ' . $server, $typehere);
+		debug('Connected to ' . $server, $typehere);
 		return $conn;
 	}
 	else {
@@ -60,6 +60,15 @@ function connect($server)
 		$author = $GLOBALS['author'];
 	}
 }
+if ($conn = mysqli_connect($ip, $u, $p,$d,$port)) {
+	debug('Connected to ' . $server, $typehere);
+	return $conn;
+}
+else {
+	debug('NOT connected....', $typehere);
+	$author = $GLOBALS['author'];
+}
+
 
 function execute_($s, $link)
 {

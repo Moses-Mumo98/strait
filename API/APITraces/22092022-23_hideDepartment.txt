@@ -1,0 +1,32 @@
+2022-09-22 23:00:10 - ===========================================
+2022-09-22 23:00:10 - UPDATE tbl_departments set effective = 3 where dep_id = '7'
+2022-09-22 23:00:10 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"7"}]}
+2022-09-22 23:00:10 - =================================================
+2022-09-22 23:00:19 - ===========================================
+2022-09-22 23:00:19 - UPDATE tbl_departments set effective = 3 where dep_id = '1'
+2022-09-22 23:00:19 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"1"}]}
+2022-09-22 23:00:19 - =================================================
+2022-09-22 23:05:17 - ===========================================
+2022-09-22 23:05:17 - UPDATE tbl_departments set effective = 3 where dep_id = '1'
+2022-09-22 23:05:17 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"1"}]}
+2022-09-22 23:05:17 - =================================================
+2022-09-22 23:05:26 - ===========================================
+2022-09-22 23:05:26 - UPDATE tbl_departments set effective = 3 where dep_id = '7'
+2022-09-22 23:05:26 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"7"}]}
+2022-09-22 23:05:26 - =================================================
+2022-09-22 23:08:18 - ===========================================
+2022-09-22 23:08:18 - UPDATE tbl_departments set effective = 3 where dep_id = ''
+2022-09-22 23:08:18 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":""}]}
+2022-09-22 23:08:18 - =================================================
+2022-09-22 23:24:09 - ===========================================
+2022-09-22 23:24:09 - UPDATE tbl_departments set effective = 3 where dep_id = 'undefined'
+2022-09-22 23:24:09 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"undefined"}]}
+2022-09-22 23:24:09 - =================================================
+2022-09-22 23:24:15 - ===========================================
+2022-09-22 23:24:15 - UPDATE tbl_departments set effective = 3 where dep_id = '3'
+2022-09-22 23:24:15 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"3"}]}
+2022-09-22 23:24:15 - =================================================
+2022-09-22 23:24:32 - ===========================================
+2022-09-22 23:24:32 - UPDATE tbl_departments set effective = 3 where dep_id = '3'
+2022-09-22 23:24:32 - Response{"hideDepartment":[{"bool_code":true,"message":"Failed to delete department"},{"dep_id":"3"}]}
+2022-09-22 23:24:32 - =================================================

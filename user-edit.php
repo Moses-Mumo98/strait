@@ -37,7 +37,7 @@
                   </div>
                   <div id = "branchDiv" class="form-group">
                         <label id = "l_b_name">Branch Name</label>
-                        <select id = "branch-name" name = "branch-name" class="form-control select2" onchange="listDepartments(1)"></select>
+                        <select id = "branch-name" name = "branch-name" class="form-control select2" onchange="listDepartment(1)"></select>
                   </div>
                   <div id = "depDiv" class="form-group">
                     <label id = "dep_label">Department Name</label>

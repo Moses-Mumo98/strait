@@ -83,7 +83,7 @@ $(document).ready(function() {
         if(userLevel < 4){
             document.getElementById('depDiv').style.display = 'none';
         }
-		listBranches(2);
+		listBranch(2);
         getUserStatus();
         getUserLevels();
         getPic();
@@ -111,6 +111,8 @@ $(document).ready(function() {
     }else if(page == "timer"){
         if(userLevel == 1){
             document.getElementById('myslider').style.display = 'none';
+            
+
         }
         getCompanyProjects(1);
         getPic();
@@ -126,13 +128,15 @@ $(document).ready(function() {
         getPic();
     }else if(page == "branch-edit"){
         branchID = localStorage.getItem("branchID");
+        getPic();
         if(!branchID){
             $('#project-edit-title').html("Add New "+localStorage.getItem("branch"));
+            getPic();
         }else{
             logger("Got Branch ID as "+branchID);
             $('#project-edit-title').html("Edit "+localStorage.getItem("branch"));
             getBranchDetails(branchID);
-            getPic();
+       
         }
     }else if(page == "departments"){
         if(userLevel < 4){
@@ -142,7 +146,7 @@ $(document).ready(function() {
         getPic();
     }else if(page == "department-edit"){
         depID = localStorage.getItem("dep_id");
-        listBranches(1);
+        listBranch(2);
         if(!depID){
             $('#project-edit-title').html("Add New Department");
         }else{
@@ -154,7 +158,7 @@ $(document).ready(function() {
         if(userLevel == 1){
             document.getElementById('addSubTask').style.display = 'none';
         }
-        listDepartments(2);
+        listDepartment(2);
         getPic();
     }else if(page == "sub-edit"){
 		localStorage.setItem("meeting", 0);
@@ -217,7 +221,7 @@ $(document).ready(function() {
         getCompanyUsers();
         getPic();
     }else if(page == 'profile'){
-        userID = localStorage.getItem("user_id");
+        // userID = localStorage.getItem("user_id");
         getProfile("user_id");
         getPic("user_id");
         
@@ -470,6 +474,7 @@ function Upload(){
     var p_name = $('input[name = "p_name"]').val();
     var u_email = $('input[name = "u_email"]').val();
     var u_password = $('input[name = "u_password"]').val();
+    var u_password2 = $('input[name = "u_password2"]').val();
     var orgTypes = $('#orgTypes').val();
 
     
@@ -484,7 +489,7 @@ function Upload(){
 	}
 	
 	if(u_name == ""){
-		errorMessage = "Your Name is Required";
+		errorMessage = "Your first name is Required";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
         document.getElementById("u_name").style.borderColor = "red";
@@ -492,7 +497,7 @@ function Upload(){
 	}
 
     if(l_name == ""){
-		errorMessage = "Your Name is Required";
+		errorMessage = "Your last name is Required";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
         document.getElementById("l_name").style.borderColor = "red";
@@ -500,7 +505,7 @@ function Upload(){
 	}
 	
     if(p_name == ""){
-		errorMessage = "Your Name is Required";
+		errorMessage = "Your phone number is Required";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
         document.getElementById("p_name").style.borderColor = "red";
@@ -514,6 +519,8 @@ function Upload(){
         document.getElementById("u_email").style.borderColor = "red";
 		return;	
 	}
+
+    
 	
 	if(u_password == ""){
 		errorMessage = "Your Password is Required";
@@ -522,7 +529,22 @@ function Upload(){
         document.getElementById("u_password").style.borderColor = "red";
 		return;	
 	}
+    
+    if(u_password2 == ""){
+		errorMessage = "Your Password is Required";
+		document.getElementById("confrimed").innerText = errorMessage;
+		document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("u_password2").style.borderColor = "red";
+		return;	
+	}
 	
+    if(u_password!== u_password2){
+        errorMessage = "Passwords are not matching";
+        document.getElementById('confrimed').innerText = errorMessage;
+        document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("u_password  || u_password2").style.borderColor = "red";
+        return false;
+     }
 
     form_data.append('c_name', c_name);
     form_data.append('u_name', u_name);
@@ -530,7 +552,7 @@ function Upload(){
     form_data.append('p_name', p_name);
     form_data.append('u_email', u_email);
     form_data.append('u_password', u_password);
-    form_data.append('orgTypes', orgTypes);
+    form_data.append('org_type', orgTypes);
 
    
    var saveButton = document.getElementById('registerIcon');
@@ -2017,7 +2039,7 @@ function getSubTasks() {
     
     var dataString = {
         'request': 30,
-        'company_id': company_id,
+        'company_id':company_id,
         'task_name':task_name,
         'project_name':project_name,
         'dep_name':dep_name
@@ -2070,7 +2092,7 @@ function getSubTasks() {
                 if(userLevel == 1){
                     toadd= "N/A"
                 }else{
-                    toadd = "<a onclick = 'EditSubTask("+sub_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
+                    toadd = "<a onclick = 'EditSubTask("+sub_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hidetask("+sub_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
                 tbHTML += "<tr><td><a href='#'>"+sub_name+"</a></td>"+
@@ -2134,19 +2156,41 @@ function EditSubTask(id){
     return false;
 }
 
+function hidetask(id){
+    var sub_id =localStorage.getItem("subID")
+    var dataString = {
+        'request':50,
+        'sub_id':sub_id
+    }
+    logger("Deleting "+id);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+    localStorage.setItem("subID", id);
+    window.location = "sub-task";
+        
+        }
+})
+    return false;
+    
+}
 
 function listSubTasks() {
     var company_id =  sessionStorage.getItem("company_id");
     var task_name = $('#task-name').val();
     var project_name = $('#project-name').val();
-    var dep_name = $('#dep_name').val();
-    
+    var sub_name = $('#sub-name').val();
+    logger("Getting Tasks For Project: "+sub_name);
+   
     var dataString = {
         'request': 30,
         'company_id': company_id,
         'task_name':task_name,
-        'project_name':project_name,
-        'dep_name':dep_name
+        'sub_name':sub_name,
+        'project-name':project_name
+   
     };
     logger(dataString);
 
@@ -2161,9 +2205,9 @@ function listSubTasks() {
             logger("Length Ya " + taskJSON + " Ni " + taskJSON.subtasks.length);
             for (var i = 0; i < taskJSON.subtasks.length; i++) {
                 if (i == 0) {
-                    subtasks += "<option value='" + taskJSON.subtasks[i].sub_id + "' selected>" + taskJSON.subtasks[i].sub_name + "</option>";
+                    subtasks += "<option value='" + taskJSON.subtasks[i] + taskJSON.subtasks[i].sub_id + "</option>";
                 } else {
-                    subtasks += "<option value='" + taskJSON.subtasks[i].sub_id + "'>" + taskJSON.subtasks[i].sub_name + "</option>";
+                    subtasks += "<option value='" + taskJSON.subtasks[i] + taskJSON.subtasks[i].sub_id + "</option>";
                 }
             }
             $("#sub-name").html(subtasks);
@@ -2180,6 +2224,7 @@ function listProjectTasks() {
     logger("Listing Project Tasks");
     var company_id =  sessionStorage.getItem("company_id");
     var project_name = $('#project_name').val();
+    var task_name = $('#task-name').val();
     var dep_name = $('#dep_name').val();
 
     var user_id;
@@ -2190,6 +2235,7 @@ function listProjectTasks() {
     var dataString = {
         'request': 28,
         'company_id': company_id,
+        'task_name':task_name,
         'project_name':project_name,
         'dep_name':dep_name,
         'user_id':user_id
@@ -2333,6 +2379,61 @@ function listDepartments(page) {
     return false;
 }
 
+function listDepartment(page) {
+    var company_id =  sessionStorage.getItem("company_id");
+	
+	var branch;
+	if(loadedPage == "user-edit"){
+		branch = $('#branch-name').val();
+    }else{
+        if(userLevel == 4){
+            branch = sessionStorage.getItem("user_branch");
+        }
+    }
+    
+    var dep_id;
+    if(userLevel < 4){
+        dep_id  = sessionStorage.getItem("user_dep");
+    }
+
+    var dataString = {
+        'request': 53,
+        'company_id':company_id,
+        'branch':branch,
+        'dep_id':dep_id
+    };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            logger(data);
+            var departmentJSON = JSON.parse(data);
+            var department = '<option></option>';
+            logger("Length Ya " + departmentJSON + " Ni " + departmentJSON.department.length);
+            for(var i = 0; i < departmentJSON.department.length; i++) {
+                if (i == 0) {
+                    department += "<option value='" + departmentJSON.department[i].dep_name + "' selected>" + departmentJSON.department[i].dep_name + "</option>";
+                } else {
+                    department += "<option value='" + departmentJSON.department[i].dep_name + "'>" + departmentJSON.department[i].dep_name + "</option>";
+                }
+            }
+            $("#dep_name").html(department);
+            if(page == 2){
+                getDepartmentProjects();
+            }
+        },
+        error: function(e) {
+
+    1    }
+
+    });
+    return false;
+}
+
+
 function getProjectTasks() {
     var company_id =  sessionStorage.getItem("company_id");
     var project_name = $('#project_name').val();
@@ -2397,7 +2498,7 @@ function getProjectTasks() {
                 "<td><div class='badge l-bg-"+code+"'>"+status+"</div></td>"+
                 "<td>"+start_date+"</td>"+
                 "<td>"+end_date+"</td>"+
-                "<td><a onclick = 'EditTask("+task_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a></td></tr>";
+                "<td><a onclick = 'EditTask("+task_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick = 'HideTasks("+task_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a></td></tr>";
             }
             tbHTML = '<table class="table table-striped table-hover" id="projectsTable" style="width:100%;"><thead><tr><th>Name</th><th>Description</th><th>'+localStorage.getItem("pr_name")+'</th><th>Client Name</th><th>Assigned To</th><th>Created On</th><th>Status</th><th>Start Date</th><th>End Date</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
             $('#projects-table').html(tbHTML);
@@ -2594,6 +2695,8 @@ function getDepartmentDetails(id){
     return false;
 }
 
+
+
 function listBranches(page) {
     var company_id =  sessionStorage.getItem("company_id");
 
@@ -2638,11 +2741,160 @@ function listBranches(page) {
     return false;
 }
 
+function listBranch(page) {
+    var company_id =  sessionStorage.getItem("company_id");
+
+    var branch;
+    if(userLevel < 5){
+        branch = sessionStorage.getItem("user_branch");
+    }
+
+    var dataString = {
+        'request': 52,
+        'company_id':company_id,
+        'branch_id':branch
+    };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            logger(data);
+            var branchJSON = JSON.parse(data);
+            var branch = '<option></option>';
+            logger("Length Ya " + branchJSON + " Ni " + branchJSON.branch.length);
+            for (var i = 0; i < branchJSON.branch.length; i++) {
+                if (i == 0) {
+                    branch += "<option value='" + branchJSON.branch[i].branch_name + "' selected>" + branchJSON.branch[i].branch_name + "</option>";
+                } else {
+                    branch += "<option value='" + branchJSON.branch[i].branch_name + "'>" + branchJSON.branch[i].branch_name + "</option>";
+                }
+            }
+            $("#branch-name").html(branch);
+            if(page == 2){
+				listDepartment(1);
+			}
+			
+        },
+        error: function(e) {
+
+        }
+
+    });
+    return false;
+}
+
+function listBranches(page) {
+    var company_id =  sessionStorage.getItem("company_id");
+
+    var branch;
+    if(userLevel < 5){
+        branch = sessionStorage.getItem("user_branch");
+    }
+
+    var dataString = {
+        'request': 23,
+        'company_id':company_id,
+        'branch_id':branch
+    };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            logger(data);
+            var branchesJSON = JSON.parse(data);
+            var branches = '<option></option>';
+            logger("Length Ya " + branchesJSON + " Ni " + branchesJSON.branches.length);
+            for (var i = 0; i < branchesJSON.branches.length; i++) {
+                if (i == 0) {
+                    branches += "<option value='" + branchesJSON.branches[i].branch_name + "' selected>" + branchesJSON.branches[i].branch_name + "</option>";
+                } else {
+                    branches += "<option value='" + branchesJSON.branches[i].branch_name + "'>" + branchesJSON.branches[i].branch_name + "</option>";
+                }
+            }
+            $("#branch-name").html(branches);
+			if(page == 2){
+				listDepartments(1);
+			}
+        },
+        error: function(e) {
+
+        }
+
+    });
+    return false;
+}
+
+
 function editDep (id){
     localStorage.setItem("dep_id", id);
     window.location = "department-edit";
     return false;
 }
+
+
+// function hideDep (id){
+//     localStorage.setItem("dep_id", id);
+//     window.location = "departments";
+//     return false;
+// }
+
+function hideDep(id){
+    var dep_id =localStorage.getItem("dep_id")
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':54,
+        'dep_id':dep_id
+    }
+    logger("Deleting "+id);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+    // localStorage.setItem("dep_id", id);
+    // window.location = "departments";
+        
+      		
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hideDepartment[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        localStorage.setItem("dep_id", jsObject.hideDepartment[0].dep_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Department has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("dep_id", id);
+            window.location = "departments";
+          } else {
+            swal("Department has not been deleted!");
+          }
+        });
+    
+    }
+        
+        }
+})
+    return false;
+}
+
+
 
 function updateDep (id){
     localStorage.setItem("dep_id", id);
@@ -2720,7 +2972,7 @@ function getDepartments() {
                 if(userLevel < 3){
 
                 }else{
-                    toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a>";
+                    toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
                 tbHTML += "<tr><td><a href='#'>"+dep_name+"</a></td>"+
                 '<td class="col-green font-weight-bold">'+branch_name+'</td>'+
@@ -2824,6 +3076,61 @@ function editBranch(id){
     return false;
 }
 
+function hideBranch(id){
+    var branch_id = localStorage.getItem("branchID");
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':51,
+        'branch_id':branch_id
+    }
+    logger("hideBranch "+id);
+
+
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+  
+    // window.location = "branches";
+    		
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hidebranch[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Branch has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("branchID", id);
+            window.location = "branches";
+          } else {
+            swal("Branch has not been deleted!");
+          }
+        });
+    
+    }
+        
+        }
+})
+    return false;
+}
+
+
+
+
+
 function updateBranch(id){
     localStorage.setItem("branchID", id);
     window.location = "branches";
@@ -2909,7 +3216,7 @@ function getBranches() {
                 if(userLevel < 5){ 
                 
                 }else{
-                toadd="<a onclick='editBranch("+branch_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a>";
+                toadd="<a onclick='editBranch("+branch_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideBranch("+branch_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
                 tbHTML += "<tr><td><a href='#'>"+branch_name+"</a></td>"+
@@ -3302,6 +3609,28 @@ function EditTask(task_id){
     return false;
 }
 
+
+function HideTasks(task_id){
+    var task_id =localStorage.getItem("taskID")
+    var dataString = {
+        'request':56,
+        'task_id':task_id
+    }
+    logger("Deleting "+task_id);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+    localStorage.setItem("taskID", task_id);
+    //window.location = "tasks";
+        
+        }
+})
+    return false;
+    
+}
+
 function getprojectUsers(){
     var project_name = $('#project-name').val();
     logger("Getting Tasks For Project: "+project_name);
@@ -3539,6 +3868,8 @@ function getCompanyProjects(page) {
             $("#project-name").html(projects);
             if(page == 1){
                 getAllTasks();
+                
+
             }else if (page == 2){
                 getprojectUsers();
             }
@@ -4184,6 +4515,7 @@ function getMyProjects() {
             var tbHTML = "";
             logger("Length of Projects JSON "+ProjectJSON.projects.length);
             for (var i = 0; i < ProjectJSON.projects.length; i++) {
+                var project_id = ProjectJSON.projects[i].project_id;
                 var project_name = ProjectJSON.projects[i].project_name;
                 var hours = ProjectJSON.projects[i].hours;
                 var created_on = ProjectJSON.projects[i].created_on;
@@ -4230,7 +4562,7 @@ function getMyProjects() {
                 "<td><div class='badge l-bg-"+code+"'>"+status+"</div></td>"+
                 "<td>"+start_date+"</td>"+
                 "<td>"+end_date+"</td>"+
-                "<td><a data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a></td><tr>";
+                "<td><a data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideproject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a></td><tr>";
             }
 
             trHTML = '<table class="table table-hover table-xl mb-0"><thead><tr><th>Project Name</th><th>Staff</th><th>Minutes</th></tr></thead><tbody>'+trHTML+'</tbody></table>';
@@ -4246,6 +4578,28 @@ function getMyProjects() {
     });
     return false;
 }
+
+function hideproject(id){
+    var project_id =localStorage.getItem("projectID");
+    var dataString = {
+        'request':55,
+        'project_id':project_id
+    }
+    logger("Deleting "+id);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+    localStorage.setItem("projectID", id);
+    window.location = "projects";
+        
+        }
+})
+    return false;
+    
+}
+
 
 function addCalendarEvent(id, start, end, title) {
   var eventObject = {
@@ -4329,7 +4683,8 @@ $('#loginbutton').on('click', function(e) {
             logger(data);
 
             var jsObject = JSON.parse(data);
-            logger(jsObject);
+            logger("user data logged",jsObject);
+            localStorage.setItem("user_d_p0",JSON.stringify(jsObject))
             var bool_code = jsObject.login[0].bool_code;
 			logger("bool_code "+bool_code);
 			
@@ -4339,7 +4694,7 @@ $('#loginbutton').on('click', function(e) {
                 document.getElementById("password").style.borderColor = "#666";
 				document.getElementById("confrimed").style.color = "#666";
 			    localStorage.setItem("user_id", jsObject.login[0].user_id);
-				sessionStorage.setItem("user_email", jsObject.login[0].user_email);
+				localStorage.setItem("user_email", jsObject.login[0].user_email);
 				sessionStorage.setItem("first_name", jsObject.login[0].first_name);
 				sessionStorage.setItem("company_id", jsObject.login[0].company_id);
 				sessionStorage.setItem("company_name", jsObject.login[0].company_name);
@@ -4347,6 +4702,7 @@ $('#loginbutton').on('click', function(e) {
                 sessionStorage.setItem("user_level", jsObject.login[0].user_level);
                 sessionStorage.setItem("org_type", jsObject.login[0].org_type);
                 sessionStorage.setItem("user_dep", jsObject.login[0].user_dep);
+                localStorage.setItem("dep_id", jsObject.login[0].dep_id);
                 sessionStorage.setItem("user_branch", jsObject.login[0].user_branch);
                 sessionStorage.setItem("loggedin", 1);
                 localStorage.setItem("uname",user_name);
@@ -4552,7 +4908,7 @@ function ListProjects() {
                 if(userLevel == 1){
                     toadd = "None Required";
                 }else{
-                    toadd ="<a onclick = 'editProject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
+                    toadd ="<a onclick = 'editProject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a a onclick = 'hideproject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
                 tbHTML += "<tr><td><a href='#'>"+project_name+"</a></td>"+
@@ -4587,9 +4943,16 @@ function ListProjects() {
 
 function loadNames(ltype){
     logger("Loading "+ltype);
+    localStorage.setItem("loadingtjja",ltype)
     lang.init(ltype, afterLangLoad);
+   
 }
 function afterLangLoad(){
+    console.log("saveLang",JSON.parse(JSON.stringify(lang)))
+    
+    localStorage.setItem("saveLang",JSON.stringify(lang.getString(
+        "pr_name"
+    )))
     localStorage.setItem("pr_name", lang.getString('pr_name'));
     localStorage.setItem("tr_name", lang.getString('tr_name'));
     localStorage.setItem("ur_name", lang.getString('ur_name'));
@@ -4599,6 +4962,7 @@ function afterLangLoad(){
     localStorage.setItem("subtask", lang.getString('subtask'));
     localStorage.setItem("workingLec", lang.getString('workingLec'));
     localStorage.setItem("workingStud", lang.getString('workingStud'));
+    
 }
 
 function changeLabels(){
@@ -4622,6 +4986,7 @@ function changeLabels(){
     }
 
     $('#logs_label').html(localStorage.getItem("subtask")+ " Logs");
+
     
     return false;
 }

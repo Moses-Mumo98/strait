@@ -1,0 +1,40 @@
+2022-09-22 18:09:41 - ===========================================
+2022-09-22 18:09:41 - UPDATE tbl_branches set active=3  where branch_id = '149'
+2022-09-22 18:09:41 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"149"}]}
+2022-09-22 18:09:41 - =================================================
+2022-09-22 18:09:47 - ===========================================
+2022-09-22 18:09:47 - UPDATE tbl_branches set active=3  where branch_id = '133'
+2022-09-22 18:09:47 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"133"}]}
+2022-09-22 18:09:47 - =================================================
+2022-09-22 18:09:53 - ===========================================
+2022-09-22 18:09:53 - UPDATE tbl_branches set active=3  where branch_id = '134'
+2022-09-22 18:09:53 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"134"}]}
+2022-09-22 18:09:53 - =================================================
+2022-09-22 18:10:00 - ===========================================
+2022-09-22 18:10:00 - UPDATE tbl_branches set active=3  where branch_id = '134'
+2022-09-22 18:10:00 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"134"}]}
+2022-09-22 18:10:00 - =================================================
+2022-09-22 18:10:08 - ===========================================
+2022-09-22 18:10:08 - UPDATE tbl_branches set active=3  where branch_id = '134'
+2022-09-22 18:10:08 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"134"}]}
+2022-09-22 18:10:08 - =================================================
+2022-09-22 18:10:12 - ===========================================
+2022-09-22 18:10:12 - UPDATE tbl_branches set active=3  where branch_id = '33'
+2022-09-22 18:10:12 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"33"}]}
+2022-09-22 18:10:12 - =================================================
+2022-09-22 18:11:14 - ===========================================
+2022-09-22 18:11:14 - UPDATE tbl_branches set active=3  where branch_id = ''
+2022-09-22 18:11:14 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":""}]}
+2022-09-22 18:11:14 - =================================================
+2022-09-22 18:11:17 - ===========================================
+2022-09-22 18:11:17 - UPDATE tbl_branches set active=3  where branch_id = '149'
+2022-09-22 18:11:17 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"149"}]}
+2022-09-22 18:11:17 - =================================================
+2022-09-22 18:11:22 - ===========================================
+2022-09-22 18:11:22 - UPDATE tbl_branches set active=3  where branch_id = '134'
+2022-09-22 18:11:22 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"134"}]}
+2022-09-22 18:11:22 - =================================================
+2022-09-22 18:11:26 - ===========================================
+2022-09-22 18:11:26 - UPDATE tbl_branches set active=3  where branch_id = '133'
+2022-09-22 18:11:26 - Response{"hidebranch":[{"bool_code":true,"message":"Failed to delete branch"},{"branch_id":"133"}]}
+2022-09-22 18:11:26 - =================================================

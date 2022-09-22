@@ -39,13 +39,13 @@
                     </div>
                   <div class="form-group">
                     <label for="user_password">New password</label>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="1" >
+                    <input id="user_password" type="password" class="form-control" name="user_password" tabindex="1" >
                     <div class="invalid-feedback">
                       Please fill in your recent password
                     </div>
                     <div class="form-group">
                     <label for="user_password">confirm password</label>
-                    <input id="user_password" type="password" class="form-control" name="user_password" tabindex="1" >
+                    <input id="password" type="password" class="form-control" name="password" tabindex="1" >
                     <div class="invalid-feedback">
                       Please fill in your new password
                     </div>

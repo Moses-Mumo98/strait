@@ -1,0 +1,5 @@
+2022-09-22 22:15:36 - ===========================================
+2022-09-22 22:15:36 - Update Details For 134
+2022-09-22 22:15:36 - UPDATE tbl_branches set  branch_name = 'Kangemi',branch_desc ='Kangemi 2',branch_status='1',company_id = '33', modified_on = NOW() where branch_id = '134'
+2022-09-22 22:15:36 - Updated 1 Branch Records
+2022-09-22 22:15:36 - =================================================

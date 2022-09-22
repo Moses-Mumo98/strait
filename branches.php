@@ -1,5 +1,6 @@
 <?php include 'header.php';?>
       <!-- Main Content -->
+      
       <div class="main-content">
         <section class="section">
           <ul class="breadcrumb breadcrumb-style ">
@@ -32,6 +33,8 @@
             </div>
           </div>
         </section>
+     
        
         <?php include 'slider.php';?>
         <?php include 'footer.php';?>
+        

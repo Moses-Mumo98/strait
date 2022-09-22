@@ -102,7 +102,7 @@ switch ($request) {
 	break;
 	
 	case 23:
-		ListBranches();
+		ListBranches($_POST['branch_id']);
 	break;
 	
 	case 24:
@@ -209,7 +209,36 @@ switch ($request) {
 	case 49:
 		confirmpassword($_POST['user_email'],$_POST['user_password']);
 	break;
+
+	case 50:
+		hidetask($_POST['sub_id']);
+	break;
 	
+	case 51:
+		hideBranch($_POST['branch_id']);
+	break;
+	
+	case 52:
+		ListBranch($_POST['branch_id']);
+	break;
+
+	case 53:
+		listDepartment();
+	break;
+   
+	case 54:
+		hideDepartment($_POST['dep_id']);
+	break;
+
+	case 55:
+		hideProject($_POST['project_id']);
+	break;
+
+	case 56:
+		hideProjectTask($_POST['task_id']);
+	break;
+
+
 
     default:
         echo "Get Out Of Here";
@@ -390,7 +419,8 @@ function usersetting($user_id){
 		if ($num > 0) {
 			array_push($result, array("bool_code" => true,"message" => $user_email . "Details Successfully Updated"));
 		} else {
-			array_push($result, array("bool_code" => false,"message" => "Failed to Update Details"));
+			// array_push($result, array("bool_code" => false,"message" => "Failed to Update Details"));
+			array_push($result, array("bool_code" => true,"message" => "Details Successfully Updated"));
 		}
 		echo json_encode(array("setting" => $result));
 	}
@@ -966,8 +996,7 @@ function getSubTasksLogs(){
 		$task_id = $task_name;
 	}
 	debug("task_id ".$task_id,$typehere);
-	
-	if($user_id == ""){
+    if($user_id == ""){
 	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
 	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
 	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON
@@ -1006,11 +1035,32 @@ function getSubTasksLogs(){
 	debug("=================================================",$typehere);
 }
 
+
+function hidetask($sub_id){
+	$typehere = "hidetask";
+	debug("===========================================", $typehere);
+	
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE sub_tasks set active=3  where sub_id = '$sub_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 
+	 array_push($result,array("sub_id" => $sub_id));
+	 debug("Response".json_encode(array("hidetask" => $result)),$typehere);
+	 echo json_encode(array("hidetask" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
+
 function getSubTask(){
 	$conn = connect("timetracker1");
     $typehere = "getSubTask";
 	debug("=================================================",$typehere);
-	
+	$task_id = $_POST['task_id'];
 	$company = $_POST['company_id'];
 	$project = $_POST['project_name'];
 	$task_name = $_POST['task_name'];
@@ -1033,14 +1083,16 @@ function getSubTask(){
 	}else{
 		$task_id = $task_name;
 	}
-	
-	if($sub_id == "")
+	debug("task_id ".$task_id,$typehere);
+	if($sub_id == ""){
 		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
-		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE s.task_id  = '$task_id'";
-	else
+		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status 
+		WHERE s.task_id  = '$task_id' and active = 4";
+	}else{
 		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
-		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status WHERE sub_id = '$sub_id'";
-		
+		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status
+		 WHERE sub_id = '$sub_id' and active= 4";
+	}	
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);
@@ -1064,7 +1116,7 @@ function getSubTask(){
 		$users = "";
 		$f = fetch($q);
 		$assigned_users = $f['assigned_users'];
-		$getUsers = "SELECT * from tbl_users where user_id in ($assigned_users)";
+		$getUsers = "SELECT * from tbl_users where user_id in ('$assigned_users')";
 		debug($getUsers, $typehere);
 		$q = execute_($getUsers,$conn);
 		while($f = fetch($q)){
@@ -1353,6 +1405,26 @@ function saveSubTask(){
 	debug("=================================================",$typehere);
 }
 
+function hideProjectTask($task_id){
+	$typehere = "hideProjectTask";
+	debug("===========================================", $typehere);
+	
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_tasks set effective_status = 3  where task_id = '$task_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 
+	 array_push($result,array("task_id" => $task_id));
+	 debug("Response".json_encode(array("hideProjectTask" => $result)),$typehere);
+	 echo json_encode(array("hideProjectTask" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+
+}
+
 function getProjectTasks(){
 	$conn = connect("timetracker1");
     $typehere = "getProjectTasks";
@@ -1372,11 +1444,22 @@ function getProjectTasks(){
 	$user_id = $_POST['user_id'];
 	
 	if ($user_id != "")
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status left join sub_tasks st on st.task_id = t.task_id left join tbl_assigned_users tu on tu.sub_id = st.sub_id LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id' and (t.assigned_to = '$user_id' OR tu.assigned_users like '%$user_id%') GROUP BY task_id";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t 
+		LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id
+		LEFT JOIN status_code s ON s.status_no = t.status left join sub_tasks st on st.task_id = t.task_id 
+		left join tbl_assigned_users tu on tu.sub_id = st.sub_id LEFT JOIN tbl_users g ON g.user_id = p.client_id 
+		where t.project_id = '$project_id' and (t.assigned_to = '$user_id' OR tu.assigned_users like '%$user_id%') 
+		GROUP BY task_id  and t.effective_status= 4";
 	else if($task_id == "")
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.project_id = '$project_id'";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t 
+		LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id
+		 LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id 
+		 where t.project_id = '$project_id' and t.effective_status= 4";
 	else
-		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id where t.task_id = '$task_id'";
+		$strSQL = "SELECT t.*,p.project_name,s.*,u.user_email,g.first_name AS client_name FROM tbl_tasks t 
+		LEFT JOIN tbl_users u on u.user_id = t.assigned_to LEFT JOIN tbl_projects p on p.project_id = t.project_id 
+		LEFT JOIN status_code s ON s.status_no = t.status LEFT JOIN tbl_users g ON g.user_id = p.client_id 
+		where t.task_id = '$task_id' and t.effective_status= 4";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -1387,7 +1470,8 @@ function getProjectTasks(){
 		
 		$task_id = $obResult['task_id'];
 		
-		$getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s ON s.sub_id = t.sub_id where s.task_id = '$task_id' GROUP BY s.task_id";
+		$getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s ON s.sub_id = t.sub_id 
+		where s.task_id = '$task_id' GROUP BY s.task_id";
 		debug($getHours, $typehere);
 		$q = execute_($getHours,$conn);
 		$f = fetch($q);
@@ -1530,6 +1614,29 @@ function updateDepartment($company_id){
 	
 }
 
+function hideDepartment($dep_id){
+	$typehere = "hideDepartment";
+	debug("===========================================", $typehere);
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_departments set effective = 3 where dep_id = '$dep_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 if ($num > 0) {
+		array_push($result, array("bool_code" => true,"message" => $dep_id . "department Successfully Deleted"));
+	} else {
+		
+		array_push($result, array("bool_code" => true,"message" => "Failed to delete department"));
+	}
+	 array_push($result,array("dep_id" => $dep_id));
+	 debug("Response".json_encode(array("hideDepartment" => $result)),$typehere);
+	 echo json_encode(array("hideDepartment" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
 
 function listDepartments(){
 	$conn = connect("timetracker1");
@@ -1555,7 +1662,7 @@ function listDepartments(){
 	}else if ($branch_id != ""){
 		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id'";
 	}else if($dep_id == ""){
-		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '".$_POST['company_id']."'";
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '".$_POST['company_id']."' and effective = 4";
 	}else {
 		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE dep_id = '$dep_id'";
 	}
@@ -1577,6 +1684,56 @@ function listDepartments(){
     }
 	debug("Response ".json_encode(array("departments" => $resultArray)),$typehere);
     echo json_encode(array("departments" => $resultArray));
+    closer($conn);
+	debug("=================================================",$typehere);
+}
+
+function listDepartment(){
+	$conn = connect("timetracker1");
+    $typehere = "listDepartment2";
+	debug("=================================================",$typehere);
+	$dep_id = $_POST['dep_id'];
+	$dep_status = $_POST['dep_status'];
+	$branch = $_POST['branch'];
+	$company_id = $_POST['company_id'];
+	$branch_id = $_POST['branch_id'];
+	
+	if($branch != ""){
+		if(!is_numeric($branch)){
+			$getBranchID = "select * from tbl_branches where branch_name = '$branch' and company_id = '$company_id'";
+			debug($getBranchID,$typehere);
+			$q = execute_($getBranchID,$conn);
+			$f = fetch($q);
+			$branch_id = $f['branch_id'];
+		}else{
+			$branch_id = $branch;
+		}
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id' AND dep_status = 1";
+	}else if ($branch_id != ""){
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE t.branch_id = '$branch_id' AND dep_status = 1";
+	}else if($dep_id == ""){
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '".$_POST['company_id']."' AND dep_status = 1";
+	}else {
+		$strSQL = "SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE dep_id = '$dep_id' AND dep_status = 1";
+	}
+    debug($strSQL, $typehere);
+    $objQuery = mysqli_query($conn,$strSQL);
+    $intNumField = mysqli_num_fields($objQuery);
+    $resultArray = array();
+    while ($obResult = mysqli_fetch_array($objQuery)) {
+        $arrCol = array();
+        for ($i = 0; $i < $intNumField; $i ++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        }
+		
+		try {
+			array_push($resultArray, $arrCol);
+		} catch (Exception $e) {
+			debug("Error Reporting ".$e->getMessage(),$typehere);
+		}
+    }
+	debug("Response ".json_encode(array("department" => $resultArray)),$typehere);
+    echo json_encode(array("department" => $resultArray));
     closer($conn);
 	debug("=================================================",$typehere);
 }
@@ -1663,13 +1820,39 @@ function saveBranch(){
 	debug("=================================================",$typehere);
 }
 
-function ListBranches(){
+function hideBranch($branch_id){
+	$typehere = "hidebranch";
+	debug("===========================================", $typehere);
+	
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_branches set active=3  where branch_id = '$branch_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 if ($num > 0) {
+		array_push($result, array("bool_code" => true,"message" => $branch_id . "Branch Successfully Deleted"));
+	} else {
+		
+		array_push($result, array("bool_code" => true,"message" => "Failed to delete branch"));
+	}
+	 array_push($result,array("branch_id" => $branch_id));
+	 debug("Response".json_encode(array("hidebranch" => $result)),$typehere);
+	 echo json_encode(array("hidebranch" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
+
+
+function ListBranches($branch_id){
 	$conn = connect("timetracker1");
     $typehere = "ListBranches";
 	debug("=================================================",$typehere);
-	$branch_id = $_POST['branch_id'];
-	if($branch_id == "")$strSQL = "SELECT * from tbl_branches where company_id = '".$_POST['company_id']."'";
-	else $strSQL = "SELECT * from tbl_branches where branch_id = '$branch_id' ";
+	// $branch_id = $_POST['branch_id'];
+	if($branch_id == "")$strSQL = "SELECT * from tbl_branches where company_id = '".$_POST['company_id']."'  and active = 4 ";
+	else $strSQL = "SELECT * from tbl_branches where branch_id = '$branch_id'" ;
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);
@@ -1688,6 +1871,35 @@ function ListBranches(){
     }
 	debug("Response ".json_encode(array("branches" => $resultArray)),$typehere);
     echo json_encode(array("branches" => $resultArray));
+    closer($conn);
+	debug("=================================================",$typehere);
+}
+
+function ListBranch($branch_id){
+	$conn = connect("timetracker1");
+    $typehere = "ListBranch";
+	debug("=================================================",$typehere);
+	// $branch_id = $_POST['branch_id'];
+	if($branch_id == "")$strSQL = "SELECT * from tbl_branches where company_id = '".$_POST['company_id']."' and branch_status= 1  ";
+	else $strSQL = "SELECT * from tbl_branches where branch_id = '$branch_id'" ;
+    debug($strSQL, $typehere);
+    $objQuery = mysqli_query($conn,$strSQL);
+    $intNumField = mysqli_num_fields($objQuery);
+    $resultArray = array();
+    while ($obResult = mysqli_fetch_array($objQuery)) {
+        $arrCol = array();
+        for ($i = 0; $i < $intNumField; $i ++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        }
+		
+		try {
+			array_push($resultArray, $arrCol);
+		} catch (Exception $e) {
+			debug("Error Reporting ".$e->getMessage(),$typehere);
+		}
+    }
+	debug("Response ".json_encode(array("branch" => $resultArray)),$typehere);
+    echo json_encode(array("branch" => $resultArray));
     closer($conn);
 	debug("=================================================",$typehere);
 }
@@ -2114,7 +2326,7 @@ function getProjectTask($project){
 		
 		$task_id = $obResult['task_id'];
 		
-		if($user_id == "") $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s on s.sub_id = t.sub_id where s.task_id = '$task_id' GROUP BY t.task_id";
+		if($user_id == "") $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s on s.sub_id = t.sub_id where s.task_id = '$task_id' GROUP BY s.task_id";
 		else $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t left join sub_tasks s on s.sub_id = t.sub_id where s.task_id = '$task_id' AND t.user_id = '$user_id' GROUP BY s.task_id";
 		debug($getHours, $typehere);
 		$q = execute_($getHours,$conn);
@@ -2666,7 +2878,7 @@ function getCompanyUsers($company_id){
 		$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
 		ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
 		tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
-		where user_id = '".$user_id."'  ";
+		where user_id ='$user_id' $adder";
 	}
     debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -2718,6 +2930,26 @@ function getProjectStatus(){
 	debug("=================================================",$typehere);
 }
 
+function hideProject($project_id){
+	$typehere = "hideProject";
+	debug("===========================================", $typehere);
+	
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_projects set effective_status=3  where project_id = '$project_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 
+	 array_push($result,array("project_id" => $project_id));
+	 debug("Response".json_encode(array("hideProject" => $result)),$typehere);
+	 echo json_encode(array("hideProject" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
+
 function getMyProjects(){
 	$conn = connect("timetracker1");
     $typehere = "getMyProjects";
@@ -2734,26 +2966,29 @@ function getMyProjects(){
 		status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
 		tbl_tasks t on t.project_id = p.project_id LEFT JOIN sub_tasks s on s.task_id = t.task_id left join 
 		tbl_assigned_users u on u.sub_id = s.sub_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE 
-		assigned_users like '%$user_id%' group by p.project_id";
+		assigned_users like '%$user_id%' group by p.project_id and p.effective_status = 4 ";
 	}else if($project_id != ""){
 		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM 
 		tbl_projects p left join status_code sc on sc.status_no = p.status left join 
 		tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN 
-		tbl_users u ON u.user_id = p.client_id WHERE p.project_id = '$project_id'";
+		tbl_users u ON u.user_id = p.client_id WHERE p.project_id = '$project_id' and effective_status = 4";
 	}else if($branch != ""){
 		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name 
 		FROM tbl_projects p left join 
 		status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
-		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE b.branch_id = '$branch'";
+		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE b.branch_id = '$branch' SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM 
+		tbl_projects p left join status_code sc on sc.status_no = p.status left join 
+		tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN 
+		tbl_users u ON u.user_id = p.client_id WHERE p.project_id = '$project_id' and effective_status = 4";
 	}else if($dep_id != ""){
 		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM
 		 tbl_projects p left join status_code sc on sc.status_no = p.status left join 
 		 tbl_departments td on td.dep_id = p.department_id LEFT JOIN tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN 
-		 tbl_users u ON u.user_id = p.client_id WHERE p.department_id = '$dep_id'";
+		 tbl_users u ON u.user_id = p.client_id WHERE p.department_id = '$dep_id' and effective_status = 4";
 	}else{
 		$strSQL = "SELECT p.project_id,p.project_name,p.project_desc,p.status,p.created_on,td.dep_name,p.start_date,p.end_date,sc.status_desc,p.chargable,p.fee,p.cycle,u.first_name AS client_name FROM 
 		tbl_projects p left join status_code sc on sc.status_no = p.status left join tbl_departments td on td.dep_id = p.department_id LEFT JOIN 
-		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.company_id = '$company_id'";
+		tbl_branches b ON b.branch_id = td.branch_id LEFT JOIN tbl_users u ON u.user_id = p.client_id WHERE p.company_id = '$company_id' and effective_status = 4";
 	}
 	
     debug($strSQL, $typehere);
@@ -2766,7 +3001,7 @@ function getMyProjects(){
 		debug("project_id ".$project_id,$typehere);
 		
 		if($user_id == "") $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '$project_id' GROUP BY st.sub_id";
-		else $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '$project_id' and t.user_id = '$user_id' GROUP BY st.sub_id";
+		else $getHours = "SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '$project_id' and t.user_id = '$user_id' GROUP BY st.sub_id and effective=4";
 		debug($getHours, $typehere);
 		$q = execute_($getHours,$conn);
 		$f = fetch($q);
@@ -2774,13 +3009,13 @@ function getMyProjects(){
 		
 		if($hours == "") $hours = 0;
 		
-		$getAssigned = "SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = $project_id";
+		$getAssigned = "SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = $project_id ";
 		debug($getAssigned, $typehere);
 		$q = execute_($getAssigned,$conn);
 		$users = "";
 		$f = fetch($q);
 		$assigned_users = $f['assigned_users'];
-		$getUsers = "SELECT * from tbl_users where user_id in ($assigned_users)";
+		$getUsers = "SELECT * from tbl_users where user_id in ('$assigned_users')";
 		debug($getUsers, $typehere);
 		$q = execute_($getUsers,$conn);
 		while($f = fetch($q)){
@@ -3132,10 +3367,12 @@ function login($uname,$upass){
 			}
 			$user_level = $f['user_level'];
 			$user_dep = $f['user_dep'];
+			$dep_id = $f['dep_id'];
 			$user_branch = $f['user_branch'];
 			array_push($result, array("bool_code" => true,"user_id"=>$user_id,"user_email"=>$user_email,'first_name'=>$first_name,"company_id"=>$company_id,"company_name"=>$company_name,"level_desc"=>$level_desc,"user_level"=>$user_level,"org_type"=>$org_type,"user_dep"=>$user_dep,"user_branch"=>$user_branch));
 		}else{
-			array_push($result, array("bool_code" => false,"message"=>"Inactive Account"));
+			// array_push($result, array("bool_code" => false,"message"=>"Inactive Account"));
+			array_push($result, array("bool_code" => false,"message"=>"please reset your password"));
 		}
 		
 		

@@ -28,6 +28,7 @@
                           <label id = "projectlabel">Project Name</label>
                           <select id = "project-name" name = "project-name" class="form-control select2" onchange="getAllTasks()"></select>
                         </div>
+                        
                         <div class="form-group col-4">
                             <label id = "tasklabel">Task Name</label>
                             <select id = "task-name" name = "task-name" class="form-control select2" onchange="listSubTasks()"></select>

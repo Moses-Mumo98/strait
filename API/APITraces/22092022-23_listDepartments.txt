@@ -1,0 +1,60 @@
+2022-09-22 23:00:13 - =================================================
+2022-09-22 23:00:13 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:00:13 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:00:13 - =================================================
+2022-09-22 23:00:21 - =================================================
+2022-09-22 23:00:21 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:00:21 - Response {"departments":[{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:00:21 - =================================================
+2022-09-22 23:03:00 - =================================================
+2022-09-22 23:03:00 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:03:00 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:03:00 - =================================================
+2022-09-22 23:04:18 - =================================================
+2022-09-22 23:04:18 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:04:18 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:04:18 - =================================================
+2022-09-22 23:05:14 - =================================================
+2022-09-22 23:05:14 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:05:14 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:05:14 - =================================================
+2022-09-22 23:05:21 - =================================================
+2022-09-22 23:05:21 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:05:21 - Response {"departments":[{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:05:21 - =================================================
+2022-09-22 23:05:33 - =================================================
+2022-09-22 23:05:33 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:05:33 - Response {"departments":[{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:05:33 - =================================================
+2022-09-22 23:06:29 - =================================================
+2022-09-22 23:06:29 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:06:29 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:06:29 - =================================================
+2022-09-22 23:07:12 - =================================================
+2022-09-22 23:07:12 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:07:12 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:07:12 - =================================================
+2022-09-22 23:08:21 - =================================================
+2022-09-22 23:08:21 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:08:21 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:08:21 - =================================================
+2022-09-22 23:09:17 - =================================================
+2022-09-22 23:09:17 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:09:17 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:09:17 - =================================================
+2022-09-22 23:24:04 - =================================================
+2022-09-22 23:24:04 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:24:04 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:24:04 - =================================================
+2022-09-22 23:24:11 - =================================================
+2022-09-22 23:24:11 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:24:11 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"3","dep_name":"kilimani","dep_status":"1","branch_name":"Mlajasho","created_on":"2022-08-30 17:20:00"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:24:11 - =================================================
+2022-09-22 23:24:17 - =================================================
+2022-09-22 23:24:17 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:24:17 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:24:17 - =================================================
+2022-09-22 23:24:39 - =================================================
+2022-09-22 23:24:39 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '33' and effective = 4
+2022-09-22 23:24:39 - Response {"departments":[{"dep_id":"1","dep_name":"kileleshwa 2","dep_status":"1","branch_name":"mjengo MAIN","created_on":"2022-08-05 20:53:52"},{"dep_id":"7","dep_name":"kiklikd","dep_status":"1","branch_name":"Kangemi","created_on":"2022-09-19 13:10:54"},{"dep_id":"9","dep_name":"aswdsefrg","dep_status":"0","branch_name":"Mlajasho","created_on":"2022-09-19 17:04:28"}]}
+2022-09-22 23:24:39 - =================================================
