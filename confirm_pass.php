@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>STRAIT LEGAL</title>
+
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <link rel="stylesheet" href="assets/bundles/bootstrap-social/bootstrap-social.css">
@@ -30,10 +29,10 @@
               </div>
               
               <div class="card-body">
-                <form  class="needs-validation" novalidate="">
+                <form action="#" class="needs-validation" novalidate="">
                 <div class="form-group">
                     <label for="user_email">User email</label>
-                    <input id="user_email" type="email" class="form-control" name="user_email" tabindex="1" >
+                    <input id="user_email" type="email" class="form-control" name="user_email" tabindex="1">
                     <div class="invalid-feedback">
                       Please fill in your email address
                     </div>
@@ -50,7 +49,7 @@
                       Please fill in your new password
                     </div>
                   </div>
-                  <button onclick ="resetPass2()" type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4"><i id = 'resetIcon' class="fa fa-spinner"></i>
+                  <button id ="resetPass2" type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4"><i id = 'resetIcon' class="fa fa-spinner"></i>
                       Submit
                     </button>
 
@@ -60,7 +59,12 @@
   <!-- JS Libraies -->
   <!-- Page Specific JS File -->
   <!-- Template JS File -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/scripts.js"></script>
   <!-- Custom JS File -->
   <script src="assets/js/custom.js"></script>
   <script src="assets/js/language/lang.js"></script>
+
+  </body>
+
+</html>

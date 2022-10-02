@@ -27,7 +27,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-4">
-                                <label>Department</label>
+             
+                            <label>Department</label>
                                 <select id = "dep_name" name = "dep_name" class="form-control select2" onchange="getDepartmentProjects()"></select>
                             </div>
                             <div class="form-group col-4">

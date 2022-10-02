@@ -4,11 +4,11 @@ $(document).ready(function() {
     logger('document loaded ' + page);
 
     logger("Is Logged In "+sessionStorage.getItem("loggedin"));
-	if(page == 'index' || page == 'register'){
+	if(page == 'index' || page == 'register' || page =='forgot-pass' || page == 'confirm_pass'){
 		
 	}
 
-    if(page == 'index' || page == 'register'){
+    if(page == 'index' || page == 'register' || page =='forgot-pass' || page == 'confirm_pass'){
     }else{
 
         NameLoggedIn = sessionStorage.getItem("first_name");
@@ -35,7 +35,7 @@ $(document).ready(function() {
             //document.getElementById('add-hours').style.display = 'none';
         }
     }
-    if(page == 'index' || page == 'register'){
+    if(page == 'index' || page == 'register' || page =='forgot-pass' || page == 'confirm_pass'){
 
     }else{
         changeLabels();
@@ -79,14 +79,20 @@ $(document).ready(function() {
         if(!userID)$('#project-edit-title').html("Add New User");
         if(userLevel < 5){
             document.getElementById('branchDiv').style.display = 'none';
+            getPic();
+           
         }
         if(userLevel < 4){
             document.getElementById('depDiv').style.display = 'none';
+            getPic();
+            getUserDetails();
         }
+        getPic();
+     
 		listBranch(2);
         getUserStatus();
         getUserLevels();
-        getPic();
+   
     }else if(page == "add-hours"){
         getCompanyProjects(1);
     }else if(page == "tasks"){
@@ -111,21 +117,22 @@ $(document).ready(function() {
     }else if(page == "timer"){
         if(userLevel == 1){
             document.getElementById('myslider').style.display = 'none';
-            
-
-        }
+            }
         getCompanyProjects(1);
+        
         getPic();
     }else if(page == "register"){
         getOrgTypes();
         // Upload();
         user_image = sessionStorage.getItem("user_image");
     }else if(page == "branches"){
+        branchID = localStorage.getItem("branchID");
         if(userLevel < 5){
             document.getElementById('addBranch').style.display = 'none';
-        }
-        getBranches();
+            }
+         getBranches(branchID);
         getPic();
+        
     }else if(page == "branch-edit"){
         branchID = localStorage.getItem("branchID");
         getPic();
@@ -158,7 +165,7 @@ $(document).ready(function() {
         if(userLevel == 1){
             document.getElementById('addSubTask').style.display = 'none';
         }
-        listDepartment(2);
+        listDepartments(2);
         getPic();
     }else if(page == "sub-edit"){
 		localStorage.setItem("meeting", 0);
@@ -228,13 +235,7 @@ $(document).ready(function() {
     }else if(page == 'setting'){
         getProfile("user_id");
         getPic(user_id);
-    }else if(page == 'forgot-pass'){
-        resetPass();
-    }else if(page == 'confirm_pass'){
-        resetPass2();
-       
     }
-    
     PageLabels(page);
     
 
@@ -2157,7 +2158,8 @@ function EditSubTask(id){
 }
 
 function hidetask(id){
-    var sub_id =localStorage.getItem("subID")
+    var sub_id = $(this).attr('subID');
+    var message = $(this).data('confirm');
     var dataString = {
         'request':50,
         'sub_id':sub_id
@@ -2169,28 +2171,108 @@ function hidetask(id){
         data: dataString,
         success: function(data) {
     localStorage.setItem("subID", id);
-    window.location = "sub-task";
+    //window.location = "sub-task";
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hidetask[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        localStorage.getItem("subID", jsObject.hidetask[0].sub_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Hearing has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("subID", id);
+            window.location = "sub-task";
+          } else {
+            swal("hearing has not been deleted!");
+          }
+        });
+    
+    }
         
         }
 })
     return false;
-    
 }
+
+
+// function listSubTasks() {
+//     var company_id =  sessionStorage.getItem("company_id");
+//     var task_name = $('#task-name').val();
+//     var project_name = $('#project-name').val();
+//     var dep_name = $('#dep_name').val();
+//     //var task_name = $('#task-name').val();
+//     logger("Getting Tasks For task: " + task_name);
+//     //var project_name = $('#project-name').val();
+//     //var dep_name = $('#dep-name').val();
+//     //logger("Getting Tasks For Project: "+sub_name);
+   
+//     var dataString = {
+//         'request': 30,
+//         'company_id':company_id,
+//         'task-name':task_name,
+//         'project-name':project_name,
+//         'dep_name':dep_name
+//         //'dep-name':dep_name,
+//         //'project-name':project_name
+   
+//     };
+//     logger(dataString);
+
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+//             logger(data);
+//             var tasksJSON = JSON.parse(data);
+//             var subtasks = '<option></option>';
+//             logger("Length Ya " + tasksJSON + " Ni " + tasksJSON.subtasks.length);
+//             for (var i = 0; i < tasksJSON.subtasks.length; i++) {
+//                 if (i == 0) {
+//                     subtasks += "<option value='" + tasksJSON.subtasks[i].sub_name + "' selected>" + tasksJSON.subtasks[i].sub_name + "</option>";
+//                 } else {
+//                     subtasks += "<option value='" + tasksJSON.subtasks[i].sub_name + "'>" + tasksJSON.subtasks[i].sub_name + "</option>";
+//                 }
+
+//                 // if (i == 0) {
+//                 //     subtasks += "<option value='" + subtasksJSON.subtasks[i] + subtasksJSON.subtasks[i].sub_id + "</option>";
+//                 // } else {
+//                 //     subtasks += "<option value='" + subtasksJSON.subtasks[i] + subtasksJSON.subtasks[i].sub_id + "</option>";
+//                 // }
+//             }
+//             $("#sub-name").html(subtasks);
+//         },
+//         error: function(e) {
+
+//         }
+
+//     });
+//     return false;
+// }
 
 function listSubTasks() {
     var company_id =  sessionStorage.getItem("company_id");
     var task_name = $('#task-name').val();
     var project_name = $('#project-name').val();
-    var sub_name = $('#sub-name').val();
-    logger("Getting Tasks For Project: "+sub_name);
-   
+    var dep_name = $('#dep_name').val();
+    
     var dataString = {
         'request': 30,
         'company_id': company_id,
         'task_name':task_name,
-        'sub_name':sub_name,
-        'project-name':project_name
-   
+        'project_name':project_name,
+        'dep_name':dep_name
     };
     logger(dataString);
 
@@ -2205,9 +2287,9 @@ function listSubTasks() {
             logger("Length Ya " + taskJSON + " Ni " + taskJSON.subtasks.length);
             for (var i = 0; i < taskJSON.subtasks.length; i++) {
                 if (i == 0) {
-                    subtasks += "<option value='" + taskJSON.subtasks[i] + taskJSON.subtasks[i].sub_id + "</option>";
+                    subtasks += "<option value='" + taskJSON.subtasks[i].sub_name + "' selected>" + taskJSON.subtasks[i].sub_name + "</option>";
                 } else {
-                    subtasks += "<option value='" + taskJSON.subtasks[i] + taskJSON.subtasks[i].sub_id + "</option>";
+                    subtasks += "<option value='" + taskJSON.subtasks[i].sub_name + "'>" + taskJSON.subtasks[i].sub_name + "</option>";
                 }
             }
             $("#sub-name").html(subtasks);
@@ -2219,6 +2301,48 @@ function listSubTasks() {
     });
     return false;
 }
+
+
+
+// function listSubTasks() {
+//     var company_id =  sessionStorage.getItem("company_id");
+//     var task_name = $('#task-name').val();
+//     var project_name = $('#project-name').val();
+//     var dep_name = $('#dep_name').val();
+    
+//     var dataString = {
+//         'request': 30,
+//         'company_id': company_id,
+//         'task_name':task_name,
+//         'project_name':project_name,
+//         'dep_name':dep_name
+//     };
+//     logger(dataString);
+
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+//             logger(data);
+//             var taskJSON = JSON.parse(data);
+//             logger("Length Ya " + taskJSON + " Ni " + taskJSON.subtasks.length);
+//             for (var i = 0; i < taskJSON.subtasks.length; i++) {
+//                 if (i == 0) {
+//                     subtasks += "<option value='" + taskJSON.subtasks[i].sub_name + "' selected>" + taskJSON.subtasks[i].sub_name + "</option>";
+//                 } else {
+//                     subtasks += "<option value='" + taskJSON.subtasks[i].sub_name + "'>" + taskJSON.subtasks[i].sub_name + "</option>";
+//                 }
+//             }
+//             $("#sub-name").html(subtasks);
+//         },
+//         error: function(e) {
+
+//         }
+
+//     });
+//     return false;
+// }
 
 function listProjectTasks() {
     logger("Listing Project Tasks");
@@ -2774,7 +2898,7 @@ function listBranch(page) {
             }
             $("#branch-name").html(branch);
             if(page == 2){
-				listDepartment(1);
+				listDepartments(1);
 			}
 			
         },
@@ -2845,6 +2969,7 @@ function editDep (id){
 // }
 
 function hideDep(id){
+    localStorage.setItem("dep_id", id);
     var dep_id =localStorage.getItem("dep_id")
     var message = $(this).data('confirm');
     var dataString = {
@@ -2867,7 +2992,7 @@ function hideDep(id){
     logger("bool_code "+bool_code);
     
     if(bool_code){
-        localStorage.setItem("dep_id", jsObject.hideDepartment[0].dep_id);
+        //localStorage.setItem("dep_id", jsObject.hideDepartment[0].dep_id);
           swal({
             title: "Are you sure ??",
             text: message, 
@@ -2917,6 +3042,113 @@ $('#addProjo').on('click', function(e) {
 function editProject (id){
     localStorage.setItem("projectID", id);
     window.location = "project-edit";
+    return false;
+}
+
+
+function getDepartment() {
+    var company_id =  sessionStorage.getItem("company_id");
+    
+    var dep_id;
+    var branch;
+    if(userLevel < 4){
+        dep_id = sessionStorage.getItem("user_dep");
+    }
+
+    if(userLevel < 5){
+        branch = sessionStorage.getItem("user_branch");
+    }
+
+    var dataString = {
+        'request': 53,
+        'company_id': company_id,
+        'dep_id':dep_id,
+        'branch_id':branch
+    };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+           
+            logger(data);
+            var departmentsJSON = JSON.parse(data);
+            var tbHTML = "";
+            logger("Length of departmentsJSON "+departmentsJSON.departments.length);
+            for (var i = 0; i < departmentsJSON.departments.length; i++) {
+                var dep_id = departmentsJSON.departments[i].dep_id;
+                var dep_name = departmentsJSON.departments[i].dep_name;
+                var branch_name = departmentsJSON.departments[i].branch_name;
+                var created_on = departmentsJSON.departments[i].created_on; 
+                var dep_status = departmentsJSON.departments[i].dep_status; 
+                var code;
+                var status_desc;
+                if(dep_status == "1"){
+                    code = "green";
+                    status_desc ="Open";
+                }else {
+                    code = "red";
+                    status_desc ="Closed";
+                }
+                var toadd= "";
+                if(userLevel < 3){
+
+                }else{
+                    toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
+                }
+                tbHTML += "<tr><td><a href='#'>"+dep_name+"</a></td>"+
+                '<td class="col-green font-weight-bold">'+branch_name+'</td>'+
+                "<td>"+created_on+"</td>"+
+                "<td><div class='badge l-bg-"+code+"'>"+status_desc+"</div></td>"+
+                "<td>"+toadd+"</td></tr>";
+                // tbHTML += "<tr><td><a href='#'>"+dep_name+"</a></td>"+
+                // '<td class="col-green font-weight-bold">'+branch_name+'</td>'+
+                // "<td>"+created_on+"</td>"+"<td><div class='badge l-bg-"+code+"'>"+status_desc+"</div></td>"+
+                // "<td>"+toadd+"</td></tr>";
+            }
+            tbHTML = '<table class="table table-striped table-hover" id="projectsTable" style="width:100%;"><thead><tr><th>Name</th><th>'+localStorage.getItem("branch")+'</th><th>Created On</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
+            $('#projects-table').html(tbHTML);
+            //$('#projectsHead').html(ProjectJSON.projects.length + " Project(s)");
+            var oTable = $('#projectsTable').DataTable({
+                "iDisplayLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+					{
+						extend: 'copyHtml5',
+						exportOptions: {
+							columns: [0,1,2]
+						}
+					},
+					{
+						extend: 'excelHtml5',
+						exportOptions: {
+							columns: [0,1,2]
+						}
+					},
+					{
+						extend: 'pdfHtml5',
+						exportOptions: {
+							columns: [0,1,2]
+						}
+					},
+					{
+						extend: 'csvHtml5',
+						exportOptions: {
+							columns: [0,1,2]
+						}
+					},
+					'colvis'
+				]
+
+            });
+        },
+        error: function(e) {
+
+        }
+
+    });
     return false;
 }
 
@@ -3076,8 +3308,22 @@ function editBranch(id){
     return false;
 }
 
+// function hideBranch(id){
+//     var branch_id = localStorage.getItem("branchID");
+//     logger("this",branchID)
+//     var message = $(this).data('confirm');
+//     var dataString = {
+//         'request':51,
+//         'branch_id':branch_id
+//     }
+//     logger("hideBranch "+id);
+// }
+
 function hideBranch(id){
+    localStorage.setItem("branchID", id);
     var branch_id = localStorage.getItem("branchID");
+    logger(branchID)
+    logger("this",branchID)
     var message = $(this).data('confirm');
     var dataString = {
         'request':51,
@@ -3100,7 +3346,7 @@ function hideBranch(id){
     logger("bool_code "+bool_code);
     
     if(bool_code){
-        localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
+        //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
           swal({
             title: "Are you sure ??",
             text: message, 
@@ -3610,26 +3856,56 @@ function EditTask(task_id){
 }
 
 
-function HideTasks(task_id){
-    var task_id =localStorage.getItem("taskID")
+function HideTasks(id){
+    localStorage.setItem("taskID",id);
+    var task_id =localStorage.getItem("taskID");
+    var message = $(this).data('confirm');
     var dataString = {
         'request':56,
         'task_id':task_id
     }
-    logger("Deleting "+task_id);
+    logger("hidetask "+id);
     $.ajax({
         type: "POST",
         url: myurl,
         data: dataString,
         success: function(data) {
-    localStorage.setItem("taskID", task_id);
+    localStorage.setItem("taskID", id);
     //window.location = "tasks";
+        
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hideProjectTask[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        localStorage.setItem("taskID", jsObject.hideProjectTask[0].task_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Matter has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("taskID", id);
+          window.location = "tasks";
+          } else {
+            swal("Matter has not been deleted!");
+          }
+        });
+    
+    }
         
         }
 })
     return false;
-    
 }
+
 
 function getprojectUsers(){
     var project_name = $('#project-name').val();
@@ -3793,11 +4069,54 @@ function getAssignedUser(){
     return false;
 }
 
+// function getAllTasks(){
+//     var project_name = $('#project-name').val();
+//     logger("Getting Tasks For Project: "+project_name);
+//     var dataString = {
+//         'request': 12,
+//         'project-name':project_name,
+// 		'company_id':sessionStorage.getItem("company_id"),
+//         'user_id':localStorage.getItem("user_id"),
+//         'dep_id':sessionStorage.getItem("user_dep")
+//     };
+//     logger(dataString);
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+//             logger(data);
+//             var tasksJSON = JSON.parse(data);
+//             var tasks = '<option></option>';
+//             logger("Length Ya  " + tasksJSON + " Ni " + tasksJSON.tasks.length);
+//             for (var i = 0; i < tasksJSON.tasks.length; i++) {
+//                 if (i == 0) {
+//                     tasks += "<option value='" + tasksJSON.tasks[i].task_name + "' selected>" + tasksJSON.tasks[i].task_name + "</option>";
+//                 } else {
+//                     tasks += "<option value='" + tasksJSON.tasks[i].task_name + "'>" + tasksJSON.tasks[i].task_name + "</option>";
+//                 }
+//             }
+//             $("#task-name").html(tasks);
+//             if(loadedPage == "timer" || page == "sub-edit"){
+//                 listSubTasks();
+//             }else{
+//                 getAssignedUser();
+//             }
+//         },
+//         error: function(e) {
+
+//         }
+
+//     });
+//     return false;
+// }
+
 function getAllTasks(){
     var project_name = $('#project-name').val();
+    
     logger("Getting Tasks For Project: "+project_name);
     var dataString = {
-        'request': 12,
+        'request': 28,
         'project_name':project_name,
 		'company_id':sessionStorage.getItem("company_id"),
         'dep_id':sessionStorage.getItem("user_dep")
@@ -3834,9 +4153,12 @@ function getAllTasks(){
     return false;
 }
 
+
+
 function getCompanyProjects(page) {
     logger("Getting Company Projects");
     var company_id =  sessionStorage.getItem("company_id");
+    var user_id =  localStorage.getItem("user_id");
 
     var user_id;
     if(userLevel == 1){
@@ -3868,8 +4190,6 @@ function getCompanyProjects(page) {
             $("#project-name").html(projects);
             if(page == 1){
                 getAllTasks();
-                
-
             }else if (page == 2){
                 getprojectUsers();
             }
@@ -3967,17 +4287,18 @@ $('#userSaver').on('click', function(e) {
 			saveButton.classList.remove('fa-spin');
 			
 			logger('User Add Response' + data);
+            
 			var jsObject = JSON.parse(data);
-            logger(jsObject);
-            var bool_code = jsObject.staffadd[0].bool_code;
+            logger("this",jsObject);
+            var bool_code = jsObject.useradd[0].bool_code;
 			logger("bool_code " + bool_code);
 			
 			if(bool_code){
-                swal(jsObject.staffadd[0].message, "Success", 'success').then(function () {
-                    window.location = "user-edit";
+                swal(jsObject.useradd[0].message, "Success", 'success').then(function () {
+                    window.location = "users";
                 });
 			}else{
-				errorMessage = jsObject.staffadd[0].message;
+				errorMessage = jsObject.useradd[0].message;
 				document.getElementById("confrimed").innerText = errorMessage;
 				document.getElementById('confrimed').style.display = 'block';
 			}
@@ -3989,6 +4310,226 @@ $('#userSaver').on('click', function(e) {
     });
     return false;
 });
+
+
+// $('#userSaver').on('click', function(e) {
+//     logger("userSaver Now");
+//     var u_name = $('input[name = "u_name"]').val();
+//     var u_email = $('input[name = "u_email"]').val();
+//     var user_level = $('#user-level').val();
+//     var user_status = $('#user-status').val();
+
+//     var errorMessage;
+// 	if(u_name == ""){
+// 		errorMessage = "User Name is Required";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+//         document.getElementById("u_name").style.borderColor = "red";
+// 		return;	
+// 	}else{
+//         document.getElementById("u_name").style.borderColor = "green";
+//     }
+	
+// 	if(u_email == ""){
+// 		errorMessage = "User Email is Required";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+//         document.getElementById("u_email").style.borderColor = "red";
+// 		return;	
+// 	}else{
+//         document.getElementById("u_email").style.borderColor = "green";
+//     }
+	
+// 	if(user_level == ""){
+// 		errorMessage = "Specify User Level";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+// 		return;	
+// 	}
+	
+// 	if(user_status == ""){
+// 		errorMessage = "Specify User Status";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+// 		return;	
+//     }
+
+//     var branch;
+//     var dep;
+//     if(userLevel > 4){
+//         branch = $('#branch-name').val();
+//     }else{
+//         branch = sessionStorage.getItem("user_branch");
+//     }
+
+//     if(userLevel > 3){
+//         dep = $('#dep_name').val();
+//     }else{
+//         dep = sessionStorage.getItem("user_dep");
+//     }
+
+//     var dataString = {
+//         'u_name': u_name,
+//         'u_email': u_email,
+//         'user_level': user_level,
+//         'user_status': user_status,
+//         'request': 10,
+//         'company_id':sessionStorage.getItem("company_id"),
+//         'added_by':sessionStorage.getItem("user_id"),
+//         'type':sessionStorage.getItem("org_type"),
+//         'branch':branch,
+//         'dep':dep
+//     };
+//     logger(dataString);
+	
+// 	var saveButton = document.getElementById('usersaverIcon');
+//     saveButton.classList.add('fa-spin');
+	
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: {},
+//         dataType: "json",
+//         success: function(data) {
+			
+// 			saveButton.classList.remove('fa-spin');
+			
+// 			logger('User Add Response ' + data);
+			
+//             var jsObject = JSON.parse(data);
+           
+//             var bool_code = jsObject.staffadd[0].bool_code;
+//             logger("this",bool_code);
+// 			//logger("bool_code "+bool_code);
+			
+// 			if(bool_code){
+//                 swal(jsObject.staffadd[0].message, "Success", 'success').then(function () {
+//                     window.location = "user-edit";
+//                 });
+// 			}else{
+// 				errorMessage = jsObject.staffadd[0].message;
+// 				document.getElementById("confrimed").innerText = errorMessage;
+// 				document.getElementById('confrimed').style.display = 'block';
+// 			}
+//         },
+//         error: function(e) {
+// 			saveButton.classList.remove('fa-spin');
+//         }
+
+//     });
+//     return false;
+// });
+
+
+// $('#userSaver').on('click', function(e) {
+//     logger("userSaver Now");
+//     var u_name = $('input[name = "u_name"]').val();
+//     var u_email = $('input[name = "u_email"]').val();
+//     var user_level = $('#user-level').val();
+//     var user_status = $('#user-status').val();
+
+//     var errorMessage;
+// 	if(u_name == ""){
+// 		errorMessage = "User Name is Required";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+//         document.getElementById("u_name").style.borderColor = "red";
+// 		return;	
+// 	}else{
+//         document.getElementById("u_name").style.borderColor = "green";
+//     }
+	
+// 	if(u_email == ""){
+// 		errorMessage = "User Email is Required";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+//         document.getElementById("u_email").style.borderColor = "red";
+// 		return;	
+// 	}else{
+//         document.getElementById("u_email").style.borderColor = "green";
+//     }
+	
+// 	if(user_level == ""){
+// 		errorMessage = "Specify User Level";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+// 		return;	
+// 	}
+	
+// 	if(user_status == ""){
+// 		errorMessage = "Specify User Status";
+// 		document.getElementById("confrimed").innerText = errorMessage;
+// 		document.getElementById('confrimed').style.display = 'block';
+// 		return;	
+//     }
+
+//     var branch;
+//     var dep;
+//     if(userLevel > 4){
+//         branch = $('#branch-name').val();
+//     }else{
+//         branch = sessionStorage.getItem("user_branch");
+//     }
+
+//     if(userLevel > 3){
+//         dep = $('#dep_name').val();
+//     }else{
+//         dep = sessionStorage.getItem("user_dep");
+//     }
+
+//     var dataString = {
+//         'u_name': u_name,
+//         'u_email': u_email,
+//         'user_level': user_level,
+//         'user_status': user_status,
+//         'request': 10,
+//         'company_id':sessionStorage.getItem("company_id"),
+//         'added_by':sessionStorage.getItem("user_id"),
+//         'type':sessionStorage.getItem("org_type"),
+//         'branch':branch,
+//         'dep':dep
+//     };
+//     logger(dataString);
+	
+// 	var saveButton = document.getElementById('usersaverIcon');
+//     saveButton.classList.add('fa-spin');
+	
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+			
+// 			saveButton.classList.remove('fa-spin');
+			
+// 			logger('User Add Response ' + data);
+			
+//             var jsObject = JSON.parse(data);
+//             logger(jsObject);
+//             var bool_code = jsObject.useradd[0].bool_code;
+// 			logger("bool_code "+bool_code);
+			
+// 			if(bool_code){
+//                new swal(jsObject.useradd[0].message, "Success", 'success').then(function () {
+//                     window.location = "user-edit";
+//                 });
+// 			}else{
+// 				errorMessage = jsObject.useradd[0].message;
+// 				document.getElementById("confrimed").innerText = errorMessage;
+// 				document.getElementById('confrimed').style.display = 'block';
+// 			}
+//         },
+//         error: function(e) {
+// 			saveButton.classList.remove('fa-spin');
+//         }
+
+//     });
+//     return false;
+// });
+
+
+
+
 
 function getUserLevels() {
     logger("Getting User Levels");
@@ -4145,8 +4686,8 @@ function ListUsers(){
                 if(userLevel == 1){
 
                 }else{
-                    adder = "<button class='btn btn-warning' onclick='resetUser(" + user_id + ")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
-                    //deleter = "<button class='btn btn-danger' onclick='deleteStaff(" + user_id + ")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
+                    adder = "<button class='btn btn-warning' onclick='resetStaff(" + user_id + ")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
+                    deleter = "<button class='btn btn-danger' onclick='hideStaff(" + user_id + ")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
                 }
 
                 tbHTML += "<tr><td class='col-green font-weight-bold'>"+first_name+"</td>"+
@@ -4179,13 +4720,115 @@ function ListUsers(){
     return false;
 }
 
+
+function getUserDetails(id){
+    logger("Get User Details for "+userID);
+    var dataString = {
+        'request': 6,
+        'user_id':id
+    };
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            logger(data);
+            var UsersJSON = JSON.parse(data);
+    
+            logger("Length Ya " + UsersJSON + " Ni " + UsersJSON.userss.length);
+            for (var i = 0; i < BranchJSON.branches.length; i++) {
+
+
+                logger("User Status "+UsersJSON.Users[i].status_desc);
+            
+                $('input[name="u_name"]').val(UsersJSON.users[i].first_name);
+                //$('#project-edit-title').html("Edit "+localStorage.getItem("branch")+" : "+BranchJSON.branches[i].branch_name);
+                $('input[name="u_email"]').val(UsersJSON.users[i].user_email);
+//load branch status: 0 represents Closed while 1 Represents Closed.
+            
+            }
+        },
+        error: function(e) {
+
+        }
+
+    });
+    return false;
+}
+
+
+
+function resetStaff(id){
+    localStorage.setItem("user_id", id);
+    window.location = "user-edit";
+    return false;
+}
+
+function hideStaff(user_id){
+    localStorage.setItem("user_id", user_id);
+    var user_id = localStorage.getItem("user_id");
+    logger(user_id)
+    logger("this",user_id)
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':57,
+        'user_id':user_id
+    }
+    logger("hideStaff "+user_id);
+
+
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+  
+    // window.location = "branches";
+    		
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hideUser[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Staff has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("user_id", user_id);
+            window.location = "users";
+          } else {
+            swal("Staff has not been deleted!");
+          }
+        });
+    
+    }
+        
+        }
+})
+    return false;
+}
+
+
+
+
 function resetUser(id){
     localStorage.setItem("user_id", id);
     window.location = "setting";
     return false;
 }
 
-function resetPass(){
+$('#resetPass').on('click', function(e) {
 logger("resetpassword2");
 //var user_email = document.querySelector('input[name="user_email"]').value;
  var user_email = $('input[name = "user_email"]').val();
@@ -4217,28 +4860,37 @@ if(user_email == ""){
 			resetPass.classList.remove('fa-spin');
 			
 			logger('Reset Password Response ' + data);
-			
+           
             var jsObject = JSON.parse(data);
-            logger(jsObject);		
-			swal(jsObject.reset[0].message, "Success", 'success');
+            logger(jsObject);
+            var bool_code =  jsObject.reset[0].bool_code;
+            logger("bool_code "+bool_code);
+					
+            if(bool_code){
+
+           new swal(jsObject.reset[0].message, "To reset your password use your email address", 'success').then(function () {
+                window.location = "forgot-pass";
+            });
+                  
+				
+			}
+          
         },
         error: function(e) {
 			resetPass.classList.remove('fa-spin');
+            // window.location = "forgot-pass"
         }
 
     });
     return false;
-}
+})
 
-function resetPass2(){
+    $('#resetPass2').on('click', function(e) {
+    document.getElementById("confrimed").innerText = "";
     logger("resetpassword");
-    //var user_email = document.querySelector('input[name="user_email"]').value;
     var user_email = $('input[name = "user_email"]').val();
-     var user_password = $('input[name = "user_password"]').val();
-     
-    
-    
-    var errorMessage;	
+    var user_password = $('input[name = "user_password"]').val();
+     var errorMessage;	
     if(user_email == ""){
         errorMessage = "User email Required";
         document.getElementById("confrimed").innerText = errorMessage;
@@ -4274,8 +4926,18 @@ function resetPass2(){
                 logger('Reset Password Response ' + data);
                 
                 var jsObject = JSON.parse(data);
+                var bool_code = jsObject.confirm[0].bool_code;
+	
                 logger(jsObject);		
-                swal(jsObject.confirm[0].message, "Success", 'success');
+                if(bool_code){
+                   new swal(jsObject.confirm[0].message, "Success", 'success').then(function () {
+                        window.location = "home";
+                    });
+                }else{
+                    errorMessage = jsObject.confirm[0].message;
+                    document.getElementById("confrimed").innerText = errorMessage;
+                    document.getElementById('confrimed').style.display = 'block';
+                }
             },
             error: function(e) {
                 resetPass2.classList.remove('fa-spin');
@@ -4283,7 +4945,7 @@ function resetPass2(){
     
         });
         return false;
-    }
+    })
     
 
 $('#projectSaver').on('click', function(e) {
@@ -4580,7 +5242,9 @@ function getMyProjects() {
 }
 
 function hideproject(id){
+    localStorage.setItem("projectID", id);
     var project_id =localStorage.getItem("projectID");
+    var message = $(this).data('confirm');
     var dataString = {
         'request':55,
         'project_id':project_id
@@ -4591,13 +5255,40 @@ function hideproject(id){
         url: myurl,
         data: dataString,
         success: function(data) {
-    localStorage.setItem("projectID", id);
-    window.location = "projects";
+    // localStorage.setItem("projectID", id);
+    // window.location = "projects";
+        
+    var jsObject = JSON.parse(data);
+    logger(jsObject);
+    var bool_code = jsObject.hideProject[0].bool_code;
+    logger("bool_code "+bool_code);
+    
+    if(bool_code){
+        localStorage.setItem("projectID", jsObject.hideProject[0].branch_id);
+          swal({
+            title: "Are you sure ??",
+            text: message, 
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("file has been deleted!", {
+              icon: "success",
+            });
+            localStorage.setItem("projectID", id);
+            window.location = "projects";
+          } else {
+            swal("File has not been deleted!");
+          }
+        });
+    
+    }
         
         }
 })
     return false;
-    
 }
 
 
@@ -4649,7 +5340,7 @@ $('#loginbutton').on('click', function(e) {
    
 	
 	if(user_name == ""){
-		errorMessage = "Username Required";
+		errorMessage = "Useremail Required";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
         document.getElementById("email").style.borderColor = "red";

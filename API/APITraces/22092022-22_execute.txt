@@ -1,7 +1,0 @@
-2022-09-22 22:15:36 - Executing UPDATE tbl_branches set  branch_name = 'Kangemi',branch_desc ='Kangemi 2',branch_status='1',company_id = '33', modified_on = NOW() where branch_id = '134'
-2022-09-22 22:15:48 - Executing UPDATE tbl_branches set active=3  where branch_id = '134'
-2022-09-22 22:53:35 - Executing UPDATE tbl_departments set effective = 3 where dep_id = ''
-2022-09-22 22:55:55 - Executing UPDATE tbl_departments set effective = 3 where dep_id = ''
-2022-09-22 22:57:23 - Executing UPDATE tbl_departments set effective = 3 where dep_id = 'undefined'
-2022-09-22 22:59:08 - Executing UPDATE tbl_departments set effective = 3 where dep_id = 'undefined'
-2022-09-22 22:59:18 - Executing UPDATE tbl_departments set effective = 3 where dep_id = '7'

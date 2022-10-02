@@ -32,6 +32,15 @@
             </div>
           </div>
         </section>
-       
+       <!-- JS Libraies -->
+ <!-- Page Specific JS File -->
+ <!-- Template JS File -->
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <script src="assets/js/scripts.js"></script>
+ <!-- Custom JS File -->
+ <script src="assets/js/custom.js"></script>
+ <script src="assets/js/language/lang.js"></script>
+ 
+ 
         <?php include 'slider.php';?>
         <?php include 'footer.php';?>

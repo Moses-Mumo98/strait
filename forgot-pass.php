@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <!-- <div class="loader"></div> -->
+  <div class="loader"></div>
   <div id="app">
     <section class="section">
       <div class="container mt-5">
@@ -30,7 +30,7 @@
               </div>
               
               <div class="card-body">
-                <form  class="needs-validation" novalidate="">
+                <form  action="#" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="user_email">Email</label>
                     <input id="user_email" type="email" class="form-control" name="user_email" tabindex="1" >
@@ -38,7 +38,7 @@
                       Please fill in your email
                     </div>
                   </div>
-                  <button onclick ="resetPass()" type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4"><i id = 'resetIcon' class="fa fa-spinner"></i>
+                  <button id ="resetPass" type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4"><i id = 'resetIcon' class="fa fa-spinner"></i>
                       Submit
                     </button>
 
@@ -48,6 +48,7 @@
   <!-- JS Libraies -->
   <!-- Page Specific JS File -->
   <!-- Template JS File -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/scripts.js"></script>
   <!-- Custom JS File -->
   <script src="assets/js/custom.js"></script>

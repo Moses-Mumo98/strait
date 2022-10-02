@@ -1,0 +1,8 @@
+2022-10-01 16:47:02 - =================================================
+2022-10-01 16:47:02 - SELECT * from tbl_branches where company_id = '33'  and active = 4 
+2022-10-01 16:47:02 - Response {"branches":[{"branch_id":"33","branch_name":"mjengo MAIN","branch_desc":"majengo main","company_id":"33","branch_status":"1","created_on":"2022-07-22 14:55:05","created_by":"20","modified_on":"2022-09-22 17:53:47","active":"4"},{"branch_id":"133","branch_name":"Mlajasho","branch_desc":"coconut","company_id":"33","branch_status":"1","created_on":"2022-08-30 14:20:12","created_by":"20","modified_on":"2022-09-21 12:20:15","active":"4"},{"branch_id":"134","branch_name":"Kangemi","branch_desc":"Kangemi 2","company_id":"33","branch_status":"1","created_on":"2022-08-30 15:15:23","created_by":"20","modified_on":"2022-09-22 22:15:36","active":"4"}]}
+2022-10-01 16:47:02 - =================================================
+2022-10-01 16:47:06 - =================================================
+2022-10-01 16:47:06 - SELECT * from tbl_branches where company_id = '33'  and active = 4 
+2022-10-01 16:47:06 - Response {"branches":[{"branch_id":"33","branch_name":"mjengo MAIN","branch_desc":"majengo main","company_id":"33","branch_status":"1","created_on":"2022-07-22 14:55:05","created_by":"20","modified_on":"2022-09-22 17:53:47","active":"4"},{"branch_id":"133","branch_name":"Mlajasho","branch_desc":"coconut","company_id":"33","branch_status":"1","created_on":"2022-08-30 14:20:12","created_by":"20","modified_on":"2022-09-21 12:20:15","active":"4"}]}
+2022-10-01 16:47:06 - =================================================

@@ -238,6 +238,11 @@ switch ($request) {
 		hideProjectTask($_POST['task_id']);
 	break;
 
+	case 57:
+		hideUser($_POST['user_id']);
+	break;
+	
+
 
 
     default:
@@ -277,7 +282,7 @@ function confirmpassword($user_email,$user_password){
 		push_mail($f['user_email'], $email,"Password Reset","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
 	}else{
-		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed,Try Again"));
+		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
 	}
     debug("Password Reset Response ".json_encode(array("confirm" => $result)),$typehere);
 	echo json_encode(array("confirm" => $result));
@@ -1045,7 +1050,14 @@ function hidetask($sub_id){
 	debug($strSQL, $typehere);
 	execute_($strSQL,$conn);
 
-	 $result = array();
+	$result = array();
+	if ($num > 0) {
+	   array_push($result, array("bool_code" => true,"message" => $sub_id . "hearing Successfully Deleted"));
+   } else {
+	   
+	   array_push($result, array("bool_code" => true,"message" => "Failed to delete hearing"));
+   }
+
 	 
 	 array_push($result,array("sub_id" => $sub_id));
 	 debug("Response".json_encode(array("hidetask" => $result)),$typehere);
@@ -1084,16 +1096,16 @@ function getSubTask(){
 		$task_id = $task_name;
 	}
 	debug("task_id ".$task_id,$typehere);
-	if($sub_id == ""){
+	if($sub_id == "")
 		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
 		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status 
 		WHERE s.task_id  = '$task_id' and active = 4";
-	}else{
+	else
 		$strSQL = "SELECT s.*,k.task_name,c.status_desc FROM sub_tasks s left join 
 		tbl_tasks k on k.task_id = s.task_id left join status_code c on c.status_no = s.status
-		 WHERE sub_id = '$sub_id' and active= 4";
-	}	
-    debug($strSQL, $typehere);
+		 WHERE sub_id = '$sub_id'";
+		
+    debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
     $intNumField = mysqli_num_fields($objQuery);
     $resultArray = array();
@@ -1415,6 +1427,12 @@ function hideProjectTask($task_id){
 	execute_($strSQL,$conn);
 
 	 $result = array();
+	 if ($num > 0) {
+		array_push($result, array("bool_code" => true,"message" => $task_id . "Branch Successfully Deleted"));
+	} else {
+		
+		array_push($result, array("bool_code" => true,"message" => "Failed to delete branch"));
+	}
 	 
 	 array_push($result,array("task_id" => $task_id));
 	 debug("Response".json_encode(array("hideProjectTask" => $result)),$typehere);
@@ -2439,7 +2457,7 @@ function saveNewUser(){
 		//$GlobalID = checkUserGlobal($u_name,$u_email,$password);
 		debug("User Global ID".$GlobalID,$typehere);
 		
-		$checker2 = "SELECT * from tbl_users where first_name='$u_name', user_email = '$u_email'";
+		$checker2 = "SELECT * from tbl_users where first_name='$u_name'and user_email = '$u_email'";
 		debug($checker2,$typehere);
 		$q = execute_($checker2,$conn);
 		$n = num($q);
@@ -2458,9 +2476,10 @@ function saveNewUser(){
 		}
 		debug($sql,$typehere);
 		$roww = execute_($sql,$conn);
-		debug($roww);
-		$num = affected($conn);
-		debug("Inserted".$num." User Records", $typehere);
+		debug($roww,$typehere);
+		 $num = affected($conn);
+		 debug("Inserted".$num." User Records", $typehere);
+	
 		if ($num > 0) {	
 			if($user_id < 1){
 
@@ -2497,15 +2516,15 @@ function saveNewUser(){
 				execute_($save,$docs);
 			}
 			
-			$u_email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
+			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
 			debug($u_email, $typehere);
 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 			}
-			array_push($result, array("bool_code" => true,"message" => $u_name . " Successfully Registered"));
+			array_push($result, array("bool_code" => true,"message" => $u_name ."Successfully Registered"));
 		} else {
 			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
 		}
-		echo json_encode(array("staffadd" => $result));
+		echo json_encode(array("useradd" => $result));
 	}else{
 		debug("Update Details For ".$staff_id,$typehere);
 		$sql = "UPDATE tbl_users set created_on = NOW(),user_email = '$u_email',first_name = '$u_name', user_level = '$u_level',user_dep = '$u_dep' where user_id = '$user_id'";
@@ -2515,11 +2534,10 @@ function saveNewUser(){
 		debug("Updated " . $num." User Records", $typehere);
 		$result = array();
 		if ($num > 0) {
-			array_push($result, array("result" => 'TRUE',"addmessage" => $u_name . " Details Successfully Updated"));
+			array_push($result, array("bool_code" => true,"message" => $u_name . " Details Successfully Updated"));
 		} else {
-			array_push($result, array("result" => 'FALSE',"addmessage" => "Failed to Update Staff Details"));
+			array_push($result, array("bool_code" => false,"message" => "Failed to Update Staff Details"));
 		}
-		
 		echo json_encode(array("staffadd" => $result));
 	}
     closer($conn);
@@ -2658,14 +2676,163 @@ function saveNewUser(){
 // 		echo json_encode(array("useradd" => $result));
 // 	}else{
 // 		debug("Update Details For ".$staff_id,$typehere);
-// 		$sql = "UPDATE tbl_users set last_action = NOW(),user_email = '$s_email',first_name = '$f_name',last_name = '$l_name', user_level = '$s_level',user_dep = '$s_dep' where user_id = '$staff_id'";
+// 		$sql = "UPDATE tbl_users set last_action = NOW(),user_email = '$u_email',first_name = '$f_name',last_name = '$l_name', user_level = '$s_level',user_dep = '$s_dep' where user_id = '$staff_id'";
 // 		debug($sql, $typehere);
 // 		$roww = execute_($sql,$conn);
 // 		$num = affected($conn);
 // 		debug("Updated " . $num." User Records", $typehere);
 // 		$result = array();
 // 		if ($num > 0) {
-// 			array_push($result, array("result" => 'TRUE',"addmessage" => $s_name . " Details Successfully Updated"));
+// 			array_push($result, array("bool_code" => true,"message" => $u_name . " Details Successfully Updated"));
+// 		} else {
+// 			array_push($result, array("bool_code" => false,"message" => "Failed to Update Staff Details"));
+// 		}
+// 		echo json_encode(array("staffadd" => $result));
+// 	}
+//     closer($conn);
+// 	debug("=================================================",$typehere);
+// }
+
+// function saveNewUser(){
+//     $u_name = $_POST['u_name'];
+// 	$u_email = $_POST['u_email'];
+//     $user_level = $_POST['user_level'];
+//     $user_status = $_POST['user_status'];
+// 	$company_id = $_POST['company_id'];
+// 	$added_by = $_POST['added_by'];
+// 	$branch = $_POST['branch'];
+// 	$dep = $_POST['dep'];
+	
+// 	$user_id = $_POST['user_id'];
+	
+//     $typehere = "saveNewUser";
+//     debug("===========================================", $typehere);
+//     $conn = connect("timetracker1");
+// 	debug("Got User ID as ".$user_id,$typehere);
+	
+// 	$type = $_POST['type'];
+	
+// 	if($type == "SCHOOL") $getLevel = "SELECT * FROM user_levels s WHERE s.school_desc = '$user_level'";
+// 	else if($type == "LAWFIRM") $getLevel = "SELECT * FROM user_levels s WHERE s.law_desc = '$user_level'"; else $getLevel = "SELECT * FROM user_levels s WHERE s.level_desc = '$user_level'";
+// 	debug($getLevel,$typehere);
+// 	$a = execute_($getLevel,$conn);
+// 	$b = fetch($a);
+// 	$level_id = $b['level_id'];
+	
+// 	if(!is_numeric($branch)){
+// 		$getBranchID = "SELECT * FROM tbl_branches WHERE branch_name = '$branch' and company_id = '$company_id'";
+// 		debug($getBranchID,$typehere);
+// 		$a = execute_($getBranchID,$conn);
+// 		$b = fetch($a);
+// 		$branch_id = $b['branch_id'];
+// 	}else{
+// 		$branch_id = $branch;
+// 	}
+	
+// 	if(!is_numeric($dep)){
+// 		$getDepID = "SELECT * FROM tbl_departments WHERE dep_name = '$dep' and company = '$company_id'";
+// 		debug($getDepID,$typehere);
+// 		$a = execute_($getDepID,$conn);
+// 		$b = fetch($a);
+// 		$dep_id = $b['dep_id'];
+// 	}else{
+// 		$dep_id = $dep;
+// 	}
+	
+// 	$getStatus = "SELECT * FROM user_status WHERE status_desc = '$user_status'";
+// 	debug($getStatus,$typehere);
+// 	$a = execute_($getStatus,$conn);
+// 	$b = fetch($a);
+// 	$status_id = $b['status_id'];
+	
+// 	debug("level_id ".$level_id." status_id ".$status_id,$typehere);
+	
+// 	if($user_id == ""){
+// 		debug("Save New Staff ",$typehere);
+				
+// 		$password = randomString(6);
+// 		debug("Generated Password " . $password, $typehere);
+		
+// 		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
+// 		debug("User Global ID ".$GlobalID,$typehere);
+		
+// 		$checker2 = "select user_id,first_name from tbl_users where user_email = '$u_email'";
+// 		debug($checker2, $typehere);
+// 		$q = execute_($checker2,$conn);
+// 		$n = num($q);
+// 		$user_id = 0;
+// 		$result = array();
+// 		while ($f = fetch($q)) {
+// 			$user_id = $f['user_id'];
+// 			$first_name = $f['first_name'];
+// 		}
+		
+// 		debug("user_id " . $user_id, $typehere);
+// 		if ($user_id > 0) {
+// 			$sql = "UPDATE tbl_users set global_id = '$GlobalID' where user_id = '$user_id'";
+// 		}else{
+// 			$sql = "INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES
+// 			 ('$GlobalID','$u_email',MD5('$password'),'$u_name','$level_id','$status_id','$company_id',NOW(),'$branch_id','$dep_id')";
+// 		}
+// 		debug($sql, $typehere);
+// 		$roww = execute_($sql,$conn);
+// 		$num = affected($conn);
+// 		debug("Inserted " . $num." User Records", $typehere);
+// 		if ($num > 0) {	
+// 			if($user_id < 1){
+
+// 			$docs = connect("docs");
+			
+// 			$exploded = multiexplode(array(" "), $u_name);
+// 			$f_name = $exploded[0];
+// 			$l_name = $exploded[1];
+			
+// 			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$f_name','1','1')";
+// 			debug($ins,$typehere);
+// 			execute_($ins,$docs);
+// 			$in = affected($docs);
+			
+// 			debug("Saved ".$in." DMS Records",$typehere);
+			
+// 			$id = last_id($docs);
+			
+// 			if($level_id > 2){
+// 				$admin = 1;
+// 			}else{
+// 				$admin = 0;
+// 			}
+				
+// 			$saver = "INSERT INTO dms_admin(id,admin) VALUES ('$id','$admin')";
+// 			debug($saver,$typehere);
+// 			execute_($saver,$docs);
+// 			$in2 = affected($docs);
+// 			debug("Saved ".$in2." DMS Admin Records",$typehere);
+			
+// 			if($level_id == 1){
+// 				$save = "INSERT INTO dms_department (name) VALUES ('$u_name');";
+// 				debug($save,$typehere);
+// 				execute_($save,$docs);
+// 			}
+			
+// 			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
+// 			debug($email, $typehere);
+// 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
+// 			}
+// 			array_push($result, array("bool_code" => true,"message" => $u_name . " Successfully Registered"));
+// 		} else {
+// 			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
+// 		}
+// 		echo json_encode(array("useradd" => $result));
+// 	}else{
+// 		debug("Update Details For ".$staff_id,$typehere);
+// 		$sql = "UPDATE tbl_users set user_email = '$u_email',first_name = '$u_name', user_level = '$s_level',user_dep = '$dep_id' where user_id = '$user_id'";
+// 		debug($sql, $typehere);
+// 		$roww = execute_($sql,$conn);
+// 		$num = affected($conn);
+// 		debug("Updated " . $num." User Records", $typehere);
+// 		$result = array();
+// 		if ($num > 0) {
+// 			array_push($result, array("result" => 'TRUE',"addmessage" => $u_name . " Details Successfully Updated"));
 // 		} else {
 // 			array_push($result, array("result" => 'FALSE',"addmessage" => "Failed to Update Staff Details"));
 // 		}
@@ -2674,6 +2841,9 @@ function saveNewUser(){
 //     closer($conn);
 // 	debug("=================================================",$typehere);
 // }
+
+
+
 
 
 function getUserLevels(){
@@ -2832,8 +3002,33 @@ function saveProject(){
 	}
     closer($conn);
 	debug("=================================================",$typehere);
+	
 }
 
+function hideUser($user_id){
+	$typehere = "hideUser";
+	debug("===========================================", $typehere);
+	
+    $conn = connect("timetracker1");
+	$strSQL = "UPDATE tbl_users set efficient = 4  where user_id = '$user_id'";
+	debug($strSQL, $typehere);
+	execute_($strSQL,$conn);
+
+	 $result = array();
+	 if ($num > 0) {
+		array_push($result, array("bool_code" => true,"message" => $user_id . "User Successfully Deleted"));
+	} else {
+		
+		array_push($result, array("bool_code" => true,"message" => "Failed to delete user"));
+	}
+	 array_push($result,array("user_id" => $user_id));
+	 debug("Response".json_encode(array("hideUser" => $result)),$typehere);
+	 echo json_encode(array("hideUser" => $result));
+	 closer($conn);
+	 debug("=================================================",$typehere);
+   
+	
+}
 
 function getCompanyUsers($company_id){
 	$conn = connect("timetracker1");
@@ -2867,12 +3062,12 @@ function getCompanyUsers($company_id){
 			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
 			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
 			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
-			where user_dep = '$dep' $adder";
+			where user_dep = '$dep' $adder ";
 		}else {
 			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
 			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
 			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
-			where user_company = '$company_id' $adder";
+			where user_company = '$company_id' $adder and efficient=3";
 		}
 	}else{
 		$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
@@ -2940,6 +3135,12 @@ function hideProject($project_id){
 	execute_($strSQL,$conn);
 
 	 $result = array();
+	 if ($num > 0) {
+		array_push($result, array("bool_code" => true,"message" => $project_id . "File Successfully Deleted"));
+	} else {
+		
+		array_push($result, array("bool_code" => true,"message" => "Failed to delete file"));
+	}
 	 
 	 array_push($result,array("project_id" => $project_id));
 	 debug("Response".json_encode(array("hideProject" => $result)),$typehere);
@@ -3335,7 +3536,7 @@ function login($uname,$upass){
     $typehere = "login";
 	debug("=================================================",$typehere);
 	$checkV = "SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
-	LEFT JOIN tbl_company c ON c.company_id = u.user_company
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company 
 	LEFT JOIN user_levels l ON l.level_id = u.user_level
 	WHERE u.user_email = '$uname' AND u.user_password = MD5('$upass')";
 	debug($checkV,$typehere);
@@ -3348,8 +3549,8 @@ function login($uname,$upass){
 	}else{
 		$f = fetch($q);
 		$user_status = $f['user_status'];
-		$reset_pass = $f['reset_pass'];
-		if( $reset_pass == 1){
+
+		if( $user_status == 1){
 			$user_id = $f['user_id'];
 			$user_email = $f['user_email'];
 			$first_name = $f['first_name'];
@@ -3371,8 +3572,8 @@ function login($uname,$upass){
 			$user_branch = $f['user_branch'];
 			array_push($result, array("bool_code" => true,"user_id"=>$user_id,"user_email"=>$user_email,'first_name'=>$first_name,"company_id"=>$company_id,"company_name"=>$company_name,"level_desc"=>$level_desc,"user_level"=>$user_level,"org_type"=>$org_type,"user_dep"=>$user_dep,"user_branch"=>$user_branch));
 		}else{
-			// array_push($result, array("bool_code" => false,"message"=>"Inactive Account"));
-			array_push($result, array("bool_code" => false,"message"=>"please reset your password"));
+			array_push($result, array("bool_code" => false,"message"=>"Inactive Account"));
+			// array_push($result, array("bool_code" => false,"message"=>"please reset your password"));
 		}
 		
 		
@@ -3438,9 +3639,11 @@ function resetPassword($user_email){
 		}
 		push_mail($f['user_email'], $email,"Password Reset","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
+		array_push($result, array("bool_code" => true,"message"=>"To reset your password use your email address"));
 	}else{
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed,Try Again"));
 	}
+
     debug("Password Reset Response ".json_encode(array("reset" => $result)),$typehere);
 	echo json_encode(array("reset" => $result));
 	closer($conn);

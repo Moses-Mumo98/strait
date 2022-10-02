@@ -1,0 +1,80 @@
+2022-10-01 16:26:31 - ===========================================
+2022-10-01 16:26:31 - UPDATE tbl_users set efficient = 4  where user_id = ''
+2022-10-01 16:26:31 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":""}]}
+2022-10-01 16:26:31 - =================================================
+2022-10-01 16:26:46 - ===========================================
+2022-10-01 16:26:46 - UPDATE tbl_users set efficient = 4  where user_id = ''
+2022-10-01 16:26:46 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":""}]}
+2022-10-01 16:26:46 - =================================================
+2022-10-01 16:31:30 - ===========================================
+2022-10-01 16:31:30 - UPDATE tbl_users set efficient = 4  where user_id = '20'
+2022-10-01 16:31:30 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"20"}]}
+2022-10-01 16:31:30 - =================================================
+2022-10-01 16:32:12 - ===========================================
+2022-10-01 16:32:12 - UPDATE tbl_users set efficient = 4  where user_id = '328'
+2022-10-01 16:32:12 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"328"}]}
+2022-10-01 16:32:12 - =================================================
+2022-10-01 16:32:30 - ===========================================
+2022-10-01 16:32:30 - UPDATE tbl_users set efficient = 4  where user_id = '405'
+2022-10-01 16:32:30 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"405"}]}
+2022-10-01 16:32:30 - =================================================
+2022-10-01 16:33:01 - ===========================================
+2022-10-01 16:33:01 - UPDATE tbl_users set efficient = 4  where user_id = '313'
+2022-10-01 16:33:01 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"313"}]}
+2022-10-01 16:33:01 - =================================================
+2022-10-01 16:34:07 - ===========================================
+2022-10-01 16:34:07 - UPDATE tbl_users set efficient = 4  where user_id = '316'
+2022-10-01 16:34:07 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"316"}]}
+2022-10-01 16:34:07 - =================================================
+2022-10-01 16:36:30 - ===========================================
+2022-10-01 16:36:30 - UPDATE tbl_users set efficient = 4  where user_id = '310'
+2022-10-01 16:36:30 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"310"}]}
+2022-10-01 16:36:30 - =================================================
+2022-10-01 16:37:59 - ===========================================
+2022-10-01 16:37:59 - UPDATE tbl_users set efficient = 4  where user_id = '273'
+2022-10-01 16:37:59 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"273"}]}
+2022-10-01 16:37:59 - =================================================
+2022-10-01 16:38:18 - ===========================================
+2022-10-01 16:38:18 - UPDATE tbl_users set efficient = 4  where user_id = '424'
+2022-10-01 16:38:18 - Response{"hideStaff":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"424"}]}
+2022-10-01 16:38:18 - =================================================
+2022-10-01 16:42:44 - ===========================================
+2022-10-01 16:42:44 - UPDATE tbl_users set efficient = 4  where user_id = '385'
+2022-10-01 16:42:44 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"385"}]}
+2022-10-01 16:42:44 - =================================================
+2022-10-01 16:42:58 - ===========================================
+2022-10-01 16:42:58 - UPDATE tbl_users set efficient = 4  where user_id = '385'
+2022-10-01 16:42:58 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"385"}]}
+2022-10-01 16:42:58 - =================================================
+2022-10-01 16:44:17 - ===========================================
+2022-10-01 16:44:17 - UPDATE tbl_users set efficient = 4  where user_id = '399'
+2022-10-01 16:44:17 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"399"}]}
+2022-10-01 16:44:17 - =================================================
+2022-10-01 16:44:38 - ===========================================
+2022-10-01 16:44:38 - UPDATE tbl_users set efficient = 4  where user_id = '317'
+2022-10-01 16:44:38 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"317"}]}
+2022-10-01 16:44:38 - =================================================
+2022-10-01 16:45:39 - ===========================================
+2022-10-01 16:45:39 - UPDATE tbl_users set efficient = 4  where user_id = '302'
+2022-10-01 16:45:39 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"302"}]}
+2022-10-01 16:45:39 - =================================================
+2022-10-01 16:45:42 - ===========================================
+2022-10-01 16:45:42 - UPDATE tbl_users set efficient = 4  where user_id = '302'
+2022-10-01 16:45:42 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"302"}]}
+2022-10-01 16:45:42 - =================================================
+2022-10-01 16:47:27 - ===========================================
+2022-10-01 16:47:27 - UPDATE tbl_users set efficient = 4  where user_id = '272'
+2022-10-01 16:47:27 - Response{"hideUser":[{"bool_code":false,"message":"Failed to delete user"},{"user_id":"272"}]}
+2022-10-01 16:47:27 - =================================================
+2022-10-01 16:48:08 - ===========================================
+2022-10-01 16:48:08 - UPDATE tbl_users set efficient = 4  where user_id = '336'
+2022-10-01 16:48:08 - Response{"hideUser":[{"bool_code":true,"message":"Failed to delete user"},{"user_id":"336"}]}
+2022-10-01 16:48:08 - =================================================
+2022-10-01 16:48:48 - ===========================================
+2022-10-01 16:48:48 - UPDATE tbl_users set efficient = 4  where user_id = '371'
+2022-10-01 16:48:48 - Response{"hideUser":[{"bool_code":true,"message":"Failed to delete user"},{"user_id":"371"}]}
+2022-10-01 16:48:48 - =================================================
+2022-10-01 16:49:07 - ===========================================
+2022-10-01 16:49:07 - UPDATE tbl_users set efficient = 4  where user_id = '377'
+2022-10-01 16:49:07 - Response{"hideUser":[{"bool_code":true,"message":"Failed to delete user"},{"user_id":"377"}]}
+2022-10-01 16:49:07 - =================================================
