@@ -26,17 +26,27 @@
               </div>
               <div class="card-body">
                   <div class="row">
+                  <div class="form-group col-6">
+                      <label for="f_name">File Number</label>
+                      <input id="f_name" type="text" class="form-control" name="f_name" autofocus>
+                    </div>
                     <div class="form-group col-6">
                       <label for="p_name">Name</label>
                       <input id="p_name" type="text" class="form-control" name="p_name" autofocus>
                     </div>
+                    
                     <div class="form-group col-6">
                       <label for="p_desc">Description</label>
                       <input id="p_desc" type="text" class="form-control" name="p_desc">
                     </div>
+                    <div class="form-group col-6">
+                      <label>Partner</label>
+                      <!-- <input id="pr_name" type="text" class="form-control" name="pr_name" autofocus> -->
+                      <select id = "first_name" name = "first_name" class="form-control select2"></select>
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label id = "dep_label">Department Name</label>
+                    <label id = "dep_label">Practice group</label>
                     <select id = "dep_name" name = "dep_name" class="form-control select2"></select>
                  </div>
                 <div class="form-group">
@@ -51,10 +61,12 @@
                       <label>Deadline</label>
                       <input name = "endDate" type="text" class="form-control datepicker">
                     </div>
+                    
 					          <div class="form-group">
                         <label>Client Name</label>
                         <select  id = "company-users" name = "company-users" class="form-control select2"></select>
                    </div>
+                  
                    <div class="section-title">Chargable ?</div>
                      <div class="pretty p-icon p-curve p-tada">
                         <input type="radio" name="radiochoice" onchange="eventStatus('1')">
@@ -84,7 +96,7 @@
                            <label>Billing Cycle</label>
                            <select id = 'b_cycle' class="form-control select2">
                               <option value = '1' selected>One Off</option>
-                              <option value = '2'>Hourly</option>
+                              <option value = '2'>Minutes</option>
                               <option value = '3'>Daily</option>
                            </select>
                         </div>

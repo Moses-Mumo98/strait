@@ -146,9 +146,11 @@ h1 small {
               <div id = "userlogged" class="dropdown-title">Hello Sarah Smith</div>
               <a href="profile" class="dropdown-item has-icon"> <i class="far
 										fa-user"></i> Profile
-              </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
+              </a>
+               <!-- <a href="#" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
                 Activities
-              </a> <a href="setting" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+              </a>  -->
+              <a href="setting" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                 Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -198,26 +200,38 @@ h1 small {
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="home"></i><span id = "menu_identity">Organization</span></a>
               <ul class="dropdown-menu">
                 <li><a id = "menu_link_branch" class="nav-link" href="branches">Branches</a></li>
-                <li><a class="nav-link" href="departments">Departments</a></li>
+                <li><a class="nav-link" href="departments">Practice Group</a></li>
                 <li><a class="nav-link" href="users"><span id = "menu_users">Users</span></a></li>
+            
               </ul>
             </li>
+
+            <li class="dropdown">
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span >Clients</span></a>
+              <ul class="dropdown-menu">
+              <li><a class="nav-link" href="clients"><span id = "menu_users">Clients</span></a></li>
+              <li id = "link_accounts"><a id = "menu_link_accounts" class="nav-link" href="accounts"><i data-feather="list"></i> Accounts</a></li>
+                <li id = "link_trans"><a  id = "menu_link_transactions" class="nav-link" href="account-statement"><i data-feather="activity"></i>Transactions</a></li>
+               
+              </ul>
+            </li>
+
           <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="grid"></i><span id = "menu_p">Projects</span></a>
               <ul class="dropdown-menu">
                 <li id = "link_projects"><a id = "menu_link_p" class="nav-link" href="projects">Projects</a></li>
                 <li id = "link_tasks"><a  id = "menu_link_t" class="nav-link" href="tasks">Tasks</a></li>
                 <li id = "link_sub_tasks"><a  id = "menu_link_sub_t" class="nav-link" href="sub-task">Sub Tasks</a></li>
-                <!--li id = "add-hours"><a class="nav-link" href="add-hours">Add Hours</a></li-->
+                <li id = "add-hours"><a class="nav-link" href="add-hours">Add Hours</a></li>
               </ul>
             </li>
-			<li class="dropdown">
+			<!-- <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="dollar-sign"></i><span id = "menu_acc">Client Accounting</span></a>
               <ul class="dropdown-menu">
                 <li id = "link_accounts"><a id = "menu_link_accounts" class="nav-link" href="accounts"><i data-feather="list"></i> Accounts</a></li>
                 <li id = "link_trans"><a  id = "menu_link_transactions" class="nav-link" href="account-statement"><i data-feather="activity"></i>Transactions</a></li>
               </ul>
-            </li>
+            </li> -->
 			      <li><a id = "dms" class="nav-link"><i data-feather="briefcase"></i>DMS</a></li>
             <li><a class="nav-link" href="timer"><i data-feather="clock"></i><span id = "timer_label">Timer</span></a></li>
             <li><a class="nav-link" href="timeline"><i data-feather="sliders"></i><span id = "logs_label">Lesson Logs</span></a></li>

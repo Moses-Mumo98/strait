@@ -61,6 +61,7 @@ $(document).ready(function() {
         listDepartments(1);
         getCompanyUsers();
         getPic();
+        listpartners();
         projectID = localStorage.getItem("projectID");
         if(!projectID){
             $('#project-edit-title').html("Add New "+localStorage.getItem("pr_name"));
@@ -73,28 +74,75 @@ $(document).ready(function() {
         if(userLevel == 1){
             document.getElementById('addUser').style.display = 'none';
         }
-        ListUsers();
+        ListUsers("user_id");
         getPic();
-    }else if(page == "user-edit"){
-        if(!userID)$('#project-edit-title').html("Add New User");
+    }
+    else if(page == "clients"){
+        if(userLevel == 1){
+            document.getElementById('addUser').style.display = 'none';
+        }
+        ListClients("user_id");
+        getPic();
+    }
+
+    else if(page == "user-edit"){
+        userID = localStorage.getItem("userID");
+        getPic();
+		listBranches(2);
+        getUserStatus();
+        getUserLevels();
+      
+        if(!userID){
+            $('#project-edit-title').html("Add New User");
+        }
         if(userLevel < 5){
             document.getElementById('branchDiv').style.display = 'none';
-            getPic();
-           
         }
         if(userLevel < 4){
             document.getElementById('depDiv').style.display = 'none';
-            getPic();
-            getUserDetails();
+            
+           
         }
-        getPic();
-     
-		listBranch(2);
-        getUserStatus();
-        getUserLevels();
+        else{
+            logger("Got User ID as " +userID);
+            $('#project-edit-title').html("Edit user");
+            getUserDetails(userID);
+
+        }
+        
+    }
+    
+    // else if(page == "user-edit"){
+    //     userID = localStorage.getItem("userID");
+    //     getPic();
+    //     if(!userID)
+    //     $('#project-edit-title').html("Add New User");
+    //     if(userLevel < 5){
+    //         document.getElementById('branchDiv').style.display = 'none';
+    //         //getPic();
+           
+    //     }
+    //     else if(userLevel < 4){
+    //         document.getElementById('depDiv').style.display = 'none';
+    //         //getPic();
+           
+    //     }
+    //     //userID = localStorage.getItem("userID");
+
+ 
+        
+    //     getUserStatus();
+    //     getUserLevels();
+    //     logger("Got User ID as "+userID);
+    //     $('#project-edit-title').html("Edit user");
+    //     getUserDetails(userID);
    
-    }else if(page == "add-hours"){
+    // }
+    
+    else if(page == "add-hours"){
+        getPic();
         getCompanyProjects(1);
+        
     }else if(page == "tasks"){
         if(userLevel == 1){
             document.getElementById('addTask').style.display = 'none';
@@ -115,7 +163,7 @@ $(document).ready(function() {
             getTasksDetails(taskID);
         }
     }else if(page == "timer"){
-        if(userLevel == 1){
+        if(userLevel == 5){
             document.getElementById('myslider').style.display = 'none';
             }
         getCompanyProjects(1);
@@ -127,7 +175,7 @@ $(document).ready(function() {
         user_image = sessionStorage.getItem("user_image");
     }else if(page == "branches"){
         branchID = localStorage.getItem("branchID");
-        if(userLevel < 5){
+        if(userLevel > 5){
             document.getElementById('addBranch').style.display = 'none';
             }
          getBranches(branchID);
@@ -146,19 +194,20 @@ $(document).ready(function() {
        
         }
     }else if(page == "departments"){
-        if(userLevel < 4){
+        if(userLevel > 5){
             document.getElementById('addDep').style.display = 'none';
         }
         getDepartments();
+        getDepartment();
         getPic();
     }else if(page == "department-edit"){
         depID = localStorage.getItem("dep_id");
         listBranch(2);
         if(!depID){
-            $('#project-edit-title').html("Add New Department");
+            $('#project-edit-title').html("Add New Practice Group");
         }else{
             logger("Got Dep ID as "+depID);
-            $('#project-edit-title').html("Edit Department");
+            $('#project-edit-title').html("Edit Practice Group");
             getDepartmentDetails(depID);
         }  getPic();
     }else if(page == "sub-task"){
@@ -202,7 +251,7 @@ $(document).ready(function() {
         }else{
             logger("Got Acc ID as "+accID);
             $('#project-edit-title').html("Edit User Account");
-            //getAccountDetails(accID);
+            // getAccountDetails(accID);
         }
     }else if(page == "account-topup"){
         getTopMethods(1);
@@ -1524,33 +1573,33 @@ function mpesaPayer(){
 }
 
 function ccPayer(){
-	debug('cc_pay clicked');
+	logger('cc_pay clicked');
 	var amount = document.getElementById("totaldue").textContent;
-	debug("Amount is: "+amount);
+	logger("Amount is: "+amount);
 	
 	var ticket = document.getElementById("invoice-number").textContent;
-	debug("Ticket is: "+ticket);
+	logger("Ticket is: "+ticket);
 	
 	var f_name = $('#f_name').val();
-	debug("f_name is: "+f_name);
+	logger("f_name is: "+f_name);
 	
 	var m_name = $('#m_name').val();
-	debug("m_name is: "+m_name);
+	logger("m_name is: "+m_name);
 	
 	var l_name = $('#l_name').val();
-	debug("l_name is: "+l_name);
+	logger("l_name is: "+l_name);
 	
 	var c_no = $('#c_no').val();
-	debug("c_no is: "+c_no);
+	logger("c_no is: "+c_no);
 	
 	var cvc = $('#cvc').val();
-	debug("cvc is: "+cvc);
+	logger("cvc is: "+cvc);
 	
 	var e_month = $('#e_month').val();
-	debug("e_month is: "+e_month);
+	logger("e_month is: "+e_month);
 	
 	var e_year = $('#e_year').val();
-	debug("e_year is: "+e_year);
+	logger("e_year is: "+e_year);
 	
 	if (f_name == "" || m_name == "" || l_name == "" || c_no == "" || cvc == "" || e_month == "" || e_year == "") {
         alert("Enter All the Fields");
@@ -2183,17 +2232,19 @@ function hidetask(id){
             title: "Are you sure ??",
             text: message, 
             icon: "warning",
-            buttons: true,
+            buttons: false,
             dangerMode: true,
         })
         .then((willDelete) => {
-          if (willDelete) {
+            console.log("deleted variable",willDelete)
+          if (willDelete === true) {
             swal("Hearing has been deleted!", {
               icon: "success",
             });
             localStorage.setItem("subID", id);
             window.location = "sub-task";
-          } else {
+          }
+          if(willDelete === false){
             swal("hearing has not been deleted!");
           }
         });
@@ -2503,6 +2554,46 @@ function listDepartments(page) {
     return false;
 }
 
+function listpartners() {
+var user_id;
+if(userLevel == 5){
+    user_id = sessionStorage.getItem("user_id");
+}
+    var dataString = {
+        'request': 60,
+        'user_id':user_id
+      };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            logger(data);
+            var partnerJSON = JSON.parse(data);
+            
+            var partner = '<option></option>';
+            logger("Length Ya " + partnerJSON + " Ni " + partnerJSON.partner.length);
+            for(var i = 0; i < partnerJSON.partner.length; i++) {
+                if (i == 0) {
+                    partner += "<option value='" + partnerJSON.partner[i].first_name + "' selected>" + partnerJSON.partner[i].first_name + "</option>";
+                } else {
+                    partner += "<option value='" + partnerJSON.partner[i].first_name + "'>" + partnerJSON.partner[i].first_name + "</option>";
+                }
+            }
+            $("#first_name").html(partner); 
+     
+        },
+        error: function(e) {
+
+    1    }
+
+    });
+    return false;
+}
+
+
 function listDepartment(page) {
     var company_id =  sessionStorage.getItem("company_id");
 	
@@ -2799,7 +2890,7 @@ function getDepartmentDetails(id){
             logger("Length Ya " + DepartmentJSON + " Ni " + DepartmentJSON.departments.length);
             for (var i = 0; i < DepartmentJSON.departments.length; i++) {
                 $('input[name="d_name"]').val(DepartmentJSON.departments[i].dep_name);
-                $('#project-edit-title').html("Edit Department: "+DepartmentJSON.departments[i].dep_name);
+                $('#project-edit-title').html("Edit Practice Group: "+DepartmentJSON.departments[i].dep_name);
                 $("#branch-name").val(DepartmentJSON.departments[i].branch_name).trigger('change');
                 
                 if(DepartmentJSON.departments[i].dep_status=="0"){
@@ -2898,7 +2989,7 @@ function listBranch(page) {
             }
             $("#branch-name").html(branch);
             if(page == 2){
-				listDepartments(1);
+				listDepartment(1);
 			}
 			
         },
@@ -2968,56 +3059,121 @@ function editDep (id){
 //     return false;
 // }
 
+// function hideDep(id){
+//     localStorage.setItem("dep_id", id);
+//     var dep_id =localStorage.getItem("dep_id")
+//     var message = $(this).data('confirm');
+//     var dataString = {
+//         'request':54,
+//         'dep_id':dep_id
+//     }
+//     logger("Deleting "+id);
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+//     // localStorage.setItem("dep_id", id);
+//     // window.location = "departments";
+        
+      		
+//     var jsObject = JSON.parse(data);
+//     logger(jsObject);
+//     var bool_code = jsObject.hideDepartment[0].bool_code;
+//     logger("bool_code "+bool_code);
+    
+//     if(bool_code){
+//         //localStorage.setItem("dep_id", jsObject.hideDepartment[0].dep_id);
+//           swal({
+//             title: "Are you sure ??",
+//             text: message, 
+//             icon: "warning",
+//             buttons: true,
+//             dangerMode: true,
+//         })
+//         .then((willDelete) => {
+//           if (willDelete) {
+//             swal("Department has been deleted!", {
+//               icon: "success",
+//             });
+//             localStorage.setItem("dep_id", id);
+//             window.location = "departments";
+//           } else {
+//             swal("Department has not been deleted!");
+//           }
+//         });
+    
+//     }
+        
+//         }
+// })
+//     return false;
+// }
+
+
 function hideDep(id){
     localStorage.setItem("dep_id", id);
-    var dep_id =localStorage.getItem("dep_id")
-    var message = $(this).data('confirm');
-    var dataString = {
-        'request':54,
-        'dep_id':dep_id
-    }
-    logger("Deleting "+id);
-    $.ajax({
+    var dep_id = localStorage.getItem("dep_id");
+    swal({
+        title: "Are you sure ??",
+        text: message, 
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        logger("swal confirmed", willDelete)
+        $.ajax({
         type: "POST",
         url: myurl,
         data: dataString,
         success: function(data) {
-    // localStorage.setItem("dep_id", id);
-    // window.location = "departments";
-        
-      		
+  
+    // window.location = "branches";
+    		
     var jsObject = JSON.parse(data);
     logger(jsObject);
     var bool_code = jsObject.hideDepartment[0].bool_code;
     logger("bool_code "+bool_code);
     
     if(bool_code){
-        //localStorage.setItem("dep_id", jsObject.hideDepartment[0].dep_id);
-          swal({
-            title: "Are you sure ??",
-            text: message, 
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("Department has been deleted!", {
-              icon: "success",
-            });
-            localStorage.setItem("dep_id", id);
-            window.location = "departments";
-          } else {
-            swal("Department has not been deleted!");
-          }
+        //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
+          localStorage.setItem("dep_id", id);
+        window.location = "departments";
+        swal("Department has been deleted!", {
+          icon: "success",
         });
+        
     
     }
         
         }
 })
+        
+      
+      } else {
+        logger("swal not confirmed")
+        swal("Department has not been deleted!");
+      }
+    });
+    logger(dep_id)
+    logger("this",dep_id)
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':54,
+        'dep_id':dep_id
+    }
+    logger("hideDepartment "+id);
+
+
+
     return false;
 }
+
+
+
+
 
 
 
@@ -3322,17 +3478,17 @@ function editBranch(id){
 function hideBranch(id){
     localStorage.setItem("branchID", id);
     var branch_id = localStorage.getItem("branchID");
-    logger(branchID)
-    logger("this",branchID)
-    var message = $(this).data('confirm');
-    var dataString = {
-        'request':51,
-        'branch_id':branch_id
-    }
-    logger("hideBranch "+id);
-
-
-    $.ajax({
+    swal({
+        title: "Are you sure ??",
+        text: message, 
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        logger("swal confirmed", willDelete)
+        $.ajax({
         type: "POST",
         url: myurl,
         data: dataString,
@@ -3347,29 +3503,35 @@ function hideBranch(id){
     
     if(bool_code){
         //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
-          swal({
-            title: "Are you sure ??",
-            text: message, 
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("Branch has been deleted!", {
-              icon: "success",
-            });
-            localStorage.setItem("branchID", id);
-            window.location = "branches";
-          } else {
-            swal("Branch has not been deleted!");
-          }
+          localStorage.setItem("branchID", id);
+        window.location = "branches";
+        swal("Branch has been deleted!", {
+          icon: "success",
         });
+        
     
     }
         
         }
 })
+        
+      
+      } else {
+        logger("swal not confirmed")
+        swal("Branch has not been deleted!");
+      }
+    });
+    logger(branchID)
+    logger("this",branchID)
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':51,
+        'branch_id':branch_id
+    }
+    logger("hideBranch "+id);
+
+
+
     return false;
 }
 
@@ -3459,9 +3621,11 @@ function getBranches() {
                     status_desc ="Closed";
                 }
                 var toadd = "";
-                if(userLevel < 5){ 
+                console.log("user level ",userLevel)
+                if(userLevel > 5){ 
                 
                 }else{
+                    console.log("loading anchor tag")
                 toadd="<a onclick='editBranch("+branch_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideBranch("+branch_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
@@ -4139,7 +4303,7 @@ function getAllTasks(){
                 }
             }
             $("#task-name").html(tasks);
-            if(loadedPage == "timer" || page == "sub-edit"){
+            if(loadedPage == "timer"){
                 listSubTasks();
             }else{
                 getAssignedUser();
@@ -4268,7 +4432,9 @@ $('#userSaver').on('click', function(e) {
         'user_status': user_status,
         'request': 10,
         'company_id':sessionStorage.getItem("company_id"),
+        'user_id':sessionStorage.getItem("userID"),
         'added_by':sessionStorage.getItem("user_id"),
+         'user_id':localStorage.getItem("userID"),
         'type':sessionStorage.getItem("org_type"),
         'branch':branch,
         'dep':dep
@@ -4295,7 +4461,7 @@ $('#userSaver').on('click', function(e) {
 			
 			if(bool_code){
                 swal(jsObject.useradd[0].message, "Success", 'success').then(function () {
-                    window.location = "users";
+                    window.location = "user-edit";
                 });
 			}else{
 				errorMessage = jsObject.useradd[0].message;
@@ -4603,8 +4769,9 @@ $('#addUser').on('click', function(e) {
 
 function ListUsers(){
     var company_id =  sessionStorage.getItem("company_id");
-    var user_id =  sessionStorage.getItem("user_id");
-    var user_id;
+    //var user_id =  sessionStorage.getItem("user_id");
+    var user_id = "";
+    //logger("USer Level "+userLevel); 
     if(userLevel == 1){
         user_id = sessionStorage.getItem("user_id");
     }
@@ -4622,6 +4789,126 @@ function ListUsers(){
 
     var dataString = {
         'request': 6,
+        'company_id': company_id,
+        'user_id':user_id,
+        'branch':branch,
+        'dep':dep,
+		'limit':5
+    };
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+           
+            logger(data);
+            var UsersJSON = JSON.parse(data);
+            var tbHTML = "";
+            logger("Length of Users JSON "+UsersJSON.users.length);
+            for (var i = 0; i < UsersJSON.users.length; i++) {
+                var user_id = UsersJSON.users[i].user_id;
+                var user_email = UsersJSON.users[i].user_email;
+                var first_name = UsersJSON.users[i].first_name;
+                //var user_phone = UsersJSON.users[i].user_phone;
+                var status_desc = UsersJSON.users[i].status_desc;
+                var created_on = UsersJSON.users[i].created_on;
+                var dep_name = UsersJSON.users[i].dep_name;
+                var branch_name = UsersJSON.users[i].branch_name;
+
+
+                var status;
+                if(status_desc == 'Active'){
+                    status = "green"; 
+                }else{
+                    status = "red"; 
+                }
+                
+                var level_desc;
+                if(sessionStorage.getItem("org_type") == "SCHOOL"){
+                    level_desc = UsersJSON.users[i].school_desc;
+                }else if(sessionStorage.getItem("org_type") == "LAWFIRM"){
+                    level_desc = UsersJSON.users[i].law_desc;
+                }else{
+                    level_desc = UsersJSON.users[i].level_desc;
+                }
+
+                var code;
+                if(level_desc == "STAFF" || level_desc == "STUDENT" || level_desc == "CLIENTS"){
+                    code = "green";
+                }else if(level_desc == "TEAM LEADER" || level_desc == "LECTURER" || level_desc == "ASSOCIATES"){
+                    code = "purple";
+                }else if(level_desc == "HOD"){
+                    code = "yellow";
+                }else if(level_desc == "SNR MGMT" || level_desc == "PRINCIPAL"){
+                    code = "orange";
+                }else{
+                    code = "red";
+                }
+
+                var deleteButton = 'deletebtn' + user_id;
+                var buttonID = 'resetStaff'+ user_id;
+                var adder = "";
+                var deleter = "";
+                if(userLevel == 1){
+
+                }else{
+                    adder = "<button class='btn btn-warning' onclick='resetStaff("+user_id+")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
+                    deleter = "<button class='btn btn-danger' onclick='hideStaff("+user_id+")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
+                }
+
+                tbHTML += "<tr><td class='col-green font-weight-bold'>"+first_name+"</td>"+
+                "<td>"+user_email+"</td>"+
+                '<td class="col-blue font-weight-bold">'+branch_name+'</td>'+
+                '<td class="col-purple font-weight-bold">'+dep_name+'</td>'+
+                "<td>"+created_on+"</td>"+
+                "<td><div class='badge l-bg-"+code+"'>"+level_desc+"</div></td>"+
+                "<td><div class='badge l-bg-"+status+"'>"+status_desc+"</div></td>"+
+                '<td align="left">' +adder+deleter+
+                "</td></tr>";
+            }
+            tbHTML = '<table class="table table-striped table-hover" id="usersTable" style="width:100%;"><thead><tr><th>Name</th><th>Email</th><th>'+localStorage.getItem("branch")+'</th><th>Department</th><th>Added On</th><th>Level</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
+            $('#users-table').html(tbHTML);
+            $('#usersHead').html(UsersJSON.users.length + " Record(s)");
+            var oTable = $('#usersTable').DataTable({
+                "iDisplayLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+
+            });
+        },
+        error: function(e) {
+
+        }
+
+    });
+    return false;
+}
+
+function ListClients(){
+    var company_id =  sessionStorage.getItem("company_id");
+    var user_id =  sessionStorage.getItem("user_id");
+    var user_id = "";
+    logger("USer Level "+userLevel); 
+    if(userLevel == 1){
+        user_id = sessionStorage.getItem("user_id");
+    }
+
+    var dep;
+    var branch;
+
+    if(userLevel == 5){
+
+    }else if(userLevel == 4){
+        branch = sessionStorage.getItem("user_branch");
+    }else if(userLevel < 4){
+        dep = sessionStorage.getItem("user_dep");
+    }
+
+    var dataString = {
+        'request': 59,
         'company_id': company_id,
         'user_id':user_id,
         'branch':branch,
@@ -4680,14 +4967,14 @@ function ListUsers(){
                 }
 
                 var deleteButton = 'deletebtn' + user_id;
-                var buttonID = 'reset'+user_id;
+                var buttonID = 'resetStaff'+ user_id;
                 var adder = "";
                 var deleter = "";
                 if(userLevel == 1){
 
                 }else{
-                    adder = "<button class='btn btn-warning' onclick='resetStaff(" + user_id + ")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
-                    deleter = "<button class='btn btn-danger' onclick='hideStaff(" + user_id + ")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
+                    adder = "<button class='btn btn-warning' onclick='resetStaff("+user_id+")'> <i id = "+buttonID+" class='fa fa-key'></i></button>";
+                    deleter = "<button class='btn btn-danger' onclick='hideStaff("+user_id+")'> <i id = "+deleteButton+" class='fa fa-trash'></i></button>";
                 }
 
                 tbHTML += "<tr><td class='col-green font-weight-bold'>"+first_name+"</td>"+
@@ -4721,6 +5008,7 @@ function ListUsers(){
 }
 
 
+
 function getUserDetails(id){
     logger("Get User Details for "+userID);
     var dataString = {
@@ -4736,16 +5024,16 @@ function getUserDetails(id){
             logger(data);
             var UsersJSON = JSON.parse(data);
     
-            logger("Length Ya " + UsersJSON + " Ni " + UsersJSON.userss.length);
-            for (var i = 0; i < BranchJSON.branches.length; i++) {
+            logger("Length Ya " + UsersJSON + " Ni " + UsersJSON.users.length);
+            for (var i = 0; i < UsersJSON.users.length; i++) {
 
 
-                logger("User Status "+UsersJSON.Users[i].status_desc);
+                logger("User Status "+UsersJSON.users[i].status_desc);
             
                 $('input[name="u_name"]').val(UsersJSON.users[i].first_name);
-                //$('#project-edit-title').html("Edit "+localStorage.getItem("branch")+" : "+BranchJSON.branches[i].branch_name);
+                $('#project-edit-title').html("Edit User: "+UsersJSON.users[i].first_name); 
                 $('input[name="u_email"]').val(UsersJSON.users[i].user_email);
-//load branch status: 0 represents Closed while 1 Represents Closed.
+
             
             }
         },
@@ -4760,25 +5048,81 @@ function getUserDetails(id){
 
 
 function resetStaff(id){
-    localStorage.setItem("user_id", id);
+    localStorage.setItem("userID", id);
     window.location = "user-edit";
     return false;
 }
 
+// function hideStaff(user_id){
+//     localStorage.setItem("user_id", user_id);
+//     var user_id = localStorage.getItem("user_id");
+//     logger(user_id)
+//     logger("this",user_id)
+//     var message = $(this).data('confirm');
+//     var dataString = {
+//         'request':57,
+//         'user_id':user_id
+//     }
+//     logger("hideStaff "+user_id);
+
+
+//     $.ajax({
+//         type: "POST",
+//         url: myurl,
+//         data: dataString,
+//         success: function(data) {
+  
+//     // window.location = "branches";
+    		
+//     var jsObject = JSON.parse(data);
+//     logger(jsObject);
+//     var bool_code = jsObject.hideUser[0].bool_code;
+//     logger("bool_code "+bool_code);
+    
+//     if(bool_code){
+//         //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
+//           swal({
+//             title: "Are you sure ??",
+//             text: message, 
+//             icon: "warning",
+//             buttons: true,
+//             dangerMode: true,
+//         })
+//         .then((willDelete) => {
+//           if (willDelete) {
+//             swal("Staff has been deleted!", {
+//               icon: "success",
+//             });
+//             localStorage.setItem("user_id", user_id);
+//             window.location = "users";
+//           } else {
+//             swal("Staff has not been deleted!");
+//           }
+//         });
+    
+//     }
+        
+//         }
+// })
+//     return false;
+// }
+
+
+
 function hideStaff(user_id){
     localStorage.setItem("user_id", user_id);
     var user_id = localStorage.getItem("user_id");
-    logger(user_id)
-    logger("this",user_id)
-    var message = $(this).data('confirm');
-    var dataString = {
-        'request':57,
-        'user_id':user_id
-    }
-    logger("hideStaff "+user_id);
-
-
-    $.ajax({
+    swal({
+        title: "Are you sure ??",
+        text: message, 
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        logger("swal confirmed", willDelete)
+        $.ajax({
         type: "POST",
         url: myurl,
         data: dataString,
@@ -4793,31 +5137,38 @@ function hideStaff(user_id){
     
     if(bool_code){
         //localStorage.setItem("branch", jsObject.hidebranch[0].branch_id);
-          swal({
-            title: "Are you sure ??",
-            text: message, 
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("Staff has been deleted!", {
-              icon: "success",
-            });
-            localStorage.setItem("user_id", user_id);
-            window.location = "users";
-          } else {
-            swal("Staff has not been deleted!");
-          }
+          localStorage.setItem("user_id", user_id);
+        window.location = "users";
+        swal("Staff has been deleted!", {
+          icon: "success",
         });
+        
     
     }
         
         }
 })
+        
+      
+      } else {
+        logger("swal not confirmed")
+        swal("Staff has not been deleted!");
+      }
+    });
+    logger(user_id)
+    logger("this",user_id)
+    var message = $(this).data('confirm');
+    var dataString = {
+        'request':57,
+        'user_id':user_id
+    }
+    logger("hideStaff "+user_id);
+
+
+
     return false;
 }
+
 
 
 
@@ -4950,17 +5301,20 @@ if(user_email == ""){
 
 $('#projectSaver').on('click', function(e) {
 	logger("projectSaver Now");
+    var f_name = $('input[name = "f_name"]').val();
     var p_name = $('input[name = "p_name"]').val();
     var p_desc = $('input[name = "p_desc"]').val();
+    var pr_name = $('input[name = "pr_name"]').val();
     var project_status = $('#project-status').val();
     var dep_name = $('#dep_name').val();
-
+    var first_name = $('#first_name').val();
     var startDate = $('input[name = "startDate"]').val();
     var endDate = $('input[name = "endDate"]').val();
 
 	var t_fee = $('input[name = "t_fee"]').val();
 	var b_cycle = $('#b_cycle').val();
 	var company_users = $('#company-users').val();
+    
 	
     var errorMessage;
 
@@ -4970,6 +5324,17 @@ $('#projectSaver').on('click', function(e) {
 		document.getElementById('confrimed').style.display = 'block';
         return;
 	}
+    
+
+    if(f_name == ""){
+		errorMessage = "File Number is Required";
+		document.getElementById("confrimed").innerText = errorMessage;
+		document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("f_name").style.borderColor = "red";
+		return;	
+	}else{
+        document.getElementById("f_name").style.borderColor = "green";
+    }
 	
 	if(p_name == ""){
 		errorMessage = "File Name is Required";
@@ -4991,6 +5356,8 @@ $('#projectSaver').on('click', function(e) {
         document.getElementById("p_desc").style.borderColor = "green";
     }
 	
+  
+
 	if(project_status == ""){
 		errorMessage = "Specify Project Status";
 		document.getElementById("confrimed").innerText = errorMessage;
@@ -4999,13 +5366,25 @@ $('#projectSaver').on('click', function(e) {
 	}
 	
 	if(dep_name == ""){
-		errorMessage = "Specify Department";
+		errorMessage = "Specify Practice Group";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
 		return;	
     }
 
+    if(first_name == ""){
+		errorMessage = "Specify Partner";
+		document.getElementById("confrimed").innerText = errorMessage;
+		document.getElementById('confrimed').style.display = 'block';
+		return;	
+    }
+
+    
+
     var dataString = {
+        'pr_name': pr_name,
+        'f_name': f_name,
+        'first_name': first_name,
         'p_name': p_name,
         'p_desc': p_desc,
         'project_status': project_status,
@@ -5385,6 +5764,7 @@ $('#loginbutton').on('click', function(e) {
                 document.getElementById("password").style.borderColor = "#666";
 				document.getElementById("confrimed").style.color = "#666";
 			    localStorage.setItem("user_id", jsObject.login[0].user_id);
+                sessionStorage.setItem("user_id", jsObject.login[0].user_id);
 				localStorage.setItem("user_email", jsObject.login[0].user_email);
 				sessionStorage.setItem("first_name", jsObject.login[0].first_name);
 				sessionStorage.setItem("company_id", jsObject.login[0].company_id);
@@ -5532,14 +5912,19 @@ $('#register').on('click', function(e) {
 
 function ListProjects() {
     var company_id =  sessionStorage.getItem("company_id");
-    var user_id;
+   
+    var user_id="";
+    var dep_id="";
+    var branch="";
+
+    logger("userLevel "+userLevel);
     if(userLevel == 1){
         user_id = sessionStorage.getItem("user_id");
     }
 
-    var dep_id;
-    var branch;
-    logger("userLevel "+userLevel);
+  
+
+    
     if(userLevel < 4){
         dep_id = sessionStorage.getItem("user_dep");
     }
@@ -5550,10 +5935,13 @@ function ListProjects() {
 
     var dataString = {
         'request': 4,
+            
         'company_id': company_id,
         'user_id':user_id,
         'dep_id':dep_id,
-        'branch':branch
+        'branch':branch,
+        'partner_id zqxa'
+       
     };
     logger(dataString);
     $.ajax({
@@ -5568,6 +5956,9 @@ function ListProjects() {
             logger("Length of Projects JSON "+ProjectJSON.projects.length);
             for (var i = 0; i < ProjectJSON.projects.length; i++) {
                 var project_id = ProjectJSON.projects[i].project_id;
+                var project_no = ProjectJSON.projects[i].project_no;
+                var partner_name = ProjectJSON.projects[i].partner_name;
+                var project_name = ProjectJSON.projects[i].project_name;
                 var project_name = ProjectJSON.projects[i].project_name;
                 var hours = ProjectJSON.projects[i].hours;
                 var created_on = ProjectJSON.projects[i].created_on;
@@ -5599,10 +5990,12 @@ function ListProjects() {
                 if(userLevel == 1){
                     toadd = "None Required";
                 }else{
-                    toadd ="<a onclick = 'editProject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a a onclick = 'hideproject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
+                    toadd ="<a onclick = 'editProject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a  onclick = 'hideproject("+project_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
 
-                tbHTML += "<tr><td><a href='#'>"+project_name+"</a></td>"+
+                tbHTML += "<tr><td><a href='#'>"+project_no+"</a></td>"+
+                '<td class="col-blue font-weight-bold">'+partner_name+'</td>'+
+                "<td><a href='#'>"+project_name+"</a></td>"+
                 '<td class="col-green font-weight-bold">'+project_desc+'</td>'+
                 "<td>"+created_on+"</td>"+
                 '<td class="col-purple font-weight-bold">'+dep_name+'</td>'+
@@ -5612,7 +6005,7 @@ function ListProjects() {
                 "<td>"+end_date+"</td>"+
                 "<td>"+toadd+"</td></tr>";
             }
-            tbHTML = '<table class="table table-striped table-hover" id="projectsTable" style="width:100%;"><thead><tr><th>Name</th><th>Description</th><th>Created On</th><th>Department</th><th>Client Name</th><th>Status</th><th>Start Date</th><th>End Date</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
+            tbHTML = '<table class="table table-striped table-hover" id="projectsTable" style="width:100%;"><thead><tr><th>File No</th><th>Partner</th><th>Name</th><th>Description</th><th>Created On</th><th>Practice Group</th><th>Client Name</th><th>Status</th><th>Start Date</th><th>End Date</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
             $('#projects-table').html(tbHTML);
             $('#projectsHead').html(ProjectJSON.projects.length + " "+localStorage.getItem("pr_name"));
             var oTable = $('#projectsTable').DataTable({

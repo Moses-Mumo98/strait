@@ -40,7 +40,7 @@
                         <select id = "branch-name" name = "branch-name" class="form-control select2" onchange="listDepartment(1)"></select>
                   </div>
                   <div id = "depDiv" class="form-group">
-                    <label id = "dep_label">Practice Group Name</label>
+                    <label id = "dep_label">Department Name</label>
                     <select id = "dep_name" name = "dep_name" class="form-control select2"></select>
                  </div>
                   <div class="form-group">

@@ -136,7 +136,7 @@
                      <p><strong>PAY THROUGH M-PESA</strong></p>
                      <div class="form-group">
                         <label for="mobile">Your M-PESA Mobile No</label>
-                        <input type="number" name="mobile" class="form-control" id="mobile" placeholder="Mobile No">
+                        <input  name="mobile" class="form-control" id="mobile" placeholder="Mobile No">
                      </div>
                      <button type="button" class="btn btn-primary" name="mpesa_pay" id="mpesa_pay" onclick="mpesaPayer()"><i id = 'mpesaIcon' class="fa fa-spinner"></i> PAY</button>
                      <input type="hidden" name="payment_method" value="mpesa">
@@ -160,7 +160,7 @@
                         <input type="text" class="form-control card-cvc" placeholder="CVC" name="cvs" id="cvc" value="" style="padding:10px !important" autocomplete="off">
                      </div>
                      <div class="form-group col-md-12" style="padding-left:0px;padding-left:0px">
-                        <input type="number" class="form-control card-expiry-month" placeholder="Exp. Month" name="e_month" id="e_month" value="" style="padding:10px !important; width:115px; display:inline" autocomplete="off" size="2">  &nbsp; 
+                        <input type="month" class="form-control card-expiry-month" placeholder="Exp. Month" name="e_month" id="e_month" value="" style="padding:10px !important; width:115px; display:inline" autocomplete="off" size="2">  &nbsp; 
                         <input type="number" class="form-control card-expiry-year" placeholder="Exp. Year" name="e_year" id="e_year" value="" style="padding:10px !important; width:130px;display:inline" autocomplete="off" size="4"> 
                      </div>
                      <button type="button" class="btn btn-primary" style="margin-top:25px" name="cc_pay" id="cc_pay" onclick="ccPayer()"><i id = 'ccIcon' class="fa fa-spinner"></i> PAY</button>

@@ -51,14 +51,14 @@
 <section class="section">
     <ul class="breadcrumb breadcrumb-style ">
         <li class="breadcrumb-item">
-            <h4 id = "b_header" class="page-title m-b-0">Departments</h4>
+            <h4 id = "b_header" class="page-title m-b-0">Practice Group</h4>
         </li>
         <li class="breadcrumb-item">
             <a href="home">
             <i data-feather="home"></i></a>
         </li>
-        <li class="breadcrumb-item"><a id = "b_link" href="departments">Departments</a></li>
-        <li class="breadcrumb-item"><a id = "b_add_link" href="department-edit">Add Departments</a></li>
+        <li class="breadcrumb-item"><a id = "b_link" href="departments">Practice Group</a></li>
+        <li class="breadcrumb-item"><a id = "b_add_link" href="department-edit">Add Practice Group</a></li>
     </ul>
     <div class="section-body">
     <div class="row">
@@ -72,14 +72,14 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label id = "l_pname" for="d_name">Department Name</label>
+                                <label id = "l_pname" for="d_name">Practice Group Name</label>
                                 <input id="d_name" type="text" class="form-control" name="d_name" autofocus>
                             </div>
                             <div class="form-group">
                                 <label id = "l_b_name">Branch Name</label>
                                 <select id = "branch-name" name = "branch-name" class="form-control select2"></select>
                             </div>
-                            <label>Department Status</label>
+                            <label>Practice Group Status</label>
                                 <div class="select-dropdown">
                               
 	<select id="status_dropdown">
