@@ -251,7 +251,7 @@ switch ($request) {
 	break;
 
 	case 60:
-		getPartner();
+		getPartner($_POST['company_id']);
 	break;
 
 
@@ -260,35 +260,73 @@ switch ($request) {
     break;
 }
 
-function getPartner(){
+function getPartner($company_id){
 	$conn = connect("timetracker1");
-	$typehere = "getPartner";
+    $typehere = "getPartner";
+	$user_id = $_POST['user_id'];
 	debug("=================================================",$typehere);
+	debug(json_encode($_POST),$typehere);
 
-
-	$strSQL = "SELECT * FROM tbl_users WHERE user_level=5";
-	debug($strSQL, $typehere);
+	//echo json_encode($conn);
+	
+	$limit = $_POST['limit'];
+	
+	if($limit != ""){
+		if($limit ==1){
+			$adder = " and user_level > $limit ";
+		}
+		
+		if($limit ==2){
+			$adder = " and user_level = 1";
+		}
+	}
+	
+	if($user_id == ""){
+		$branch = $_POST['branch'];
+		$dep = $_POST['dep'];
+		if($branch != ""){
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l
+			 ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			 tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			 where user_branch = '$branch' $adder";
+		}else if($dep != ""){
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			where user_dep = '$dep' $adder ";
+		}else {
+			$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+			ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+			tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+			where user_company = '$company_id' $adder and efficient=3";
+		}
+	}else{
+		$strSQL = "SELECT s.*,l.*,t.*,td.dep_name,tb.branch_name FROM tbl_users s LEFT JOIN user_levels l 
+		ON l.level_id = s.user_level LEFT JOIN user_status t ON t.status_id = s.user_status left join 
+		tbl_departments td on td.dep_id = s.user_dep left join tbl_branches tb on tb.branch_id = s.user_branch 
+		where user_id ='$user_id' $adder";
+	}
+    debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
+	//debug(json_encode(mysqli_free_result($objQuery)));
     $intNumField = mysqli_num_fields($objQuery);
     $resultArray = array();
     while ($obResult = mysqli_fetch_array($objQuery)) {
         $arrCol = array();
-        for ($i = 0; $i < $intNumField; $i ++) {
-             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        for ($i = 0; $i < $intNumField; $i++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery,$i)->name] = $obResult[$i];
         }
 		
 		try {
-			array_push($resultArray, $arrCol);
+			array_push($resultArray,$arrCol);
 		} catch (Exception $e) {
-			debug("Error Reporting ".$e->getMessage(),$typehere);
+			debug("Error Reporting".$e->getMessage(),$typehere);
 		}
     }
-	debug("Response ".json_encode(array("partner" => $resultArray)),$typehere);
+	debug("Response".json_encode(array("partner" => $resultArray)),$typehere);
     echo json_encode(array("partner" => $resultArray));
     closer($conn);
 	debug("=================================================",$typehere);
-	
-
 }
 
 function confirmpassword($user_email,$user_password){
@@ -547,6 +585,7 @@ function getClientInvoices(){
 		$cycle = $obResult['cycle'];
 		$fee = $obResult['fee'];
 		$minutes = $obResult['minutes'];
+
 		$subtotal = 0;
 		$desc = '';
 		debug("cycle ".$cycle." @ ".$fee." Worked ".$minutes,$typehere);
@@ -554,11 +593,11 @@ function getClientInvoices(){
 			$subtotal = $fee;
 			$desc = 'One Off';
 		}else if($cycle == 2){
-			$hours = floor($minutes / 3600);
-			$subtotal = $hours * $fee;
+			$minutes = floor( 60 / $minutes);
+			$subtotal = $minutes * $fee;
 			$desc = 'minutes';
 		}else if($cycle == 3){
-			$days = floor($minutes / (3600*24));
+			$days = floor($minutes / (60*24));
 			$subtotal = $days * $fee;
 			$desc = 'Daily';
 		}
@@ -599,10 +638,23 @@ function getStaffThroughPut(){
 	$f = fetch($q);
 	$user_id = $f['user_id'];
 
-	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,SUM(c.minutes)
-	 AS minutes,s.sub_progress,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN sub_tasks s ON c.sub_id = c.sub_id
-	  LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id
-	   LEFT JOIN tbl_users q ON q.user_id = p.client_id WHERE c.user_id = '$user_id' and counter_date between '$startDate' and '$endDate' GROUP BY p.project_id";
+	debug("user id s",$user_id);
+
+	$strSQL = "SELECT p.project_id,c.user_id,u.user_email ,u.first_name ,p.project_name ,t.task_name,s.sub_name ,c.counter_date ,  SUM(c.minutes)
+	 AS minutes,s.sub_progress,chargable,fee,q.first_name 
+	 AS client_name 
+	 FROM task_counter c
+	  LEFT JOIN sub_tasks s ON c.sub_id = c.sub_id
+	  LEFT JOIN tbl_tasks t ON t.assigned_to = c.user_id 
+	  LEFT JOIN tbl_projects p ON p.project_id = t.project_id 
+	  LEFT JOIN tbl_users u ON u.user_id = c.user_id
+	   LEFT JOIN tbl_users q ON q.user_id = p.client_id
+	    WHERE c.added_by = '$user_id'
+	   
+	    AND counter_date 
+	    BETWEEN '$startDate' 
+	    AND '$endDate' 
+	    GROUP BY p.project_id  ";
 		
     debug($strSQL, $typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -919,12 +971,14 @@ function invoiceDetails(){
 			$subtotal = $fee;
 			$desc = 'One Off';
 		}else if($cycle == 2){
-			$minutes = floor($minutes /3600);
-			$subtotal = $hours * $fee;
+			$minutes = floor( 60 / $minutes);
+			$subtotal = $minutes * $fee;
+			
 			$desc = 'minutes';
 		}else if($cycle == 3){
-			$days = floor($minutes / (3600*24));
+			//$days = floor($minutes / (3600*24));
 			$subtotal = $days * $fee;
+			//echo(array_product($days));
 			$desc = 'Daily';
 		}
 		
@@ -1042,20 +1096,20 @@ function getSubTasksLogs(){
 		$task_id = $task_name;
 	}
 	debug("task_id ".$task_id,$typehere);
-    if($user_id == ""){
+    if($user_id == "")
 	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
 	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
-	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON
-	 p.project_id = p.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id'
-	  GROUP BY counter_date,c.user_id,c.sub_id";
-	}
-	else{
+	ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' 
+	GROUP BY counter_date,c.user_id,c.sub_id";
+	
+	else
 	$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,
 	c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c LEFT JOIN sub_tasks s 
 	ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
-	p.project_id = p.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' 
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' 
 	and c.user_id = '$user_id' GROUP BY counter_date,c.sub_id";
-	}	
+		
 	
     debug($strSQL,$typehere);
     $objQuery = mysqli_query($conn,$strSQL);
@@ -1080,6 +1134,76 @@ function getSubTasksLogs(){
     closer($conn);
 	debug("=================================================",$typehere);
 }
+
+
+
+// function getSubTasksLogs(){
+// 	$conn = connect("timetracker1");
+//     $typehere = "getSubTasksLogs";
+// 	debug("=================================================",$typehere);
+// 	$task_id = $_POST['task_id'];
+// 	$company = $_POST['company_id'];
+// 	$project = $_POST['project_name'];
+// 	$task_name = $_POST['task_name'];
+// 	$sub_id = $_POST['sub_id'];
+// 	$user_id = $_POST['user_id'];
+	
+// 	$getProjectID = "SELECT * FROM tbl_projects s WHERE s.project_name = '$project' and company_id = '$company'";
+// 	debug($getProjectID,$typehere);
+// 	$a = execute_($getProjectID,$conn);
+// 	$b = fetch($a);
+// 	$project_id = $b['project_id'];
+// 	debug("Project ID ".$project_id,$typehere);
+	
+// 	if(!is_numeric($task_name)){
+// 		$getTaskID = "SELECT * from tbl_tasks s where s.project_id = '$project_id' and task_name = '$task_name'";
+// 		debug($getTaskID,$typehere);
+// 		$q = execute_($getTaskID,$conn);
+// 		$f = fetch($q);
+// 		$task_id = $f['task_id'];
+// 		debug("Task ID ".$task_id,$typehere);
+// 	}else{
+// 		$task_id = $task_name;
+// 	}
+// 	debug("task_id  ".$task_id,$typehere);
+	
+// 	if($user_id == "")
+// 		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,
+// 		s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee FROM task_counter c 
+// 		LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id 
+// 		LEFT JOIN tbl_projects p ON p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id 
+// 		WHERE s.task_id = '$task_id' GROUP BY counter_date,c.user_id,c.sub_id";
+// 	else
+// 		$strSQL = "SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,
+// 		s.sub_name,c.counter_date,SUM(c.minutes) AS minutes,s.sub_progress,chargable,fee 
+// 		FROM task_counter c LEFT JOIN sub_tasks s ON s.sub_id = c.sub_id LEFT JOIN tbl_tasks t 
+// 		ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id 
+// 		LEFT JOIN tbl_users u ON u.user_id = c.user_id WHERE s.task_id = '$task_id' and 
+// 		c.user_id = '$user_id' GROUP BY counter_date,c.sub_id";
+		
+//     debug($strSQL, $typehere);
+//     $objQuery = mysqli_query($conn,$strSQL);
+//     $intNumField = mysqli_num_fields($objQuery);
+//     $resultArray = array();
+//     while ($obResult = mysqli_fetch_array($objQuery)) {
+//         $arrCol = array();
+		
+//         for ($i = 0; $i < $intNumField; $i ++) {
+//              $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+//         }
+		
+// 		try {
+// 			array_push($resultArray, $arrCol);
+// 		} catch (Exception $e) {
+// 			debug("Error Reporting ".$e->getMessage(),$typehere);
+// 		}
+//     }
+// 	debug("Response ".json_encode(array("logs" => $resultArray)),$typehere);
+//     echo json_encode(array("logs" => $resultArray));
+//     closer($conn);
+// 	debug("=================================================",$typehere);
+// }
+
 
 
 function hidetask($sub_id){
@@ -2742,11 +2866,11 @@ function saveNewUser(){
 			}
 			array_push($result, array("bool_code" => true,"message" => $u_name ." Successfully Registered"));
 		} else {
-			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
+			//array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
 		}
 		echo json_encode(array("useradd" => $result));
 	}else{
-		debug("Update Details For ".$staff_id,$typehere);
+		debug("Update Details For ".$user_id,$typehere);
 		$sql = "UPDATE tbl_users set created_on = NOW(), user_email = '$u_email',first_name = '$u_name', user_level = '$level_id', user_status='$status_id',user_dep = '$dep_id' where user_id = '$user_id'";
 		debug($sql,$typehere);
 		$roww = execute_($sql,$conn);
@@ -2763,6 +2887,158 @@ function saveNewUser(){
     closer($conn);
 	debug("=================================================",$typehere);
 }
+
+
+// function saveNewUser(){
+//     $u_name = $_POST['u_name'];
+// 	$u_email = $_POST['u_email'];
+//      //$user_level =  getUserLevelID($_POST['user_level']);
+// 	$user_level =  $_POST['user_level'];
+//     $user_status = $_POST['user_status'];
+// 	$company_id = $_POST['company_id'];
+// 	$added_by = $_POST['added_by'];
+// 	$branch = $_POST['branch'];
+// 	$dep = $_POST['dep'];
+// 	$user_id = $_POST['user_id'];
+// 	$typehere = "saveNewUser";
+//     debug("===========================================", $typehere);
+//     $conn = connect("timetracker1");
+// 	debug("Got User ID as ".$user_id,$typehere);
+	
+// 	$type = $_POST['type'];
+	
+// 	if($type == "SCHOOL") $getLevel = "SELECT * FROM user_levels s WHERE s.school_desc = '$user_level'";
+// 	else if($type == "LAWFIRM") $getLevel = "SELECT * FROM user_levels s WHERE s.law_desc = '$user_level'"; else $getLevel = "SELECT * FROM user_levels s WHERE s.level_desc = '$user_level'";
+// 	debug($getLevel,$typehere);
+// 	$a = execute_($getLevel,$conn);
+// 	$b = fetch($a);
+// 	$level_id = $b['level_id'];
+	
+// 	if(!is_numeric($branch)){
+// 		$getBranchID = "SELECT * FROM tbl_branches WHERE branch_name = '$branch' and company_id = '$company_id'";
+// 		debug($getBranchID,$typehere);
+// 		$a = execute_($getBranchID,$conn);
+// 		$b = fetch($a);
+// 		$branch_id = $b['branch_id'];
+// 	}else{
+// 		$branch_id = $branch;
+// 	}
+	
+// 	if(!is_numeric($dep)){
+// 		$getDepID = "SELECT * FROM tbl_departments WHERE dep_name = '$dep' and company = '$company_id'";
+// 		debug($getDepID,$typehere);
+// 		$a = execute_($getDepID,$conn);
+// 		$b = fetch($a);
+// 		$dep_id = $b['dep_id'];
+// 	}else{
+// 		$dep_id = $dep;
+// 	}
+	
+// 	$getStatus = "SELECT * FROM user_status WHERE status_desc = '$user_status'";
+// 	debug($getStatus,$typehere);
+// 	$a = execute_($getStatus,$conn);
+// 	$b = fetch($a);
+// 	$status_id = $b['status_id'];
+	
+// 	debug("level_id ".$level_id." status_id ".$status_id,$typehere);
+	
+// 	if($user_id == ""){
+// 		debug("Save New Staff ",$typehere);
+				
+// 		$password = randomString(6);
+// 		debug("Generated Password" . $password, $typehere);
+		
+// 		$GlobalID = checkUserGlobal($u_name,$u_email,$password);
+// 		debug("User Global ID".$GlobalID,$typehere);
+		
+// 		$checker2 = "select user_id, first_name from tbl_users where user_email = '$u_email'";
+// 		//$checker2 = "SELECT * from tbl_users where first_name='$u_name'and user_email = '$u_email'";
+// 		debug($checker2,$typehere);
+// 		$q = execute_($checker2,$conn);
+// 		$n = num($q);
+// 		$user_id = 0;
+// 		$result = array();
+// 		while ($f = fetch($q)) {
+// 			$user_id = $f['user_id'];
+// 			$first_name = $f['u_name'];
+// 		}
+		
+// 		debug("user_id ".$user_id,$typehere);
+// 		if ($user_id > 0) {
+// 			$sql = "UPDATE tbl_users set global_id = '$GlobalID' where user_id = '$user_id'";
+// 		}else{
+// 			$sql = "INSERT INTO tbl_users(global_id,user_email,user_password,first_name,user_level,user_status,user_company,created_on,user_branch,user_dep) VALUES ('$GlobalID','$u_email',MD5('$password'),'$u_name','$level_id','$status_id','$company_id',NOW(),'$branch_id','$dep_id')";
+			
+// 		}
+// 		debug($sql,$typehere);
+// 		$roww = execute_($sql,$conn);
+// 		debug($roww,$typehere);
+// 		 $num = affected($conn);
+// 		 debug("Inserted".$num." User Records", $typehere);
+	
+// 		if ($num > 0) {	
+// 			if($user_id < 1){
+
+// 			$docs = connect("docs");
+			
+// 			$exploded = multiexplode(array(" "), $u_name);
+// 			$f_name = $exploded[0];
+// 			$l_name = $exploded[1];
+			
+// 			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$u_name','1','1')";
+// 			debug($ins,$typehere);
+// 			execute_($ins,$docs);
+// 			$in = affected($docs);
+			
+// 			debug("Saved ".$in." DMS Records",$typehere);
+			
+// 			$id = last_id($docs);
+			
+// 			if($level_id > 2){
+// 				$admin = 1;
+// 			}else{
+// 				$admin = 0;
+// 			}
+				
+// 			$saver = "INSERT INTO dms_admin(id,admin) VALUES ('$id','$admin')";
+// 			debug($saver,$typehere);
+// 			execute_($saver,$docs);
+// 			$in2 = affected($docs);
+// 			debug("Saved ".$in2." DMS Admin Records",$typehere);
+			
+// 			if($level_id == 1){
+// 				$save = "INSERT INTO dms_department (name) VALUES ('$u_name');";
+// 				debug($save,$typehere);
+// 				execute_($save,$docs);
+// 			}
+			
+// 			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
+// 			debug($u_email, $typehere);
+// 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
+// 			}
+// 			array_push($result, array("bool_code" => true,"message" => $u_name ." Successfully Registered"));
+// 		} else {
+// 			array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
+// 		}
+// 		echo json_encode(array("useradd" => $result));
+// 	}else{
+// 		debug("Update Details For ".$user_id,$typehere);
+// 		$sql = "UPDATE tbl_users set created_on = NOW(), user_email = '$u_email',first_name = '$u_name', user_level = '$level_id', user_status='$status_id',user_dep = '$dep_id' where user_id = '$user_id'";
+// 		debug($sql,$typehere);
+// 		$roww = execute_($sql,$conn);
+// 		$num = affected($conn);
+// 		debug("Updated " . $num." User Records", $typehere);
+// 		$result = array();
+// 		if ($num > 0) {
+// 			array_push($result, array("bool_code" => true,"message" => $u_name . " Details Successfully Updated"));
+// 		} else {
+// 			array_push($result, array("bool_code" => false,"message" => " Failed to Update Staff Details"));
+// 		}
+// 		echo json_encode(array("useradd" => $result));
+// 	}
+//     closer($conn);
+// 	debug("=================================================",$typehere);
+// }
 
 
 // function saveNewUser(){
@@ -3572,6 +3848,7 @@ function getMyProjects(){
 	
 		$arrCol["hours"] = $hours;
 		$arrCol["users"] = $users;
+		$arrCol["partner_name"] = $partner_name;
 		
 		try {
 			array_push($resultArray, $arrCol);
@@ -3584,31 +3861,6 @@ function getMyProjects(){
     closer($conn);
 	debug("=================================================",$typehere);
 }
-
-
-// function get_partner_name($partner_id){
-// 	$conn = connect("timetracker1");
-// 	$partner_name="";
-// 	$typehere = "get_partner_name";
-// 	debug("=================================================",$typehere);
-// 	$strSQL = "select first_name from tbl_users where user_id= '".$partner_id."'";
-
-// 	debug($strSQL,$typehere);
-	
-
-// 	$objQuery = mysqli_query($conn,$strSQL);
-    
-//     while ($obResult = mysqli_fetch_array($objQuery)) {
-      
-// 		$partner_name= get_partner_name($obResult['first_name']);
-
-	
-		
-// 	}
-
-// 		return $partner_name;
-
-// }
 
 function get_partner_name($partner_id){
     $conn = connect("timetracker1");
@@ -4034,7 +4286,7 @@ function resetPassword($user_email){
 		}
 		push_mail($f['user_email'], $email,"Password Reset","KAPS STRAIT","kapslabnotify@kaps.co.ke");
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Successful"));
-		array_push($result, array("bool_code" => true,"message"=>"To reset your password use your email address"));
+		array_push($result, array("bool_code" => true,"message"=>"To reset your password check your email address"));
 	}else{
 		array_push($result, array("bool_code" => true,"message"=>"Password Reset Failed,Try Again"));
 	}

@@ -1,0 +1,19 @@
+2022-10-18 15:44:34 - =================================================
+2022-10-18 15:44:34 - SELECT * FROM tbl_company c WHERE c.company_name = 'Legal'
+2022-10-18 15:44:34 - Found 0 Company Records
+2022-10-18 15:44:34 - ==================== ON GLOBAL ==========================
+2022-10-18 15:44:34 - SELECT * FROM tbl_users u WHERE u.user_email = 'mosesmumo49@gmail.com'
+2022-10-18 15:44:34 - INSERT INTO tbl_users(user_email,first_name,last_name,user_phone,user_password, created_on, user_status,user_image) VALUES ('mosesmumo49@gmail.com','Moses','Mumo','0705051906',MD5('ADMIN123456'),NOW(),'1','customer 3.png')
+2022-10-18 15:44:34 - SELECT * FROM gts_users u WHERE u.user_email = 'mosesmumo49@gmail.com'
+2022-10-18 15:44:34 - Found 0 User Records
+2022-10-18 15:44:34 - INSERT INTO gts_users(global_id,user_uname,user_lname,user_email,user_password,user_level,user_date_joined,user_status) VALUES ('','Moses','','mosesmumo49@gmail.com',MD5('ADMIN123456'),'23',NOW(),'0')
+2022-10-18 15:44:34 - Got User ID from Global as 
+2022-10-18 15:44:34 - ==================== OFF GLOBAL ==========================
+2022-10-18 15:44:34 - User Global ID 
+2022-10-18 15:44:34 - SELECT * FROM tbl_users u WHERE user_email = 'mosesmumo49@gmail.com'
+2022-10-18 15:44:34 - Found 0 User Records
+2022-10-18 15:44:34 - customer 3.png
+2022-10-18 15:44:34 - 
+2022-10-18 15:44:34 - Saved 0 Records
+2022-10-18 15:44:34 - Register Response {"register":[{"bool_code":false,"message":"An error occured,try again"}]}
+2022-10-18 15:44:34 - =================================================

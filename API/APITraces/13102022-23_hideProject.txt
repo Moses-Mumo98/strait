@@ -1,8 +1,0 @@
-2022-10-13 23:58:15 - ===========================================
-2022-10-13 23:58:15 - UPDATE tbl_projects set effective_status=3  where project_id = '20'
-2022-10-13 23:58:15 - Response{"hideProject":[{"bool_code":true,"message":"Failed to delete file"},{"project_id":"20"}]}
-2022-10-13 23:58:15 - =================================================
-2022-10-13 23:58:20 - ===========================================
-2022-10-13 23:58:20 - UPDATE tbl_projects set effective_status=3  where project_id = '20'
-2022-10-13 23:58:20 - Response{"hideProject":[{"bool_code":true,"message":"Failed to delete file"},{"project_id":"20"}]}
-2022-10-13 23:58:20 - =================================================

@@ -1,0 +1,26 @@
+2022-10-26 12:29:50 - =================================================
+2022-10-26 12:29:50 - SELECT * from tbl_users where user_email = ''
+2022-10-26 12:29:50 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	SUM(c.minutes) AS minutes,s.sub_progress,cycle,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN 
+	sub_tasks s ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id
+	 WHERE p.client_id = '' and counter_date between '2022-10-26' and '1970-01-01' GROUP BY p.project_id
+2022-10-26 12:29:50 - =================================================
+2022-10-26 12:29:50 - SELECT * from tbl_users where user_email = ''
+2022-10-26 12:29:50 - Response {"logs":[]}
+2022-10-26 12:29:50 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	SUM(c.minutes) AS minutes,s.sub_progress,cycle,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN 
+	sub_tasks s ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id
+	 WHERE p.client_id = '' and counter_date between '2022-10-26' and '2022-10-26' GROUP BY p.project_id
+2022-10-26 12:29:50 - Response {"logs":[]}
+2022-10-26 12:29:50 - =================================================
+2022-10-26 12:29:50 - =================================================
+2022-10-26 12:29:50 - SELECT * from tbl_users where user_email = 'Moses98@gmail.com'
+2022-10-26 12:29:50 - SELECT c.sub_id,c.user_id,u.user_email,u.first_name,p.project_name,t.task_name,s.sub_name,c.counter_date,
+	SUM(c.minutes) AS minutes,s.sub_progress,cycle,chargable,fee,q.first_name as client_name FROM task_counter c LEFT JOIN 
+	sub_tasks s ON c.sub_id = c.sub_id LEFT JOIN tbl_tasks t ON t.task_id = s.task_id LEFT JOIN tbl_projects p ON 
+	p.project_id = t.project_id LEFT JOIN tbl_users u ON u.user_id = c.user_id LEFT JOIN tbl_users q on q.user_id = p.client_id
+	 WHERE p.client_id = '129' and counter_date between '2022-10-26' and '2022-10-26' GROUP BY p.project_id
+2022-10-26 12:29:50 - Response {"logs":[]}
+2022-10-26 12:29:50 - =================================================

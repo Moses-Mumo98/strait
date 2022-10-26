@@ -27,7 +27,7 @@
               <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
-                    <label>Project Name</label>
+                    <label>File Name</label>
                     <select id = "project-name" name = "project-name" class="form-control select2" onchange="getAllTasks()"></select>
                  </div>
                  <div class="form-group col-6">
