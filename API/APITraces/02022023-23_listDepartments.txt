@@ -1,0 +1,4 @@
+2023-02-02 23:12:37 - =================================================
+2023-02-02 23:12:37 - SELECT t.dep_id,t.dep_name,t.dep_status,b.branch_name,t.created_on FROM tbl_departments t LEFT JOIN tbl_branches b ON b.branch_id = t.branch_id WHERE company_id = '3' and effective = 4
+2023-02-02 23:12:37 - Response {"departments":[{"dep_id":"3","dep_name":"Legal cases","dep_status":"1","branch_name":"Mary cosmetic MAIN","created_on":"2022-10-17 17:16:10"}]}
+2023-02-02 23:12:37 - =================================================

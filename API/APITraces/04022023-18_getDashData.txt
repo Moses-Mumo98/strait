@@ -1,0 +1,8 @@
+2023-02-04 18:04:43 - =================================================
+2023-02-04 18:04:43 - SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '3'
+2023-02-04 18:04:43 - SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '3'
+2023-02-04 18:04:43 - SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '3'
+2023-02-04 18:04:43 - SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '3'
+2023-02-04 18:04:43 - SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '3'
+2023-02-04 18:04:43 - DashData Response {"dashdata":[{"users":"22","projects":"1","tasks":"2","sub_tasks":"1","minutes":"68"}]}
+2023-02-04 18:04:43 - =================================================

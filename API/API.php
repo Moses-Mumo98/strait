@@ -333,7 +333,7 @@ function confirmpassword($user_email,$user_password){
 	$conn = connect("timetracker1");
     $typehere = "confirmPassword";
 	debug("=================================================",$typehere);
-    $getUser = "SELECT a.user_id,a.user_email,,a.first_name,a.reset_pass= 0 FROM tbl_users a where user_email = '$user_email'";
+    $getUser = "SELECT a.user_id,a.user_email,a.first_name,a.reset_pass= 0 FROM tbl_users a where user_email = '$user_email'";
     debug($getUser,$typehere);
 	$q = execute_($getUser,$conn);
 	$f = fetch($q);
@@ -4267,7 +4267,7 @@ function resetPassword($user_email){
 	}else{
 		$password = $_POST['newpass'];
 	}
-	debug("Generated Password " . $password, $typehere);
+		debug("Generated Password " . $password, $typehere);
 		
 	$updater = "update tbl_users set user_password = MD5('$password'),reset_pass = 0 where user_email = '$user_email'";
 	debug($updater,$typehere);

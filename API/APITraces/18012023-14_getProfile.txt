@@ -1,0 +1,4 @@
+2023-01-18 14:48:25 - =================================================
+2023-01-18 14:48:25 - SELECT user_email,first_name,last_name,user_phone,user_password,user_image FROM tbl_users where user_id = '128'
+2023-01-18 14:48:25 - Response {"profile":[{"user_email":"githuthimary@gmail.com","first_name":"Mary 1","last_name":"Githuthi","user_phone":"0743581860","user_password":"f22ad51c20deed8d9a769671acff1264","user_image":"798435black woman.jpg"}]}
+2023-01-18 14:48:25 - =================================================

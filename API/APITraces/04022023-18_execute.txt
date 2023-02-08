@@ -1,0 +1,17 @@
+2023-02-04 18:04:37 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company 
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'Moses' AND u.user_password = MD5('hammer666sarah')
+2023-02-04 18:04:42 - Executing SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
+	LEFT JOIN tbl_company c ON c.company_id = u.user_company 
+	LEFT JOIN user_levels l ON l.level_id = u.user_level
+	WHERE u.user_email = 'githuthimary@gmail.com' AND u.user_password = MD5('ADMIN123456')
+2023-02-04 18:04:43 - Executing SELECT COUNT(*) AS users FROM tbl_users t WHERE t.user_company = '3'
+2023-02-04 18:04:43 - Executing SELECT COUNT(*) AS projects FROM tbl_projects t WHERE t.company_id = '3'
+2023-02-04 18:04:43 - Executing SELECT COUNT(*) AS tasks FROM tbl_tasks s LEFT JOIN tbl_projects p ON p.project_id = s.project_id WHERE p.company_id = '3'
+2023-02-04 18:04:43 - Executing SELECT COUNT(*) AS sub_tasks FROM sub_tasks s LEFT JOIN  tbl_tasks t on t.task_id = s.task_id LEFT JOIN tbl_projects p ON p.project_id = t.project_id WHERE p.company_id = '3'
+2023-02-04 18:04:43 - Executing SELECT SUM(minutes) AS minutes FROM task_counter t LEFT JOIN tbl_users u ON u.user_id = t.user_id WHERE u.user_company = '3'
+2023-02-04 18:04:43 - Executing SELECT first_name FROM tbl_users WHERE user_id = '128'
+2023-02-04 18:04:43 - Executing SELECT SUM(minutes) AS hours FROM task_counter t LEFT JOIN sub_tasks st ON st.sub_id = t.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id  WHERE project_id = '36' GROUP BY st.sub_id
+2023-02-04 18:04:43 - Executing SELECT u.assigned_users from tbl_assigned_users u LEFT JOIN sub_tasks st ON st.sub_id = u.sub_id LEFT JOIN tbl_tasks c ON c.task_id = st.task_id where project_id = 36 
+2023-02-04 18:04:43 - Executing SELECT * from tbl_users where user_id in ('128,129,128')

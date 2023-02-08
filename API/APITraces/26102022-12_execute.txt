@@ -1,3 +1,0 @@
-2022-10-26 12:29:50 - Executing SELECT * from tbl_users where user_email = ''
-2022-10-26 12:29:50 - Executing SELECT * from tbl_users where user_email = ''
-2022-10-26 12:29:50 - Executing SELECT * from tbl_users where user_email = 'Moses98@gmail.com'
