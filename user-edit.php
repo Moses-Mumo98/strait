@@ -34,6 +34,10 @@
                       <label for="u_email">User Email</label>
                       <input id="u_email" type="email" class="form-control" name="u_email">
                     </div>
+                    <!-- <div class="form-group col-6">
+                      <label for="charges">Charges ksh 30 per hour</label>
+                      <input id="charges" type="text" class="form-control" name="charges">
+                    </div> -->
                   </div>
                   <div id = "branchDiv" class="form-group">
                         <label id = "l_b_name">Branch Name</label>

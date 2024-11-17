@@ -4,7 +4,7 @@
         <section class="section">
           <ul class="breadcrumb breadcrumb-style ">
             <li class="breadcrumb-item">
-              <h4 id = "title_users" class="page-title m-b-0">Users</h4>
+              <h4  class="page-title m-b-0">Clients</h4>
             </li>
             <li class="breadcrumb-item">
               <a href="home">
@@ -19,7 +19,7 @@
                   <div class="card-header">
                     <h4 id = "usersHead">Users</h4>
                     <div class="card-header-action">
-                      <button id = "addUser" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"title=""><i data-feather="user-plus"></i>Add New <span id = "user_a_label">User</span></button>
+                      <button id = "addUser" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"title=""><i data-feather="user-plus"></i>Add Client</span></button>
                     </div>
                   </div>
                   <div class="card-body">

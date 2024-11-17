@@ -5,6 +5,7 @@ ini_set('display_errors',1);
 session_start();
 include 'func.php';
 include 'upload.php';
+// include 'doc.php';
 $GLOBALS['URL'] = $_SERVER['REMOTE_ADDR'];
 $request = $_POST['request'];
 debug("Received Request " . $request . " And IP " . $GLOBALS['URL'], "API");
@@ -254,11 +255,245 @@ switch ($request) {
 		getPartner($_POST['company_id']);
 	break;
 
+	case 61:
+		getfilethroughput();
+		break;
+		case 62:
+			uploadDocuments($_POST['doc'],$_POST['descriptions'],$_POST['user_id']);
+			break;
+			case 63:
+				get_all_documents($_POST['user_id']);
+						   
+					break;
+					case 64:
+						get_all_users();
+								   
+							break;
+							case 65:
+								update_doc($_POST['id']);
+								break;
+		
 
     default:
         echo "Get Out Of Here";
     break;
 }
+
+function update_doc($id){
+    $conn = connect("timetracker1");
+    $typehere = "update_doc";
+    debug("===========================================", $typehere);
+
+    $strSQL = "UPDATE tbl_documents SET status = 2 WHERE id = '$id'";
+    debug($strSQL, $typehere);
+
+    $q = execute_($strSQL, $conn);
+    if ($q === false) {
+        // Handle SQL execution error
+        echo json_encode(array("update_doc" => array("bool_code" => false, "message" => "Error executing SQL query")));
+        closer($conn);
+        return;
+    }
+
+    $n = num($q);
+
+    $result = array();
+
+    if ($n > 0) {
+        // Update successful
+        array_push($result, array("bool_code" => true, "message" => $id . " Document Successfully Updated"));
+    } else {
+        // Update failed
+        array_push($result, array("bool_code" => true, "message" => "Document Successfully Updated"));
+    }
+
+    array_push($result, array("id" => $id));
+    debug("Response" . json_encode(array("update_doc" => $result)), $typehere);
+    echo json_encode(array("update_doc" => $result));
+
+    closer($conn);
+    debug("=================================================", $typehere);
+}
+
+
+
+function get_all_users(){
+	$conn = connect("timetracker1");
+	$typehere = "get_all_users";
+    debug("=================================================",$typehere);
+	//$strSQL = "SELECT * FROM tbl_property";
+	$strSQL = "SELECT * FROM tbl_users  WHERE user_level < 5";
+	$objQuery = mysqli_query($conn,$strSQL);
+    $intNumField = mysqli_num_fields($objQuery);
+    $resultArray = array();
+    while ($obResult = mysqli_fetch_array($objQuery)) {
+        $arrCol = array();
+        for ($i = 0; $i < $intNumField; $i ++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        }
+		
+		try {
+			array_push($resultArray, $arrCol);
+		} catch (Exception $e) {
+			debug("Error Reporting ".$e->getMessage(),$typehere);
+		}
+    }
+	debug("Response ".json_encode(array("get_all_users" => $resultArray)),$typehere);
+    echo json_encode(array("get_all_users" => $resultArray));
+    closer($conn);
+	debug("=================================================",$typehere);
+}
+
+function get_all_documents($user_id, $staff_id = null, $userIdArray = []) {
+    $conn = connect("timetracker1");
+    $typehere = "get_all_documents";
+    debug("=================================================", $typehere);
+
+    // Determine if the user is a super admin
+    $roleQuery = "SELECT user_level FROM tbl_users WHERE user_id = '$user_id'";
+    $roleResult = mysqli_query($conn, $roleQuery);
+    
+    if (!$roleResult) {
+        debug("Error fetching user role: " . mysqli_error($conn), $typehere);
+        closer($conn);
+        return;
+    }
+
+    $roleRow = mysqli_fetch_assoc($roleResult);
+    $userLevel = $roleRow['user_level'];
+
+    // Prepare the base SQL query
+    $sql = "SELECT 
+                u.user_id,
+                d.id,
+                d.doc_name,
+                d.description,
+                d.user_id,
+                d.status
+            FROM 
+                tbl_users AS u
+            INNER JOIN 
+                tbl_documents AS d ON u.user_id = d.user_id
+            WHERE 
+                d.status = '1' ";
+
+    // Apply condition based on the user level and presence of staff_id
+    if ($userLevel == '5') {
+        // If the user is an admin, they can see all documents
+        if ($staff_id) {
+            $sql .= " AND  FIND_IN_SET('$staff_id', d.user_id) > 0;";
+        }
+    } else {
+        // For regular users, show only their own documents
+        $sql .= " AND  FIND_IN_SET('$user_id', d.user_id) > 0;";
+    }
+
+    // If user ID array is provided, apply FIND_IN_SET on d.user_id
+    if (!empty($userIdArray)) {
+        $inClause = implode(',', array_map('intval', $userIdArray));
+        $sql .= " AND FIND_IN_SET(d.user_id, '$inClause')";
+    }
+
+    // Execute the query
+    $objQuery = mysqli_query($conn, $sql);
+    if (!$objQuery) {
+        debug("Error: " . mysqli_error($conn), $typehere);
+        closer($conn);
+        return;
+    }
+
+    $resultArray = array();
+    while ($obResult = mysqli_fetch_assoc($objQuery)) {
+        $resultArray[] = $obResult;
+    }
+
+    debug("Response " . json_encode(array("get_all_documents" => $resultArray)), $typehere);
+    echo json_encode(array("get_all_documents" => $resultArray));
+    closer($conn);
+    debug("=================================================", $typehere);
+}
+
+
+
+
+
+
+function uploadDocuments($files, $doc_names, $user_ids) {
+    $conn = connect("timetracker1");
+    $typehere = "uploadDocuments";
+
+    debug("=================================================", $typehere);
+    $uploadedDocuments = array();
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'pdf');
+    $path = 'Documents/';
+
+    // Check if files are uploaded
+    if (!empty($files['name']) && is_array($files['name'])) {
+        // Process each uploaded file
+        foreach ($files['name'] as $index => $filename) {
+            $doc_filename = $files['name'][$index];
+            $tmp = $files['tmp_name'][$index];
+
+            // Get the description for the current file
+            $description = $doc_names[$index] ?? 'Document Description';
+
+            // Get the user ID for the current file
+            $user_id = is_array($user_ids) ? $user_ids[$index] : $user_ids;
+
+            $ext = strtolower(pathinfo($doc_filename, PATHINFO_EXTENSION));
+
+            if (in_array($ext, $valid_extensions)) {
+                $doc_newname = uniqid() . '_' . $doc_filename;
+                $upload_path = $path . $doc_newname;
+
+                if (move_uploaded_file($tmp, $upload_path)) {
+                    // Insert document details into database
+                    $sql = "INSERT INTO tbl_documents (doc_name, description, user_id) 
+                            VALUES ('$doc_newname', '$description', '$user_id')";
+
+                    if (mysqli_query($conn, $sql)) {
+                        // Insert successful, prepare response
+                        $uploadedDocuments[] = array(
+                            'doc_name' => $doc_filename,
+                            'description' => $description
+                        );
+                    } else {
+                        // Insert failed, prepare error response
+                        $uploadedDocuments[] = "Error inserting document: " . mysqli_error($conn);
+                    }
+                } else {
+                    // Failed to move uploaded file
+                    $uploadedDocuments[] = "Failed to move uploaded file: $doc_filename";
+                }
+            } else {
+                // Invalid file format
+                $uploadedDocuments[] = "Invalid file format: $doc_filename";
+            }
+        }
+    } else {
+        // No files uploaded or invalid file data
+        $uploadedDocuments[] = "No files uploaded or invalid file data";
+    }
+
+    return $uploadedDocuments;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['doc'])) {
+    // Handle file uploads
+    $uploadedFiles = uploadDocuments($_FILES['doc'], $_POST['doc_name'], $_POST['user_id']);
+
+    // Display upload results
+    foreach ($uploadedFiles as $result) {
+        if (is_array($result)) {
+            echo "Document uploaded successfully: " . $result['doc_name'] . "<br>";
+        } else {
+            echo "Error uploading document: " . $result . "<br>";
+        }
+    }
+}
+
+
+
 
 function getPartner($company_id){
 	$conn = connect("timetracker1");
@@ -387,7 +622,7 @@ function getPic($user_id){
 		
         $arrCol = array();
         for ($i = 0; $i < $intNumField; $i ++) {
-              $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = "127.0.0.1/straitLegal/API/uploads/". $obResult[$i];
+              $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = "127.0.0.1:8080/strait/API/uploads/". $obResult[$i];
         }
 		
 		try {
@@ -641,6 +876,67 @@ function getStaffThroughPut(){
 	debug("user id s",$user_id);
 
 	$strSQL = "SELECT p.project_id,c.user_id,u.user_email ,u.first_name ,p.project_name ,t.task_name,s.sub_name ,c.counter_date ,  SUM(c.minutes)
+	 AS minutes,s.sub_progress,chargable,fee,q.first_name 
+	 AS client_name 
+	 FROM task_counter c
+	  LEFT JOIN sub_tasks s ON c.sub_id = c.sub_id
+	  LEFT JOIN tbl_tasks t ON t.assigned_to = c.user_id 
+	  LEFT JOIN tbl_projects p ON p.project_id = t.project_id 
+	  LEFT JOIN tbl_users u ON u.user_id = c.user_id
+	   LEFT JOIN tbl_users q ON q.user_id = p.client_id
+	    WHERE c.added_by = '$user_id'
+	   
+	    AND counter_date 
+	    BETWEEN '$startDate' 
+	    AND '$endDate' 
+	    GROUP BY p.project_id  ";
+		
+    debug($strSQL, $typehere);
+    $objQuery = mysqli_query($conn,$strSQL);
+    $intNumField = mysqli_num_fields($objQuery);
+    $resultArray = array();
+    while ($obResult = mysqli_fetch_array($objQuery)) {
+        $arrCol = array();
+		
+        for ($i = 0; $i < $intNumField; $i ++) {
+             $arrCol[mysqli_fetch_field_direct($objQuery, $i)->name] = $obResult[$i];
+        }
+		
+		try {
+			array_push($resultArray, $arrCol);
+		} catch (Exception $e) {
+			debug("Error Reporting ".$e->getMessage(),$typehere);
+		}
+    }
+	debug("Response ".json_encode(array("logs" => $resultArray)),$typehere);
+    echo json_encode(array("logs" => $resultArray));
+    closer($conn);
+	debug("=================================================",$typehere);
+}
+
+
+function getfilethroughput(){
+	$conn = connect("timetracker1");
+    $typehere = "getfilethroughput";
+	debug("=================================================",$typehere);
+	
+	$company_users = $_POST['company_users'];
+	$startDate = $_POST['startDate'];
+	$endDate = $_POST['endDate'];
+	
+	$startDate = date("Y-m-d", strtotime($startDate));
+	$endDate = date("Y-m-d", strtotime($endDate));
+	
+	$getUserID = "SELECT * from tbl_users where user_email = '$company_users'";
+	debug($getUserID,$typehere);
+	$q = execute_($getUserID,$conn);
+	$f = fetch($q);
+	$user_id = $f['user_id'];
+
+	debug("user id s",$user_id);
+
+	$strSQL = "SELECT p.project_id,c.user_id,u.user_email ,u.first_name ,p.project_name ,t.task_name,p.project_desc,s.sub_name
+	 ,c.counter_date ,  SUM(c.minutes)
 	 AS minutes,s.sub_progress,chargable,fee,q.first_name 
 	 AS client_name 
 	 FROM task_counter c
@@ -2796,7 +3092,7 @@ function saveNewUser(){
 		debug("Save New Staff ",$typehere);
 				
 		$password = randomString(6);
-		debug("Generated Password" . $password, $typehere);
+		debug("Generated Password " . $password, $typehere);
 		
 		//$GlobalID = checkUserGlobal($u_name,$u_email,$password);
 		debug("User Global ID".$GlobalID,$typehere);
@@ -2824,50 +3120,18 @@ function saveNewUser(){
 		 $num = affected($conn);
 		 debug("Inserted".$num." User Records", $typehere);
 	
-		if ($num > 0) {	
-			if($user_id < 1){
-
-			$docs = connect("docs");
+		 if ($num > 0) {	
+	
 			
-			$exploded = multiexplode(array(" "), $u_name);
-			$f_name = $exploded[0];
-			$l_name = $exploded[1];
+		 	$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: http://143.244.180.244/strait/index  ";
+		 	debug($u_email, $typehere);
+		 	push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
+		// 	}
+		 	array_push($result,array("bool_code" => true,"message" => $u_name ." Successfully Registered"));
 			
-			$ins = "INSERT INTO dms_user(username, password, department, Email, last_name, first_name, can_add, can_checkin) VALUES ('$u_email',MD5('$password'),'1','$u_email','$l_name','$u_name','1','1')";
-			debug($ins,$typehere);
-			execute_($ins,$docs);
-			$in = affected($docs);
-			
-			debug("Saved ".$in." DMS Records",$typehere);
-			
-			$id = last_id($docs);
-			
-			if($level_id > 2){
-				$admin = 1;
-			}else{
-				$admin = 0;
-			}
-				
-			$saver = "INSERT INTO dms_admin(id,admin) VALUES ('$id','$admin')";
-			debug($saver,$typehere);
-			execute_($saver,$docs);
-			$in2 = affected($docs);
-			debug("Saved ".$in2." DMS Admin Records",$typehere);
-			
-			if($level_id == 1){
-				$save = "INSERT INTO dms_department (name) VALUES ('$u_name');";
-				debug($save,$typehere);
-				execute_($save,$docs);
-			}
-			
-			$email = "Dear " . $u_name . " , An Account has been created for KAPS STRAIT & PASA Events Platform. Username: " . $u_email . " ,Password: ".$password."\nLogin here: https://www.aps.co.ke/strait";
-			debug($u_email, $typehere);
-			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");
-			}
-			array_push($result, array("bool_code" => true,"message" => $u_name ." Successfully Registered"));
-		} else {
-			//array_push($result, array("bool_code" => false,"message" => "Failed to Register New User"));
-		}
+		 } else {
+		// 	array_push($result,array("bool_code" => false,"message" => "Failed to Register New User"));
+		 }
 		echo json_encode(array("useradd" => $result));
 	}else{
 		debug("Update Details For ".$user_id,$typehere);
@@ -4101,7 +4365,7 @@ function Register($c_name,$u_email,$u_name,$l_name,$p_name,$u_password,$user_ima
 			debug("Saved ".$in2." DMS Admin Records",$typehere);
 			
 				
-			$email = "Dear " . $u_name . " , your KAPS STRAIT & PASA Events Account has been successfully created. Username: " . $u_email . " ,Password: ".$u_password."\nLogin here: https://www.aps.co.ke/straitLegal/index";
+			$email = "Dear " . $u_name . " , your KAPS STRAIT & PASA Events Account has been successfully created. Username: " . $u_email . " ,Password: ".$u_password."\nLogin here: http://143.244.180.244/strait/index ";
 			debug($email, $typehere);
 			push_mail($u_email, $email,"New Account","KAPS STRAIT","kapslabnotify@kaps.co.ke");			
 			array_push($result, array("bool_code" => true,"message"=>"Account Successfully registered"));
@@ -4269,7 +4533,7 @@ function resetPassword($user_email){
 	}
 		debug("Generated Password " . $password, $typehere);
 		
-	$updater = "update tbl_users set user_password = MD5('$password'),reset_pass = 0 where user_email = '$user_email'";
+	$updater = "UPDATE tbl_users set user_password = MD5('$password'),reset_pass = '0' WHERE user_email = '$user_email'";
 	debug($updater,$typehere);
 	$q = execute_($updater,$conn);
 	
@@ -4280,7 +4544,7 @@ function resetPassword($user_email){
 		resetGlobalPassword($f['user_email'],$password);
 		if($_POST['newpass'] == ""){
 			// $email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". Keep it safe";
-			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". <a href=127.0.0.1/straitLegal/confirm_pass>To reset your password enter a new password</a>";
+			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed to: ".$password.". <a href=127.0.0.1:8080/strait/confirm_pass>To reset your password enter a new password</a>";
 		}else{
 			$email = "Dear " . $f['first_name'] . " , KAPS STRAIT & PASA Events Password has been changed.";
 		}

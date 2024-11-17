@@ -1,8 +1,0 @@
-2023-01-12 17:05:08 - =================================================
-2023-01-12 17:05:08 - SELECT u.user_id,u.user_email,u.first_name,u.user_status,u.reset_pass,c.company_id,c.company_name,c.company_type,user_level,l.level_desc,l.company_desc,l.school_desc,l.law_desc,user_dep,user_branch FROM tbl_users u
-	LEFT JOIN tbl_company c ON c.company_id = u.user_company 
-	LEFT JOIN user_levels l ON l.level_id = u.user_level
-	WHERE u.user_email = 'githuthimary@gmail.com' AND u.user_password = MD5('ADMIN12345')
-2023-01-12 17:05:08 - Found 0 User Records
-2023-01-12 17:05:08 - Login Response {"login":[{"bool_code":false,"message":"Invalid Email\/Password"}]}
-2023-01-12 17:05:08 - =================================================

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>STRAIT LEGAL</title>
+  <title>Iconz spa</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/css/app.min.css">
   <link rel="stylesheet" href="assets/bundles/prism/prism.css">
@@ -28,6 +28,7 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.png' />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -200,21 +201,26 @@ h1 small {
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="home"></i><span id = "menu_identity">Organization</span></a>
               <ul class="dropdown-menu">
                 <li><a id = "menu_link_branch" class="nav-link" href="branches">Branches</a></li>
-                <li><a class="nav-link" href="departments">Practice Group</a></li>
+                <li><a class="nav-link" href="departments">Departments</a></li>
                 <li><a class="nav-link" href="users"><span id = "menu_users">Users</span></a></li>
             
               </ul>
             </li>
 
-            <li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span >Clients</span></a>
+            <li>
+            <a href="clients" ><i data-feather="user"></i><span id = "menu_users">Clients</span></a>
+            </li>
+
+
+            <!-- <li class="dropdown">
+              <a href="clients" class="menu-toggle nav-link has-dropdown"><i data-feather="user"></i><span >Clients</span></a>
               <ul class="dropdown-menu">
               <li><a class="nav-link" href="clients"><span id = "menu_users">Clients</span></a></li>
               <li id = "link_accounts"><a id = "menu_link_accounts" class="nav-link" href="accounts"><i data-feather="list"></i> Accounts</a></li>
                 <li id = "link_trans"><a  id = "menu_link_transactions" class="nav-link" href="account-statement"><i data-feather="activity"></i>Transactions</a></li>
                
               </ul>
-            </li>
+            </li> -->
 
           <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="grid"></i><span id = "menu_p">Projects</span></a>
@@ -232,11 +238,22 @@ h1 small {
                 <li id = "link_trans"><a  id = "menu_link_transactions" class="nav-link" href="account-statement"><i data-feather="activity"></i>Transactions</a></li>
               </ul>
             </li> -->
-			      <li><a id = "dms" class="nav-link"><i data-feather="briefcase"></i>DMS</a></li>
+            <li class="dropdown">
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file"></i><span id = "menu_p">Documents</span></a>
+              <ul class="dropdown-menu">
+                <li id = "link_projects"><a id = "menu_link_p" class="nav-link" href="document">View Documents</a></li>
+                <li id = "link_task"><a  id = "menu_link_t" class="nav-link" href="add_document">Add document</a></li>
+                <!-- <li id = "link_sub_tasks"><a  id = "menu_link_sub_t" class="nav-link" href="sub-task">Sub Tasks</a></li>
+                <li id = "add-hours"><a class="nav-link" href="add-hours">Add Hours</a></li> -->
+              </ul>
+            </li>
+			      <!-- <li><a id = "dms" class="nav-link"><i data-feather="briefcase"></i>DMS</a></li> -->
             <li><a class="nav-link" href="timer"><i data-feather="clock"></i><span id = "timer_label">Timer</span></a></li>
-            <li><a class="nav-link" href="timeline"><i data-feather="sliders"></i><span id = "logs_label">Lesson Logs</span></a></li>
-            <li><a class="nav-link" href="throughput"><i data-feather="activity"></i><span id = "throuput_label">Staff Throughput</span></a></li>
-            <li><a class="nav-link" href="invoices"><i data-feather="credit-card"></i><span id = "invoices_label">Client Invoices</span></a></li>
+            <li><a class="nav-link" href="timeline"><i data-feather="sliders"></i><span id = "logs_label">Lesson</span></a></li>
+            <!-- <li><a class="nav-link" href="throughput"><i data-feather="activity"></i><span id = "throuput_label">Staff Throughput</span></a></li> -->
+            <li><a class="nav-link" href="filethroughput"><i data-feather="file-text"></i><span id = "throuput_label">File Throughput</span></a></li>
+            <!-- <li><a class="nav-link" href="taskthroughput"><i data-feather="clipboard"></i><span id = "throuput_label">Task Throughput</span></a></li> -->
+            <!-- <li><a class="nav-link" href="invoices"><i data-feather="credit-card"></i><span id = "invoices_label">Client Invoices</span></a></li> -->
           </ul>
         </aside>
         <!-- General JS Scripts -->

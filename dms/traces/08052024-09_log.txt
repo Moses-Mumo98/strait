@@ -1,0 +1,96 @@
+2024-05-08 09:21:25 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:21:26 - Got Connection
+2024-05-08 09:21:26 - UID 33
+2024-05-08 09:21:26 - Redirecting Visitor to out.php
+2024-05-08 09:21:26 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:21:27 - Got Connection
+2024-05-08 09:21:27 - ========== out.php =====================
+2024-05-08 09:21:27 - Last Message 
+2024-05-08 09:21:27 - Draw Header with Files List Message being 
+2024-05-08 09:21:27 -  ============================ draw_header ================= Files List
+2024-05-08 09:21:27 - Uid here 33
+2024-05-08 09:21:28 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:21:28 - Set up the breadcrumbs
+2024-05-08 09:21:28 - Done With the breadcrumbs
+2024-05-08 09:21:28 - display_smarty_template header.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/header.tpl
+2024-05-08 09:21:28 - After draw_header
+2024-05-08 09:21:30 - After sort_browser
+2024-05-08 09:21:30 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:21:32 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:21:32 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:21:33 - display_smarty_template footer.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/footer.tpl
+2024-05-08 09:22:03 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:04 - Got Connection
+2024-05-08 09:22:04 - ========== out.php =====================
+2024-05-08 09:22:04 - Last Message 
+2024-05-08 09:22:04 - Draw Header with Files List Message being 
+2024-05-08 09:22:04 -  ============================ draw_header ================= Files List
+2024-05-08 09:22:04 - Uid here 33
+2024-05-08 09:22:04 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:05 - Set up the breadcrumbs
+2024-05-08 09:22:05 - Done With the breadcrumbs
+2024-05-08 09:22:05 - display_smarty_template header.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/header.tpl
+2024-05-08 09:22:05 - After draw_header
+2024-05-08 09:22:06 - After sort_browser
+2024-05-08 09:22:06 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:07 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:08 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:11 - display_smarty_template footer.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/footer.tpl
+2024-05-08 09:22:26 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:27 - Got Connection
+2024-05-08 09:22:28 - UID 33
+2024-05-08 09:22:28 - Redirecting Visitor to out.php
+2024-05-08 09:22:28 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:28 - Got Connection
+2024-05-08 09:22:29 - UID 33
+2024-05-08 09:22:29 - Redirecting Visitor to out.php
+2024-05-08 09:22:29 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:30 - Got Connection
+2024-05-08 09:22:30 - UID 33
+2024-05-08 09:22:30 - Redirecting Visitor to out.php
+2024-05-08 09:22:30 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:31 - Got Connection
+2024-05-08 09:22:31 - UID 33
+2024-05-08 09:22:31 - Redirecting Visitor to out.php
+2024-05-08 09:22:31 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:32 - Got Connection
+2024-05-08 09:22:33 - UID 33
+2024-05-08 09:22:33 - Redirecting Visitor to out.php
+2024-05-08 09:22:33 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:33 - Got Connection
+2024-05-08 09:22:34 - UID 33
+2024-05-08 09:22:34 - Redirecting Visitor to out.php
+2024-05-08 09:22:34 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:35 - Got Connection
+2024-05-08 09:22:35 - ========== out.php =====================
+2024-05-08 09:22:35 - Last Message 
+2024-05-08 09:22:35 - Draw Header with Files List Message being 
+2024-05-08 09:22:35 -  ============================ draw_header ================= Files List
+2024-05-08 09:22:35 - Uid here 33
+2024-05-08 09:22:35 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:36 - Set up the breadcrumbs
+2024-05-08 09:22:36 - Done With the breadcrumbs
+2024-05-08 09:22:36 - display_smarty_template header.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/header.tpl
+2024-05-08 09:22:36 - After draw_header
+2024-05-08 09:22:37 - After sort_browser
+2024-05-08 09:22:38 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:41 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:41 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:22:42 - display_smarty_template footer.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/footer.tpl
+2024-05-08 09:22:58 - mysql:host=185.148.145.77;port=8062;dbname=strait_docs;charset=utf8
+2024-05-08 09:22:59 - Got Connection
+2024-05-08 09:22:59 - ========== out.php =====================
+2024-05-08 09:22:59 - Last Message 
+2024-05-08 09:22:59 - Draw Header with Files List Message being 
+2024-05-08 09:22:59 -  ============================ draw_header ================= Files List
+2024-05-08 09:22:59 - Uid here 33
+2024-05-08 09:23:00 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:23:00 - Set up the breadcrumbs
+2024-05-08 09:23:00 - Done With the breadcrumbs
+2024-05-08 09:23:00 - display_smarty_template header.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/header.tpl
+2024-05-08 09:23:00 - After draw_header
+2024-05-08 09:23:02 - After sort_browser
+2024-05-08 09:23:02 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:23:04 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:23:05 - SELECT id, username, department, phone, email,last_name, first_name, pw_reset_code,can_add,can_checkin FROM dms_user WHERE id = :id - 33
+2024-05-08 09:23:06 - display_smarty_template footer.tpl Path C:\xampp\htdocs\strait\dms/templates/tweeter/footer.tpl

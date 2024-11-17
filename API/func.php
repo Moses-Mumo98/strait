@@ -278,7 +278,7 @@ function push_mail($email,$mail_msg,$subject,$sent_from_user,$sent_from_email){
 	$mail->Port = 465; // or 587 
 	$mail->SMTPAuth = true;                               
 	$mail->Username = 'mosesmumo49@gmail.com';                
-	$mail->Password = 'dknenviksbexvueg';                           
+	$mail->Password = 'vapbrubcdizasygm';                           
 	$mail->SMTPSecure = 'ssl';  
 	                          
 

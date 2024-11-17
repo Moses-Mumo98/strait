@@ -9,7 +9,7 @@
               <h4 class="page-title m-b-0">Dashboard</h4>
             </li>
             <li class="breadcrumb-item">
-              <a href="home.php">
+              <a href="home">
                 <i data-feather="home"></i></a>
             </li>
             <li class="breadcrumb-item active">Dashboard</li>

@@ -261,13 +261,28 @@ $(document).ready(function() {
     }else if(page == 'setting'){
         getProfile("user_id");
         getPic(user_id);
+    }else if (page == 'filethroughput'){
+        getCompanyUsers();
+        getPic();
+        // getfilethroughput();
+    }else if (page == 'add_document'){
+
+        getPic();
+        // getfilethroughput();
+        listdoc();
+        // get_staff();
+    }else if (page == 'document'){
+
+        getPic();
+        // getfilethroughput();
+        listdoc();
     }
     PageLabels(page);
     
 
 });
 
-var myurl = "http://localhost/straitLegal/API/API.php";
+var myurl = "http://localhost:8080/strait/API/API.php";
 console.log("Using Url " + myurl);
 var NameLoggedIn = "";
 var projectID;
@@ -281,6 +296,367 @@ var accID;
 var loadedPage;
 var user_image;
 var user_id;
+$('#adddoc').on('click', function(e) {
+    localStorage.setItem("userID", "");
+    window.location = "add_document";
+});
+
+function listdoc() {
+    var user_id = localStorage.getItem("user_id");
+
+    var dataString = {
+        'request': 63,
+        'user_id': user_id,
+    };
+
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+            var partnerJSON = JSON.parse(data);
+            var tbHTML = "";
+
+            // Iterate through the documents
+            for (var i = 0; i < partnerJSON.get_all_documents.length; i++) {
+                var id = partnerJSON.get_all_documents[i].id;
+                console.log("doc_id",id);
+                var doc_name = partnerJSON.get_all_documents[i].doc_name;
+                var description = partnerJSON.get_all_documents[i].description;
+
+                // Create download link
+                var downloadLink = '<a href="#" onclick="downloadDocument(\'' + user_id + '\', \'' + doc_name + '\')"><i class="fa fa-download"></i></a>';
+
+                // Create delete button
+                var deleteButton = '<button class="btn btn-danger btn-sm" onclick="deleteDocument(\'' + id + '\')">Remove</button>';
+
+                // Append table row with document name, download link, and delete button
+                tbHTML += '<tr><td class="col-green font-weight-bold">' + description + '</td><td>' + downloadLink + '</td><td>' + deleteButton + '</td></tr>';
+            }
+
+            // Generate the HTML table
+            tbHTML = '<table class="table table-striped table-hover" id="usersTable" style="width:100%;"><thead><tr><th>Document Name</th><th>Download</th><th>Remove</th></tr></thead><tbody>' + tbHTML + '</tbody></table>';
+            $('#users-table').html(tbHTML);
+
+            // Initialize DataTable with buttons
+            var oTable = $('#usersTable').DataTable({
+                "iDisplayLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        },
+        error: function(e) {
+            console.error('Error fetching documents:', e);
+        }
+    });
+
+    return false;
+}
+
+function deleteDocument(id) {
+    // Display a SweetAlert confirmation dialog
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this document!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var dataString = {
+                'request': 65,
+                'id': id
+            };
+
+            // AJAX request to delete the document
+            $.ajax({
+                type: "POST",
+                url: myurl, // Assuming myurl is defined elsewhere in your code
+                data: dataString,
+                success: function(data) {
+                    // Show a SweetAlert success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Your document has been deleted.',
+                        icon: 'success',
+                        showConfirmButton: true, // Hide the "OK" button
+                      // Auto-close the alert after 1.5 seconds
+                    }).then(() => {
+                        // Redirect the user to another page
+                        window.location.href = 'document'; // Change 'new_page.html' to the desired URL
+                    });
+                },
+                error: function(e) {
+                    console.error('Error removing document:', e);
+                }
+            });
+        }
+    });
+}
+
+
+
+
+
+// Function to handle document download
+function downloadDocument(user_id, doc_name) {
+    var basePath = 'API/Documents'; // Base path where files are stored on the server
+    var fileName = doc_name; // Use the description as the filename (adjust as needed)
+
+    // Construct the full file URL
+    var fileUrl = basePath + '/' + fileName;
+
+    // Create a hidden anchor element to trigger the download
+    var downloadLink = document.createElement('a');
+    downloadLink.href = fileUrl;
+    downloadLink.download = fileName; // Set the filename for download
+
+    // Append the anchor element to the body and trigger a click event
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    // Clean up: Remove the anchor element from the DOM
+    document.body.removeChild(downloadLink);
+}
+
+
+
+
+// $(document).ready(function() {
+//     $('#upload_btn').click(function() {
+//         var formData = new FormData($('#upload_form')[0]);
+
+//         // Get the selected files and descriptions
+//         var files = $('#doc')[0].files;
+//         var descriptions = $('#doc_name').val() || 'Document Description';
+
+//         // Append each file and its description to formData
+//         for (var i = 0; i < files.length; i++) {
+//             formData.append('doc[]', files[i]);
+//             formData.append('doc_name[]', descriptions);
+//         }
+
+//         $.ajax({
+//             url: myurl,
+//             type: 'POST',
+//             data: formData,
+//             contentType: false,
+//             processData: false,
+//             xhr: function() {
+//                 var xhr = $.ajaxSettings.xhr();
+//                 xhr.upload.addEventListener('progress', function(e) {
+//                     if (e.lengthComputable) {
+//                         var percent = Math.round((e.loaded / e.total) * 100);
+//                         $('#progress').css('width', percent + '%');
+//                         $('#progress_percent').text(percent + '%');
+//                     }
+//                 });
+//                 return xhr;
+//             },
+//             success: function(response) {
+//                 $('#upload_response').html(response);
+//             },
+//             error: function(xhr, status, error) {
+//                 console.log(error);
+//             }
+//         });
+//     });
+// });
+
+    // Click event for adding more file inputs
+    $(document).ready(function() {
+        var serviceOptions = ''; // Global variable to store user options
+    
+        // Function to get staff and populate the user select elements
+        function get_staff() {
+            var dataString = {
+                'request': 64,
+            };
+        
+            $('#hloadingmessage').show();
+        
+            $.ajax({
+                type: "POST",
+                url: myurl, // Replace 'myurl' with your API endpoint URL
+                data: dataString,
+                success: function(response, textStatus, jqXHR) {
+                    $('#hloadingmessage').hide();
+        
+                    console.log('Status:', textStatus);
+                    console.log('Response Headers:', jqXHR.getAllResponseHeaders());
+                    console.log('Raw Response Data:', response);
+        
+                    try {
+                        if (typeof response === 'string') {
+                            response = JSON.parse(response);
+                        }
+        
+                        console.log('Parsed Response Data:', response);
+        
+                        if (response && response.get_all_users) {
+                            // Clear previous content
+                            $(".users").empty();
+        
+                            // Populate Select2 with options for each user
+                            response.get_all_users.forEach(function(user) {
+                                var option = new Option(user.first_name, user.user_id, false, false);
+                                $(".users").append(option);
+                            });
+        
+                            // Initialize Select2
+                            $(".users").select2({
+                                placeholder: "Select Users",
+                                multiple: true
+                            });
+        
+                            // Event listener for user selection change
+                            $(".users").on("change", function() {
+                                var selectedUserIds = $(this).val();
+                                sessionStorage.setItem("selected_user_ids", JSON.stringify(selectedUserIds));
+                            });
+        
+                            if (response.get_all_users.length > 0) {
+                                var defaultUser = response.get_all_users[0];
+                                sessionStorage.setItem("selected_user_ids", JSON.stringify([defaultUser.user_id]));
+                            }
+                        } else {
+                            console.error("Unexpected response structure or no users found:", response);
+                            alert("Failed to load users. Please try again.");
+                        }
+                    } catch (e) {
+                        console.error("Error processing response:", e);
+                        alert("Failed to load users. Please try again.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching users:", error);
+                    console.error("Status:", status);
+                    console.error("XHR Response Text:", xhr.responseText);
+                    $('#hloadingmessage').hide();
+                    alert("Failed to load users. Please try again.");
+                }
+            });
+        
+            return false;
+        }
+        
+        // Call get_staff to populate the initial user select elements
+        get_staff();
+        
+        
+        // Prevent multiple bindings by using .off() before .on()
+        $('#uplon').off('click').on('click', function() {
+            console.log("Add more files button clicked");
+            addFileInput(); // Call function to append new file inputs
+        });
+    
+        $('#upload_btns').off('click').one('click', function(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            console.log('Upload button clicked');
+    
+            var formData = new FormData();
+            var fileInputs = $('input[name="doc[]"]');
+            var descriptionInputs = $('input[name="descriptions[]"]');
+            var userSelects = $('select[name="users[]"]');
+    
+            // Iterate over each file input
+            fileInputs.each(function(index, fileInput) {
+                var files = fileInput.files;
+                var descriptionInput = $(descriptionInputs[index]).val() || 'Document Description';
+                var userId = $(userSelects[index]).val(); // Retrieve user ID from select element
+    
+                if (files.length > 0) {
+                    for (var i = 0; i < files.length; i++) {
+                        formData.append('doc[]', files[i]);
+                        formData.append('doc_name[]', descriptionInput);
+                        formData.append('user_id[]', userId); // Append user ID for each file
+                    }
+                }
+            });
+    
+            formData.append('request', '62');
+    
+            var settings = {
+                url: myurl,
+                method: 'POST',
+                headers: {
+                    'X-API-Key': '{{token}}'
+                },
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(response) {
+                    try {
+                        var responseData = JSON.parse(JSON.stringify(response));
+                        console.log('Upload success:', responseData);
+    
+                        // Display SweetAlert notification upon successful upload
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Upload Successful!',
+                            text: 'Your files have been successfully uploaded.',
+                            confirmButtonText: 'OK'
+                        }).then(function() {
+                            // Optional: Perform additional actions after user clicks OK
+                            window.location = "document"; // Reload the page or navigate to another URL
+                        });
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        $('#upload_response').html('Error: Unexpected response format');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Upload error:', error);
+                    $('#upload_response').html('Error: ' + error);
+                }
+            };
+    
+            $.ajax(settings);
+        });
+    
+        function addFileInput() {
+            console.log("Adding new file input...");
+    
+            // Check if a file input already exists to prevent appending twice
+            var lastFileInputGroup = $('.file_upload_group').last();
+            if (lastFileInputGroup.length && lastFileInputGroup.find('input[type="file"]').val() === '') {
+                console.log("A file input already exists, skipping append.");
+                return;
+            }
+    
+            var fileInputGroup = `
+                <div class="file_upload_group">
+                    <div>
+                        <label for="doc">Please select file</label>
+                        <input type="file" name="doc[]" class="doc" />
+                    </div>
+                    <br>
+                    <div>
+                        <input type="text" placeholder="File description" name="descriptions[]" class="descriptions" />
+                    </div>
+                    <br>
+                    <div>
+                        <label>Select user</label>
+                        <select name="users[]" class="form-control select2 users">${serviceOptions}</select>
+                    </div>
+                    <br>
+                </div>
+            `;
+    
+            $('#file_inputs_container').append(fileInputGroup);
+    
+            console.log("New file input appended");
+        }
+    });
+    
+
+    
+
+
 
 
 $('#dms').on('click', function(e) {
@@ -375,34 +751,35 @@ $("#imageUpload").change(function() {
 function readURL(user_image) {
     var form_data = new FormData();
     var user_id = localStorage.getItem("user_id");
-    var user_image = $('input[name = "user_image"]').val();
-    console.log("rrr",user_image)
+    var user_image = $('input[name="user_image"]').val();
+    console.log("rrr", user_image);
     form_data.append('user_image', $('#user_image')[0].files[0]);
     form_data.append('request', 46);
     form_data.append('user_id', user_id);
     $.ajax({
-      url:myurl,
-      type:"POST",
-      dataType:"text",
-      data: form_data,
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend:function(){
-       $('#profile').html('<img style="width:100% !important;height:100% !important; border-radius:100% !important" src="'+user_image+'"/>');
-       $('#imagePreview').show();
-      },   
-      success:function(data){
-        
-        var imageImageHolder = JSON.parse(data).update[0].user_image
-        console.log("data",imageImageHolder)
-        $('#profile').html(`<img style="width:100% !important;height:100% !important; border-radius:100% !important" src="http://127.0.0.1/straitLegal/API/uploads/${imageImageHolder}"/>`);
-        $('#imagePreview').show();
-   
-      },
+        url: myurl,
+        type: "POST",
+        dataType: "text",
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        beforeSend: function () {
+            $('#profile').html('<img style="width:100% !important;height:100% !important; border-radius:100% !important" src="' + user_image + '"/>');
+            $('#imagePreview').show();
+        },
+        success: function (data) {
+            var imageImageHolder = JSON.parse(data).update[0].user_image;
+            console.log("data", imageImageHolder);
+            $('#profile').html(`<img style="width:100% !important;height:100% !important; border-radius:100% !important" src="http://127.0.0.1/straitLegal/API/uploads/${imageImageHolder}"/>`);
+            $('#imagePreview').show();
+            // Redirect the user after successful upload
+            window.location.href = "home";
+        },
     });
-    
+
 }
+
 $("#user_image").change(function() {
         readURL(this);
     });
@@ -978,6 +1355,104 @@ function getClientInvoices(){
     return false;    
 }
 
+function getfilethroughput() {
+    var company_users = $('#company-users').val();
+    var startDate = $('input[name = "startDate"]').val();
+    var endDate = $('input[name = "endDate"]').val();
+    var user_id = sessionStorage.getItem("user_id");
+
+    logger("user id" +user_id)
+    
+    
+    var dataString = {
+        'request': 61,
+        'company_users': company_users,
+        'startDate':startDate,
+        'endDate':endDate,
+        'user_id':user_id
+    };
+
+    logger(dataString);
+    $.ajax({
+        type: "POST",
+        url: myurl,
+        data: dataString,
+        success: function(data) {
+           
+            logger(data);
+            var logsJSON = JSON.parse(data);
+            var tbHTML = "";
+            logger("Length of Projects JSON "+logsJSON.logs.length);
+            for (var i = 0; i < logsJSON.logs.length; i++) {
+                var user_id = logsJSON.logs[i].user_id;
+                var sub_id = logsJSON.logs[i].sub_id;
+                var user_email = logsJSON.logs[i].user_email;
+                var first_name = logsJSON.logs[i].first_name;
+                var project_name = logsJSON.logs[i].project_name;
+                var task_name = logsJSON.logs[i].task_name;
+                var project_desc = logsJSON.logs[i].project_desc;
+                var sub_name = logsJSON.logs[i].sub_name;
+                var counter_date = logsJSON.logs[i].counter_date;
+                var minutes = logsJSON.logs[i].minutes;
+                var sub_progress = logsJSON.logs[i].sub_progress;
+                var user_id = logsJSON.logs[i].user_id;
+                var chargable = logsJSON.logs[i].chargable;
+                var fee = logsJSON.logs[i].fee;
+                var client_name = logsJSON.logs[i].client_name;
+
+                var moreValue = sub_id+','+ user_id;
+                var toadd = "<button class='btn btn-warning btn-icon icon-left' onclick = 'moreLogs("+moreValue+")'><i class='fas fa-ellipsis-h'></i> Details</button>";
+
+                tbHTML += "<tr><td><a href='#'>"+project_name+"</a></td>"+
+                '<td class="col-blue font-weight-bold">'+task_name+'</td>'+
+                '<td class="col-green font-weight-bold">'+user_email+"</td>"+
+                "<td>"+project_desc+"</td>"+
+                '<td class="col-purple font-weight-bold">'+ConvertMinutes(minutes)+"</td></tr>";
+            }
+            tbHTML = '<table class="table table-striped table-hover" id="logsTables" style="width:100%;"><thead><tr><th>Project Name</th><th>File Name</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>Description</th><th>Time Logged</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
+            $('#logs-tables').html(tbHTML);
+            $('#logsHeads').html(logsJSON.logs.length + " Record(s)");
+            var oTable = $('#logsTables').DataTable({
+                "iDisplayLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+					{
+						extend: 'copyHtml5',
+						exportOptions: {
+							columns: [0,1,2,3,4]
+						}
+					},
+					{
+						extend: 'excelHtml5',
+						exportOptions: {
+							columns: [0,1,2,3,4]
+						}
+					},
+					{
+						extend: 'pdfHtml5',
+						exportOptions: {
+							columns: [0,1,2,3,4]
+						}
+					},
+					{
+						extend: 'csvHtml5',
+						exportOptions: {
+							columns: [0,1,2,3,4]
+						}
+					},
+					'colvis'
+				]
+
+            });
+        },
+        error: function(e) {
+
+        }
+
+    });
+    return false;
+}
+
 function getStaffThroughPut() {
     var company_users = $('#company-users').val();
     var startDate = $('input[name = "startDate"]').val();
@@ -1033,7 +1508,7 @@ function getStaffThroughPut() {
             }
             tbHTML = '<table class="table table-striped table-hover" id="logsTable" style="width:100%;"><thead><tr><th>Project Name</th><th>Client Name</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>'+localStorage.getItem("ur_name") +' Name</th><th>Time Logged</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
             $('#logs-table').html(tbHTML);
-            $('#logsHead').html(logsJSON.logs.length + " Record(s)");
+            $('#logsHeads').html(logsJSON.logs.length + " Record(s)");
             var oTable = $('#logsTable').DataTable({
                 "iDisplayLength": 10,
                 dom: 'Bfrtip',
@@ -1815,6 +2290,7 @@ $('#logout').on('click', function(e) {
 
 });
 
+
 $('#subtaskSaver').on('click', function(e) {
 	logger("subtaskSaver Now");
     var t_name = $('input[name = "t_name"]').val();
@@ -1960,6 +2436,8 @@ function getSubTasksLogs() {
     var task_name = $('#task_name').val();
     var project_name = $('#project_name').val();
     var dep_name = $('#dep_name').val();
+    var counter_date =$('#counter_date').val();
+ 
 
     var user_id;
 
@@ -1975,6 +2453,7 @@ function getSubTasksLogs() {
         'task_name':task_name,
         'project_name':project_name,
         'dep_name':dep_name,
+        "counter_date":counter_date,
         'user_id':user_id
     };
     logger(dataString);
@@ -1988,7 +2467,14 @@ function getSubTasksLogs() {
             var logsJSON = JSON.parse(data);
             var tbHTML = "";
             logger("Length of Projects JSON "+logsJSON.logs.length);
+            console.log("this is the", logsJSON)
             for (var i = 0; i < logsJSON.logs.length; i++) {
+                const start_date = new Date(logsJSON.logs[i].counter_date);
+                const current_date = new Date();
+                const time_diff = current_date.getTime() - start_date.getTime();
+                const weeks_diff = Math.floor(time_diff / 604800000);
+                console.log(`Weeks between ${start_date} and ${current_date}: ${weeks_diff}`);
+                localStorage.setItem("week", weeks_diff)
                 var sub_id = logsJSON.logs[i].sub_id;
                 //var user_email = logsJSON.logs[i].user_email;
                 //var first_name = logsJSON.logs[i].first_name;
@@ -2019,10 +2505,13 @@ function getSubTasksLogs() {
                 "<td>"+first_name+"</td>"+
                 "<td>"+counter_date+"</td>"+
                 "<td>"+ConvertMinutes(minutes)+"</td>"+
-                "<td class='align-middle'><div class='progress-text'>"+sub_progress+"%</div><div class='progress' data-height='6' style='height: 6px;'><div class='progress-bar' data-width="+sub_progress+"% style='width: "+sub_progress+"%;'></div></div></td>"+
-                "<td>"+toadd+"</td></tr>";
+                "<td>"+weeks_diff+"</td>"+
+                "<td class='align-middle'><div class='progress-text'>"+sub_progress+"%</div><div class='progress' data-height='6' style='height: 6px;'><div class='progress-bar' data-width="+sub_progress+"% style='width: "+sub_progress+"%;'></div></div></td>"
+                // "<td>"+toadd+"</td>
+                "</tr>";
             }
-            tbHTML = '<table class="table table-striped table-hover" id="logsTable" style="width:100%;"><thead><tr><th>'+localStorage.getItem("subtask")+'</th><th>'+localStorage.getItem("tr_name")+'</th><th>'+localStorage.getItem("pr_name")+'</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>'+localStorage.getItem("ur_name") +' Name</th><th>'+localStorage.getItem("subtask")+' Date</th><th>Time Recorded</th><th>'+localStorage.getItem("subtask")+' Progress</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';           
+            // tbHTML = '<table class="table table-striped table-hover" id="logsTable" style="width:100%;"><thead><tr><th>'+localStorage.getItem("subtask")+'</th><th>'+localStorage.getItem("tr_name")+'</th><th>'+localStorage.getItem("pr_name")+'</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>'+localStorage.getItem("ur_name") +' Name</th><th>'+localStorage.getItem("subtask")+' Date</th><th>Time Recorded</th><th>'+localStorage.getItem("subtask")+' Progress</th><th>Actions</th></tr></thead><tbody>'+tbHTML+'</tbody></table>'; 
+            tbHTML = '<table class="table table-striped table-hover" id="logsTable" style="width:100%;"><thead><tr><th>'+localStorage.getItem("subtask")+'</th><th>'+localStorage.getItem("tr_name")+'</th><th>'+localStorage.getItem("pr_name")+'</th><th>'+localStorage.getItem("ur_name")+' Email</th><th>'+localStorage.getItem("ur_name") +' Name</th><th>'+localStorage.getItem("subtask")+' Date</th><th>Time Recorded</th><th>Weeks</th><th>'+localStorage.getItem("subtask")+' Progress</th></tr></thead><tbody>'+tbHTML+'</tbody></table>';          
             $('#logs-table').html(tbHTML);
             $('#logsHead').html(logsJSON.logs.length + " "+localStorage.getItem("subtasks")+" Logs");
             var oTable = $('#logsTable').DataTable({
@@ -3148,6 +3637,70 @@ function listBranches(page) {
     });
     return false;
 }
+// function get_staff() {
+//     var dataString = {
+//         'request': 64,
+//     };
+
+//     $('#hloadingmessage').show();
+
+//     $.ajax({
+//         type: "POST",
+//         url: myurl, // Replace 'myurl' with your API endpoint URL
+//         data: dataString,
+//         success: function(response, textStatus, jqXHR) {
+//             $('#hloadingmessage').hide();
+            
+//             // Log the status and headers
+//             console.log('Status:', textStatus);
+//             console.log('Response Headers:', jqXHR.getAllResponseHeaders());
+//             console.log('Raw Response Data:', response);
+    
+//             try {
+//                 if (typeof response === 'string') {
+//                     response = JSON.parse(response);
+//                 }
+    
+//                 console.log('Parsed Response Data:', response);
+    
+//                 if (response && response.get_all_users) {
+//                     var serviceOptions = '<option value="" disabled selected>Select User</option>';
+//                     response.get_all_users.forEach(function(user) {
+//                         serviceOptions += `<option value="${user.user_id}">${user.first_name}</option>`;
+//                     });
+//                     $("#users").html(serviceOptions);
+    
+//                     $("#users").on("change", function() {
+//                         var selectedUserId = $(this).val();
+//                         sessionStorage.setItem("selected_user_id", selectedUserId);
+//                     });
+    
+//                     if (response.get_all_users.length > 0) {
+//                         var defaultUser = response.get_all_users[0];
+//                         sessionStorage.setItem("selected_user_id", defaultUser.user_id);
+//                     }
+//                 } else {
+//                     console.error("Unexpected response structure or no users found:", response);
+//                     alert("Failed to load users. Please try again.");
+//                 }
+//             } catch (e) {
+//                 console.error("Error processing response:", e);
+//                 alert("Failed to load users. Please try again.");
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("Error fetching users:", error);
+//             console.error("Status:", status);
+//             console.error("XHR Response Text:", xhr.responseText);
+//             $('#hloadingmessage').hide();
+//             alert("Failed to load users. Please try again.");
+//         }
+//     });
+    
+
+//     return false;
+// }
+
 
 function listBranch(page) {
     var company_id =  sessionStorage.getItem("company_id");
@@ -3445,7 +3998,7 @@ function getDepartment() {
                 if(userLevel < 3){
 
                 }else{
-                    toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
+                    // toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
                 tbHTML += "<tr><td><a href='#'>"+dep_name+"</a></td>"+
                 '<td class="col-green font-weight-bold">'+branch_name+'</td>'+
@@ -3553,6 +4106,7 @@ function getDepartments() {
                 if(userLevel < 3){
 
                 }else{
+                  
                     toadd = "<a onclick = 'editDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Edit'><i class='fas fa-pencil-alt'></i></a><a onclick= 'hideDep("+dep_id+")' data-toggle='tooltip' title='' data-original-title='Delete'><i class='far fa-trash-alt'></i></a>";
                 }
                 tbHTML += "<tr><td><a href='#'>"+dep_name+"</a></td>"+
@@ -3968,7 +4522,7 @@ function getOrgTypes() {
         data: dataString,
         success: function(data) {
             logger(data);
-            var typesJSON = JSON.parse(data);
+            var typesJSON =  JSON.parse(data);
             var types = '<option></option>';
             logger("Length Ya " + typesJSON + " Ni " + typesJSON.types.length);
             for (var i = 0; i < typesJSON.types.length; i++) {
@@ -4675,6 +5229,7 @@ $('#userSaver').on('click', function(e) {
     //var user_phone = $('input[name = "user_phone"]').val();
     var user_level = $('#user-level').val();
     var user_status = $('#user-status').val();
+    //var charges = $('input[name="charges"]').val();
 
     var errorMessage;
 	if(u_name == ""){
@@ -4702,15 +5257,29 @@ $('#userSaver').on('click', function(e) {
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
 		return;	
-	}
+	}else{
+        document.getElementById("user-level").style.borderColor = "green";
+    }
+	
 	
 	if(user_status == ""){
 		errorMessage = "Specify User Status";
 		document.getElementById("confrimed").innerText = errorMessage;
 		document.getElementById('confrimed').style.display = 'block';
 		return;	
+    }else{
+        document.getElementById("user-status").style.borderColor = "green";
     }
-
+	
+    // if(charges == ""){
+	// 	errorMessage = "Enter amount";
+	// 	document.getElementById("confrimed").innerText = errorMessage;
+	// 	document.getElementById('confrimed').style.display = 'block';
+	// 	return;	
+    // }else{
+    //     document.getElementById("charges").style.borderColor = "green";
+    // }
+	
     var branch;
     var dep;
     if(userLevel > 4){
@@ -4730,6 +5299,7 @@ $('#userSaver').on('click', function(e) {
         'u_email': u_email,
         'user_level': user_level,
         'user_status': user_status,
+        //'charges': charges,
         'request': 10,
         'company_id':sessionStorage.getItem("company_id"),
         'user_id':sessionStorage.getItem("userID"),
@@ -5064,6 +5634,7 @@ function getUserStatus() {
     return false;
 }
 
+
 $('#addUser').on('click', function(e) {
     localStorage.setItem("userID", "");
     window.location = "user-edit";
@@ -5331,7 +5902,7 @@ function ListClients(){
 
 
 
-function getUserDetails(id){
+function    getUserDetails(id){
     logger("Get User Details for "+id);
     var dataString = {
         'request': 6,
@@ -6186,6 +6757,7 @@ $('#register').on('click', function(e) {
     var p_name = $('input[name = "p_name"]').val();
     var u_email = $('input[name = "u_email"]').val();
     var u_password = $('input[name = "u_password"]').val();
+    var u_password2 = $('input[name = "u_password2"]').val();
     var orgTypes = $('#orgTypes').val();
     //var user_image = $('#user_image').val();
     
@@ -6238,7 +6810,21 @@ $('#register').on('click', function(e) {
         document.getElementById("u_password").style.borderColor = "red";
 		return;	
 	}
-	
+    if(u_password2 == ""){
+		errorMessage = "Your Password is Required";
+		document.getElementById("confrimed").innerText = errorMessage;
+		document.getElementById('confrimed').style.display = 'block';
+        document.getElementById("u_password2").style.borderColor = "red";
+		return;	
+	}
+	if (u_password != u_password2) {
+		errorMessage = "Please enter confirm password";
+		document.getElementById("confrimed").innerText = errorMessage;
+		document.getElementById('confrimed').style.display = 'block';
+		document.getElementById('confrimed').style.display = 'block';
+		document.getElementById("u_password").style.borderColor = "red";
+		return false;	
+	}
 
     var dataString = {
         'c_name': c_name,
@@ -6289,6 +6875,16 @@ $('#register').on('click', function(e) {
     });
     return false;
 });
+var passConfirm = function() {
+	if (document.getElementById("u_password").value ==
+	  document.getElementById("u_password2").value) {
+	  document.getElementById("Message").style.color = "Green";
+	  document.getElementById("Message").innerHTML = "Passwords match!"
+	} else {
+	  document.getElementById("Message").style.color = "Red";
+	  document.getElementById("Message").innerHTML = "Passwords DO NOT match!"
+	}
+  }
 
 
 function ListProjects() {

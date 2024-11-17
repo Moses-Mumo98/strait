@@ -93,9 +93,11 @@ body {background: #f6f6f6; color: #444; font-family: 'Roboto', sans-serif; font-
                     </div>
                     <div class="form-group col-6">
                       <label for="u_password2" class="d-block">Password Confirmation</label>
-                      <input id="u_password2" type="password" class="form-control" name="u_password2">
+                      <input id="u_password2" type="password" class="form-control" name="u_password2" onkeyup='passConfirm()'/>
                     </div>
+                    <span id="Message"></span>
                   </div>
+                  
                   <!-- profile pic -->
                   <form id="myform">
                   <!-- <main class="main_full">

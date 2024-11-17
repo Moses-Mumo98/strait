@@ -1,4 +1,0 @@
-2023-02-02 23:12:37 - =================================================
-2023-02-02 23:12:37 - SELECT * FROM tbl_projects p WHERE p.department_id = (SELECT dep_id from tbl_departments where dep_name = 'Legal cases')
-2023-02-02 23:12:37 - Response {"projects":[{"project_id":"36","project_no":"12345","partner_id":"128","project_name":"Testing","project_desc":"Testing file","department_id":"3","created_on":"2022-10-17","created_by":"128","status":"-1","start_date":"2022-10-17","end_date":"2022-10-17","modified_on":"2022-10-20 09:49:29","company_id":"3","client_id":"129","chargable":"1","fee":"11","cycle":"2","effective_status":"4"}]}
-2023-02-02 23:12:37 - =================================================
